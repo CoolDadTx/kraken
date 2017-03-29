@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D43D798F-978C-47E6-B011-446825747FF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>P3Net.Kraken.Web.Forms</RootNamespace>
+    <AssemblyName>P3Net.Kraken.Web.Forms</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>
+    </NoWarn>
+    <DocumentationFile>..\bin\Debug\P3Net.Kraken.Web.Forms.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\_Infrastructure\Kraken.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>none</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\P3Net.Kraken.Web.Forms.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>..\_Infrastructure\Kraken.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\_Infrastructure\AssemblyVer.cs">
+      <Link>_Infrastructure\AssemblyVer.cs</Link>
+    </Compile>
+    <Compile Include="UI\AttributeAccessorExtensions.cs" />
+    <Compile Include="UI\ControlExtensions.cs" />
+    <Compile Include="UI\WebControls\WebControlExtensions.cs" />
+    <Compile Include="UI\_Buttons\ConfirmButton.cs" />
+    <Compile Include="UI\_Buttons\ConfirmImageButton.cs" />
+    <Compile Include="UI\_Buttons\ConfirmLinkButton.cs" />
+    <Compile Include="UI\WebControls\ListControlExtensions.cs" />
+    <Compile Include="UI\_Links\ImageLink.cs" />
+    <Compile Include="UI\_Buttons\ImageLinkButton.cs" />
+    <Compile Include="UI\_Parameters\PageParameter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\P3Net.Kraken\P3Net.Kraken.csproj">
+      <Project>{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}</Project>
+      <Name>P3Net.Kraken</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">
+      <Link>_Infrastructure\CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

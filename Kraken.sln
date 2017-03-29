@@ -1,0 +1,100 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Infrastructure", "_Infrastructure", "{D1E1A242-DAEA-47E8-B1FA-2CC2244863CE}"
+	ProjectSection(SolutionItems) = preProject
+		_Infrastructure\CustomDictionary.xml = _Infrastructure\CustomDictionary.xml
+		_Infrastructure\Kraken.ruleset = _Infrastructure\Kraken.ruleset
+	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Data", "P3Net.Kraken.Data\P3Net.Kraken.Data.csproj", "{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Windows.Forms", "P3Net.Kraken.Windows.Forms\P3Net.Kraken.Windows.Forms.csproj", "{A0177780-1F73-45CE-BF41-7CD94A6A00F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken", "P3Net.Kraken\P3Net.Kraken.csproj", "{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5E031AAA-BD7B-435C-BE9F-35C983E8286E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken", "Tests\Tests.P3Net.Kraken\Tests.P3Net.Kraken.csproj", "{4B9F8878-0E11-41B8-8821-310788530B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceModel", "P3Net.Kraken.ServiceModel\P3Net.Kraken.ServiceModel.csproj", "{96692C92-A028-4630-A669-49656267FFC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.ServiceModel", "Tests\Tests.P3Net.Kraken.ServiceModel\Tests.P3Net.Kraken.ServiceModel.csproj", "{32F3834E-632E-4F46-B09F-A36522C0F52D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.Data", "Tests\Tests.P3Net.Kraken.Data\Tests.P3Net.Kraken.Data.csproj", "{BB85DB49-D391-4964-8920-CEC2B9AFFA54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{68E9045A-2FB5-48FE-83FC-BAE1C765DF3E}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.UnitTesting", "P3Net.Kraken.UnitTesting\P3Net.Kraken.UnitTesting.csproj", "{78155561-D33E-4D70-B619-329E8327B42D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.UnitTesting", "Tests\Tests.P3Net.Kraken.UnitTesting\Tests.P3Net.Kraken.UnitTesting.csproj", "{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Web.Forms", "P3Net.Kraken.Web.Forms\P3Net.Kraken.Web.Forms.csproj", "{D43D798F-978C-47E6-B011-446825747FF9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0177780-1F73-45CE-BF41-7CD94A6A00F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0177780-1F73-45CE-BF41-7CD94A6A00F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0177780-1F73-45CE-BF41-7CD94A6A00F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0177780-1F73-45CE-BF41-7CD94A6A00F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B9F8878-0E11-41B8-8821-310788530B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B9F8878-0E11-41B8-8821-310788530B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B9F8878-0E11-41B8-8821-310788530B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B9F8878-0E11-41B8-8821-310788530B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96692C92-A028-4630-A669-49656267FFC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96692C92-A028-4630-A669-49656267FFC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96692C92-A028-4630-A669-49656267FFC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96692C92-A028-4630-A669-49656267FFC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32F3834E-632E-4F46-B09F-A36522C0F52D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32F3834E-632E-4F46-B09F-A36522C0F52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32F3834E-632E-4F46-B09F-A36522C0F52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32F3834E-632E-4F46-B09F-A36522C0F52D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB85DB49-D391-4964-8920-CEC2B9AFFA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB85DB49-D391-4964-8920-CEC2B9AFFA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB85DB49-D391-4964-8920-CEC2B9AFFA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB85DB49-D391-4964-8920-CEC2B9AFFA54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78155561-D33E-4D70-B619-329E8327B42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78155561-D33E-4D70-B619-329E8327B42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78155561-D33E-4D70-B619-329E8327B42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78155561-D33E-4D70-B619-329E8327B42D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D43D798F-978C-47E6-B011-446825747FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D43D798F-978C-47E6-B011-446825747FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D43D798F-978C-47E6-B011-446825747FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D43D798F-978C-47E6-B011-446825747FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B9F8878-0E11-41B8-8821-310788530B2F} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
+		{32F3834E-632E-4F46-B09F-A36522C0F52D} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
+		{BB85DB49-D391-4964-8920-CEC2B9AFFA54} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
+		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
+	EndGlobalSection
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
+EndGlobal

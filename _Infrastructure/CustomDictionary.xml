@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dictionary>
+    <Words>
+        <Recognized>            
+            <Word>Tera</Word>
+            <Word>Giga</Word>
+            <Word>Mega</Word>
+            <Word>Kilo</Word>            
+        </Recognized>
+        <Compound>
+            <Term CompoundAlternative="P3Net">P3Net</Term>
+            <Term CompoundAlternative="TeraByte">TeraByte</Term>
+            <Term CompoundAlternative="GigaByte">GigaByte</Term>
+            <Term CompoundAlternative="MegaByte">MegaByte</Term>
+            <Term CompoundAlternative="KiloByte">KiloByte</Term>
+        </Compound>
+    </Words>
+</Dictionary>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>P3Net.Kraken.UnitTesting</id>
+        <version>5.0.0</version>
+        <title>Kraken for Unit Testing</title>
+        <authors>Michael Taylor</authors>
+        <owners>P3Net</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Provides support for unit testing.</description>
+        <releaseNotes></releaseNotes>
+        <copyright>Copyright 2016</copyright>
+        <tags>Kraken Testing P3Net</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="Microsoft.VisualStudio.QualityTools.UnitTestFramework" targetFramework="net45" />
+        </frameworkAssemblies>
+
+        <dependencies>
+            <dependency id="P3Net.Kraken" version="5.0.0" />
+            <dependency id="FluentAssertions" version="4.5.0" targetFramework="net461" />
+        </dependencies>
+    </metadata>    
+    <files>
+        <file src="P3Net.Kraken.UnitTesting.dll" target="lib\net461" />
+        <file src="P3Net.Kraken.UnitTesting.pdb" target="lib\net461" />
+        <file src="P3Net.Kraken.UnitTesting.xml" target="lib\net461" />
+    </files>
+</package>
