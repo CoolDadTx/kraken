@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\_Infrastructure\AssemblyVer.cs">
-      <Link>_Infrastructure\AssemblyVer.cs</Link>
+      <Link>Properties\AssemblyVer.cs</Link>
     </Compile>
     <Compile Include="UI\AttributeAccessorExtensions.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
@@ -78,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">
-      <Link>_Infrastructure\CustomDictionary.xml</Link>
+      <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

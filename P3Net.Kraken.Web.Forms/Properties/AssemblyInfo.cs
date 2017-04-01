@@ -14,3 +14,12 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 [assembly: Guid("804cc353-fbe3-4578-ad40-9829c8837d6d")]
+
+[assembly: AssemblyCompany(Metadata.AssemblyVersionConstants.Company)]
+[assembly: AssemblyProduct(Metadata.AssemblyVersionConstants.Product)]
+[assembly: AssemblyCopyright(Metadata.AssemblyVersionConstants.Copyright)]
+[assembly: AssemblyTrademark(Metadata.AssemblyVersionConstants.Trademark)]
+
+[assembly: AssemblyVersion(Metadata.AssemblyVersionConstants.ProductVersion)]
+[assembly: AssemblyFileVersion(Metadata.AssemblyVersionConstants.FileVersion)]
+[assembly: AssemblyInformationalVersion(Metadata.AssemblyVersionConstants.FileVersion)]

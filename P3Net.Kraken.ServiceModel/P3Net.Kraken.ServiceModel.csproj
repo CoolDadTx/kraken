@@ -20,22 +20,22 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Bin\Debug\</OutputPath>
+    <OutputPath>..\Bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Bin\Debug\P3Net.Kraken.ServiceModel.xml</DocumentationFile>
+    <DocumentationFile>..\Bin\Debug\P3Net.Kraken.ServiceModel.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\_Infrastructure\Kraken.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\P3Net.Kraken.ServiceModel.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\P3Net.Kraken.ServiceModel.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\_Infrastructure\Kraken.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -57,11 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\_Infrastructure\AssemblyVer.cs">
+      <Link>Properties\AssemblyVer.cs</Link>
+    </Compile>
     <Compile Include="Channels\InProcChannelFactory.cs" />
     <Compile Include="ISupportsPersistentChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceChannelClient.cs" />
-    <Compile Include="_Infrastructure\GlobalSuppressions.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="ServiceClientFactory.cs" />
     <Compile Include="ServiceClientWrapper.cs" />
   </ItemGroup>
@@ -73,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">
-      <Link>_Infrastructure\CustomDictionary.xml</Link>
+      <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup />

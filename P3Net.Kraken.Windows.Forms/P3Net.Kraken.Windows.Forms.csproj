@@ -21,14 +21,14 @@
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\P3Net.Kraken.Windows.Forms.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Debug\P3Net.Kraken.Windows.Forms.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -45,14 +45,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\P3Net.Kraken.Windows.Forms.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\P3Net.Kraken.Windows.Forms.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -86,6 +86,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\_Infrastructure\AssemblyVer.cs">
+      <Link>Properties\AssemblyVer.cs</Link>
+    </Compile>
     <Compile Include="_Extensions\ControlExtensions.cs" />
     <Compile Include="Design\DropDownEditor.cs" />
     <Compile Include="Diagnostics\TextBoxTraceListener.cs" />
@@ -94,7 +97,7 @@
     <Compile Include="Dialogs\NotImplementedBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="_Infrastructure\GlobalSuppressions.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="Messages\AnimationMessage.cs" />
     <Compile Include="Messages\ButtonMessage.cs" />
     <Compile Include="Messages\ComboBoxMessage.cs" />
@@ -111,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">
-      <Link>_Infrastructure\CustomDictionary.xml</Link>
+      <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

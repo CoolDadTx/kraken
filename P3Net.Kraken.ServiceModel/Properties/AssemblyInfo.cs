@@ -18,10 +18,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Debug")]
 #endif
 
-[assembly: AssemblyCompany("TaylorSoft")]
-[assembly: AssemblyProduct("Kraken")]
-[assembly: AssemblyCopyright("(c) Michael Taylor 2013, All Rights Reserved")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany(Metadata.AssemblyVersionConstants.Company)]
+[assembly: AssemblyProduct(Metadata.AssemblyVersionConstants.Product)]
+[assembly: AssemblyCopyright(Metadata.AssemblyVersionConstants.Copyright)]
+[assembly: AssemblyTrademark(Metadata.AssemblyVersionConstants.Trademark)]
 
-[assembly: AssemblyVersion("4.6.1.0")]
-[assembly: AssemblyFileVersion("4.6.1.0")]
+[assembly: AssemblyVersion(Metadata.AssemblyVersionConstants.ProductVersion)]
+[assembly: AssemblyFileVersion(Metadata.AssemblyVersionConstants.FileVersion)]
+[assembly: AssemblyInformationalVersion(Metadata.AssemblyVersionConstants.FileVersion)]

@@ -30,14 +30,14 @@
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>Bin\Debug\</OutputPath>
+    <OutputPath>..\Bin\Debug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>Bin\Debug\P3Net.Kraken.xml</DocumentationFile>
+    <DocumentationFile>..\Bin\Debug\P3Net.Kraken.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -55,14 +55,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\P3Net.Kraken.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\P3Net.Kraken.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -96,6 +96,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\_Infrastructure\AssemblyVer.cs">
+      <Link>Properties\AssemblyVer.cs</Link>
+    </Compile>
     <Compile Include="Algorithms\Luhn.cs" />
     <Compile Include="Attributes\CodeAttributes.cs" />
     <Compile Include="Collections\ArrayExtensions.cs" />
@@ -205,7 +208,7 @@
     <Compile Include="_DateTime\TimeRange.cs" />
     <Compile Include="_DateTime\TimeSpanExtensions.cs" />
     <Compile Include="_DateTime\YearPart.cs" />
-    <Compile Include="_Infrastructure\GlobalSuppressions.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="IO\FileSystemHelper.cs" />
     <Compile Include="Net\SafeInternetHandle.cs" />
     <Compile Include="Net\WinINetNative.cs" />
@@ -220,7 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">
-      <Link>_Infrastructure\CustomDictionary.xml</Link>
+      <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup />

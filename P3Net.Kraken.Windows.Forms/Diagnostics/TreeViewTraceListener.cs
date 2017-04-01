@@ -1,10 +1,8 @@
 /*
  * This file implements a trace listener attached to a treeview.
  *
- * Copyright © 2003 Michael L Taylor ($COMPANY$)
+ * Copyright © 2003 Michael L Taylor
  * All rights reserved
- *
- * $Header: $
  */
 #region Imports
 
@@ -13,7 +11,6 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-using TaylorSoft;
 #endregion
 
 namespace P3Net.Kraken.Diagnostics

@@ -1,10 +1,9 @@
 /*
  * This file implements a trace listener attached to a multi-line text box.
  *
- * Copyright © 2003 Michael L Taylor ($COMPANY$)
+ * Copyright © 2003 Michael L Taylor
  * All rights reserved
  *
- * $Header: $
  */
 #region Imports
 
@@ -13,7 +12,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-using TaylorSoft;
 #endregion
 
 namespace P3Net.Kraken.Diagnostics

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>P3Net.Kraken</id>
-        <version>5.0.0</version>
+        <version>4.6.17091.1</version>
         <title>Kraken Core Library</title>
         <authors>Michael Taylor</authors>
         <owners>P3Net</owners>

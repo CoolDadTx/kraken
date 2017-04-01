@@ -1,9 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Infrastructure", "_Infrastructure", "{D1E1A242-DAEA-47E8-B1FA-2CC2244863CE}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		_Infrastructure\AssemblyVer.cs = _Infrastructure\AssemblyVer.cs
 		_Infrastructure\CustomDictionary.xml = _Infrastructure\CustomDictionary.xml
 		_Infrastructure\Kraken.ruleset = _Infrastructure\Kraken.ruleset
 	EndProjectSection
@@ -37,6 +39,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.UnitTesting", "Tests\Tests.P3Net.Kraken.UnitTesting\Tests.P3Net.Kraken.UnitTesting.csproj", "{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Web.Forms", "P3Net.Kraken.Web.Forms\P3Net.Kraken.Web.Forms.csproj", "{D43D798F-978C-47E6-B011-446825747FF9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{1E72D627-A76C-494A-823B-085DD7F42F5E}"
+	ProjectSection(SolutionItems) = preProject
+		Packaging\P3Net.Kraken.nuspec = Packaging\P3Net.Kraken.nuspec
+		Packaging\P3Net.Kraken.UnitTesting.nuspec = Packaging\P3Net.Kraken.UnitTesting.nuspec
+		Packaging\P3Net.Kraken.Web.Forms.nuspec = Packaging\P3Net.Kraken.Web.Forms.nuspec
+		Packaging\P3Net.Kraken.Windows.Forms.nuspec = Packaging\P3Net.Kraken.Windows.Forms.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
