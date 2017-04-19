@@ -116,6 +116,8 @@
     <Compile Include="ComponentModel\EnumTypeConverter.cs" />
     <Compile Include="ComponentModel\ObjectToDictionaryConverter.cs" />
     <Compile Include="ComponentModel\RequiredIfAttribute.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollectionOfString.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="Diagnostics\AndArgumentConstraint.cs" />
     <Compile Include="Diagnostics\Argument.cs" />
     <Compile Include="Diagnostics\ArgumentConstraint.cs" />
@@ -162,9 +164,6 @@
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="ComponentModel\NotifyPropertyChange.cs" />
-    <Compile Include="Configuration\ConfigurationElementEx.cs" />
-    <Compile Include="Configuration\ConfigurationPropertyCache.cs" />
-    <Compile Include="Configuration\ConfigurationSectionEx.cs" />
     <Compile Include="Console\CommandLineOption.cs" />
     <Compile Include="Console\CommandLineOptionFlags.cs" />
     <Compile Include="Console\CommandLineParser.cs" />
