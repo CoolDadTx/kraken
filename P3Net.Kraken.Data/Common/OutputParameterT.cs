@@ -12,8 +12,6 @@ namespace P3Net.Kraken.Data.Common
     /// <seealso cref="DbTypeMapper"/>
     public class OutputParameter<T> : DataParameter<T>
     {
-        #region Construction
-
         /// <summary>Initializes an instance of the <see cref="OutputParameter{T}"/> class.</summary>
         /// <param name="name">The name of the parameter.</param>
         public OutputParameter(string name) : base(name, ParameterDirection.Output)
@@ -26,17 +24,5 @@ namespace P3Net.Kraken.Data.Common
         {
             return new OutputParameter<T>(name);
         }
-        #endregion
-
-        #region Public Members
-
-        /// <summary>Gets the current typed value.</summary>
-        /// <returns>The typed parameter value.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public T GetValue()
-        {
-            return TypedValue;
-        }
-        #endregion
     }
 }

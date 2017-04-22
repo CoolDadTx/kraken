@@ -15,9 +15,9 @@ namespace P3Net.Kraken.Data.Common
 
         private InputParameter ( string name )
         {
-            Verify.Argument("name", name).IsNotNullOrEmpty();
+            Verify.Argument(nameof(name)).WithValue(name).IsNotNullOrEmpty();
 
-            m_name = name;
+            _name = name;
         }
         #endregion
 
@@ -26,22 +26,24 @@ namespace P3Net.Kraken.Data.Common
         /// <returns>The new parameter.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="name"/> is empty.</exception>
-        public static InputParameter Named ( string name )
-        {
-            return new InputParameter(name);
-        }
+        public static InputParameter Named ( string name ) => new InputParameter(name);
+
+        /// <summary>Creates an <see cref="InputParameter{T}"/> for the given type.</summary>
+        /// <typeparam name="T">The type of the parameter.</typeparam>
+        /// <returns>The typed parameter.</returns>
+        /// <remarks>
+        /// This method should be used when <see cref="WithValue"/> cannot be used.
+        /// </remarks>
+        public InputParameter<T> OfType<T> () => new InputParameter<T>(_name);
 
         /// <summary>Sets the value of the parameter.</summary>
         /// <param name="value">The parameter value.</param>
         /// <returns>The updated parameter.</returns>
-        public InputParameter<T> WithValue<T> ( T value )
-        {
-            return new InputParameter<T>(m_name).WithValue(value);
-        }
+        public InputParameter<T> WithValue<T> ( T value ) => new InputParameter<T>(_name).WithValue(value);
 
         #region Private Members
 
-        private readonly string m_name;
+        private readonly string _name;
         #endregion
     }
 }

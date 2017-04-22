@@ -9,7 +9,8 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-
+using System.Threading;
+using System.Threading.Tasks;
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data.Common
@@ -85,10 +86,7 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public DataTransaction BeginTransaction ()
-        {
-            return BeginTransactionCore(IsolationLevel.ReadCommitted);
-        }
+        public DataTransaction BeginTransaction () => BeginTransactionCore(IsolationLevel.ReadCommitted);
 
         /// <summary>Begins a transaction to wrap a group of data access calls.</summary>
         /// <param name="level">The level of isolation for the transaction.</param>
@@ -114,10 +112,7 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public DataTransaction BeginTransaction ( IsolationLevel level )
-        {
-            return BeginTransactionCore(level);
-        }
+        public DataTransaction BeginTransaction ( IsolationLevel level ) => BeginTransactionCore(level);
         #endregion
 
         #region ExecuteDataSet
@@ -135,10 +130,7 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public DataSet ExecuteDataSet ( DataCommand command )
-        {
-            return ExecuteDataSet(command, null);
-        }
+        public DataSet ExecuteDataSet ( DataCommand command ) => ExecuteDataSet(command, null);
 
         /// <summary>Executes a command and returns the results as a <see cref="DataSet"/>.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -165,13 +157,48 @@ namespace P3Net.Kraken.Data.Common
         /// </example>
         public DataSet ExecuteDataSet ( DataCommand command, DataTransaction transaction )
         {
-            Verify.Argument("command", command).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
 
             using (var conn = CreateConnectionData(transaction))
             {
                 return ExecuteDataSetCore(conn, command);
             };
         }
+        #endregion
+
+        #region ExecuteDataSetAsync
+
+        /// <summary>Executes a command and returns the results as a <see cref="DataSet"/>.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>The results as a <see cref="DataSet"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task<DataSet> ExecuteDataSetAsync ( DataCommand command ) => ExecuteDataSetAsync(command, null, CancellationToken.None);
+
+        /// <summary>Executes a command and returns the results as a <see cref="DataSet"/>.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The results as a <see cref="DataSet"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task<DataSet> ExecuteDataSetAsync ( DataCommand command, CancellationToken cancellationToken  ) => ExecuteDataSetAsync(command, null, cancellationToken);
+
+        /// <summary>Executes a command and returns the results as a <see cref="DataSet"/>.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The results as a <see cref="DataSet"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public async Task<DataSet> ExecuteDataSetAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+
+            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
+            {
+                return await ExecuteDataSetCoreAsync(conn, command, cancellationToken).ConfigureAwait(false);
+            };
+        }        
         #endregion
 
         #region ExecuteNonQuery
@@ -189,10 +216,7 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public int ExecuteNonQuery ( DataCommand command )
-        {
-            return ExecuteNonQuery(command, null);
-        }
+        public int ExecuteNonQuery ( DataCommand command ) => ExecuteNonQuery(command, null);
 
         /// <summary>Executes a command and returns the number of affected rows.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -219,11 +243,46 @@ namespace P3Net.Kraken.Data.Common
         /// </example>
         public int ExecuteNonQuery ( DataCommand command, DataTransaction transaction )
         {
-            Verify.Argument("command", command).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
 
             using (var conn = CreateConnectionData(transaction))
             {
                 return ExecuteNonQueryCore(conn, command);
+            };
+        }
+        #endregion
+
+        #region ExecuteNonQueryAsync
+
+        /// <summary>Executes a command and returns the number of affected rows.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>The number of rows affected.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task<int> ExecuteNonQueryAsync ( DataCommand command ) => ExecuteNonQueryAsync(command, null, CancellationToken.None);
+
+        /// <summary>Executes a command and returns the number of affected rows.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The number of rows affected.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task<int> ExecuteNonQueryAsync ( DataCommand command, CancellationToken cancellationToken ) => ExecuteNonQueryAsync(command, null, cancellationToken);
+
+        /// <summary>Executes a command and returns the number of affected rows.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The number of rows affected.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public async Task<int> ExecuteNonQueryAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+
+            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
+            {
+                return await ExecuteNonQueryCoreAsync(conn, command, cancellationToken).ConfigureAwait(false);
             };
         }
         #endregion
@@ -263,10 +322,7 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public TResult ExecuteQueryWithResult<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter )
-        {
-            return ExecuteQueryWithResult<TResult>(command, converter, null);
-        }
+        public TResult ExecuteQueryWithResult<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter ) => ExecuteQueryWithResult<TResult>(command, converter, null);
 
         /// <summary>Executes a command, parses the result and returns a strongly-typed object.</summary>
         /// <typeparam name="TResult">The type of the objects to return.</typeparam>
@@ -284,7 +340,7 @@ namespace P3Net.Kraken.Data.Common
         /// <example>Refer to <see cref="ExecuteQueryWithResult{T}(DataCommand, Func{DbDataReader,T})">ExecuteQueryWithResult</see> for an example.</example>
         public TResult ExecuteQueryWithResult<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, DataTransaction transaction )
         {
-            Verify.Argument("converter", converter).IsNotNull();
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
 
             using (var dr = ExecuteReader(command, transaction))
             {
@@ -309,10 +365,7 @@ namespace P3Net.Kraken.Data.Common
         /// </remarks>
         /// <seealso cref="O:ExecuteQueryWithResults{TResult}"/>
         /// <example>Refer to <see cref="ExecuteQueryWithResult{T}(DataCommand, Func{DbDataReader,T})">ExecuteQueryWithResult</see> for an example.</example>
-        public TResult ExecuteQueryWithResult<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data )
-        {
-            return ExecuteQueryWithResult<TResult>(command, converter, data, null);
-        }
+        public TResult ExecuteQueryWithResult<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data ) => ExecuteQueryWithResult<TResult>(command, converter, data, null);        
 
         /// <summary>Executes a command, parses the result and returns a strongly-typed object.</summary>
         /// <typeparam name="TResult">The type of the objects to return.</typeparam>
@@ -331,12 +384,123 @@ namespace P3Net.Kraken.Data.Common
         /// <example>Refer to <see cref="ExecuteQueryWithResult{T}(DataCommand, Func{DbDataReader,T})">ExecuteQueryWithResult</see> for an example.</example>
         public TResult ExecuteQueryWithResult<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data, DataTransaction transaction )
         {
-            Verify.Argument("converter", converter).IsNotNull();
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
 
             using (var dr = ExecuteReader(command, transaction))
             {
                 if (dr.Read())
                     return converter(dr, data);
+            };
+
+            return default(TResult);
+        }
+        #endregion
+
+        #region ExecuteQueryWithResultAsync
+
+        /// <summary>Executes a command, parses the first result and returns a strongly-typed object.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to convert the row to an object.</param>
+        /// <returns>An object containing the data that was parsed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{TResult}"/>
+        /// <preliminary />
+        public Task<TResult> ExecuteQueryWithResultAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter )
+                    => ExecuteQueryWithResultAsync<TResult>(command, converter, null, CancellationToken.None);
+
+        /// <summary>Executes a command, parses the first result and returns a strongly-typed object.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to convert the row to an object.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An object containing the data that was parsed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{TResult}"/>
+        /// <preliminary />
+        public Task<TResult> ExecuteQueryWithResultAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, CancellationToken cancellationToken )
+                    => ExecuteQueryWithResultAsync<TResult>(command, converter, null, cancellationToken);
+
+        /// <summary>Executes a command, parses the result and returns a strongly-typed object.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to convert the row to an object.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An object containing the data that was parsed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{TResult}"/>
+        /// <preliminary />
+        public async Task<TResult> ExecuteQueryWithResultAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
+
+            using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
+            {                
+                if (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
+                    return await converter(dr).ConfigureAwait(false);
+            };
+
+            return default(TResult);
+        }
+
+        /// <summary>Executes a command, parses the first result and returns a strongly-typed object.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to convert the row to an object.</param>
+        /// <param name="data">The data to pass to the converter.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An object containing the data that was parsed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{TResult}"/>
+        /// <preliminary />
+        public Task<TResult> ExecuteQueryWithResultAsync<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data, CancellationToken cancellationToken ) 
+                    => ExecuteQueryWithResultAsync<TResult>(command, converter, data, null, cancellationToken);
+
+        /// <summary>Executes a command, parses the result and returns a strongly-typed object.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to convert the row to an object.</param>
+        /// <param name="data">The data to pass to the converter.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An object containing the data that was parsed.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{TResult}"/>
+        /// <preliminary />
+        public async Task<TResult> ExecuteQueryWithResultAsync<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
+
+            using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
+            {
+                if (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
+                    return await converter(dr, data).ConfigureAwait(false);
             };
 
             return default(TResult);
@@ -378,19 +542,8 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public TResult[] ExecuteQueryWithResults<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter )
-        {
-            Verify.Argument("converter", converter).IsNotNull();
-
-            var items = new List<TResult>();
-            using (var dr = ExecuteReader(command))
-            {
-                while (dr.Read())
-                    items.Add(converter(dr));
-            };
-
-            return items.ToArray();
-        }
+        public IEnumerable<TResult> ExecuteQueryWithResults<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter )
+                => ExecuteQueryWithResults(command, converter, (DataTransaction)null);
 
         /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
         /// <typeparam name="TResult">The type of the objects to return.</typeparam>
@@ -407,18 +560,7 @@ namespace P3Net.Kraken.Data.Common
         /// <seealso cref="O:ExecuteQueryWithResult{TResult}"/>
         /// <example>Refer to <see cref="ExecuteQueryWithResult{T}(DataCommand,Func{DbDataReader,T})"></see> for an example.</example>
         public IEnumerable<TResult> ExecuteQueryWithResults<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data )
-        {
-            Verify.Argument("converter", converter).IsNotNull();
-
-            var items = new List<TResult>();
-            using (var dr = ExecuteReader(command))
-            {
-                while (dr.Read())
-                    items.Add(converter(dr, data));
-            };
-
-            return items;
-        }
+                => ExecuteQueryWithResults(command, converter, data, (DataTransaction)null);
 
         /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
         /// <typeparam name="TResult">The type of the objects to return.</typeparam>
@@ -436,7 +578,8 @@ namespace P3Net.Kraken.Data.Common
         /// <example>Refer to <see cref="ExecuteQueryWithResult{T}(DataCommand,Func{DbDataReader,T})"></see> for an example.</example>
         public IEnumerable<TResult> ExecuteQueryWithResults<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, DataTransaction transaction )
         {
-            Verify.Argument("converter", converter).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
 
             var items = new List<TResult>();
             using (var dr = ExecuteReader(command, transaction))
@@ -463,15 +606,156 @@ namespace P3Net.Kraken.Data.Common
         /// </remarks>
         /// <seealso cref="O:ExecuteQueryWithResult{TResult}"/>
         /// <example>Refer to <see cref="ExecuteQueryWithResult{T}(DataCommand,Func{DbDataReader,T})"></see> for an example.</example>
-        public IEnumerable<TResult> ExecuteQueryWithResults<TResult> ( DataCommand command, Func<DbDataReader, Object, TResult> converter, object data, DataTransaction transaction )
+        public IEnumerable<TResult> ExecuteQueryWithResults<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data, DataTransaction transaction )
         {
-            Verify.Argument("converter", converter).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
 
             var items = new List<TResult>();
             using (var dr = ExecuteReader(command, transaction))
             {
                 while (dr.Read())
                     items.Add(converter(dr, data));
+            };
+
+            return items;
+        }
+        #endregion
+
+        #region ExecuteQueryWithResultsAsync
+
+        /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method used to convert a row to an object.</param>
+        /// <returns>An array containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{TResult}"/>
+        /// <preliminary />
+        public Task<IEnumerable<TResult>> ExecuteQueryWithResultsAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter )
+                    => ExecuteQueryWithResultsAsync<TResult>(command, converter, (DataTransaction)null, CancellationToken.None);
+
+        /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method used to convert a row to an object.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An array containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{TResult}"/>
+        /// <preliminary />
+        public Task<IEnumerable<TResult>> ExecuteQueryWithResultsAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, CancellationToken cancellationToken )
+                    => ExecuteQueryWithResultsAsync(command, converter, (DataTransaction)null, cancellationToken);
+
+        /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method used to convert a row to an object.</param>
+        /// <param name="data">User-provided data to parse to the delegate.</param>
+        /// <returns>An enumerable list containing the objects that were parsed.  The list will never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{TResult}"/>
+        /// <preliminary />
+        public Task<IEnumerable<TResult>> ExecuteQueryWithResultsAsync<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data )
+                    => ExecuteQueryWithResultsAsync(command, converter, data, null, CancellationToken.None);
+
+        /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method used to convert a row to an object.</param>
+        /// <param name="data">User-provided data to parse to the delegate.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An enumerable list containing the objects that were parsed.  The list will never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{TResult}"/>
+        /// <preliminary />
+        public Task<IEnumerable<TResult>> ExecuteQueryWithResultsAsync<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data, CancellationToken cancellationToken )
+                    => ExecuteQueryWithResultsAsync(command, converter, data, null, cancellationToken);
+
+        /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to use to convert the row to an object.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An enumerable list containing the objects that were parsed.  The list will never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{TResult}"/>
+        /// <preliminary />
+        public async Task<IEnumerable<TResult>> ExecuteQueryWithResultsAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
+
+            var items = new List<TResult>();
+            using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
+            {
+                while (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    items.Add(await converter(dr).ConfigureAwait(false));
+
+                    cancellationToken.ThrowIfCancellationRequested();
+                };
+            };
+
+            return items;
+        }
+
+        /// <summary>Executes a command, parses the results and returns a strongly-typed array of objects.</summary>
+        /// <typeparam name="TResult">The type of the objects to return.</typeparam>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="converter">The method to use to convert the row to an object.</param>
+        /// <param name="data">User-provided data to parse to the delegate.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An enumerable list containing the objects that were parsed.  The list will never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
+        /// from a reader into a business object.  <paramref name="converter"/> is called once for each row to build the list
+        /// of data objects to return.
+        /// </remarks>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{TResult}"/>
+        /// <preliminary />
+        public async Task<IEnumerable<TResult>> ExecuteQueryWithResultsAsync<TResult> ( DataCommand command, Func<DbDataReader, object, TResult> converter, object data, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+            Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
+
+            var items = new List<TResult>();
+            using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
+            {
+                while (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
+                {                    
+                    items.Add(await converter(dr, data).ConfigureAwait(false));
+
+                    cancellationToken.ThrowIfCancellationRequested();
+                };                
             };
 
             return items;
@@ -499,10 +783,7 @@ namespace P3Net.Kraken.Data.Common
         /// </example>
         /// <seealso cref="O:ExecuteQueryWithResult{T}"/>
         /// <seealso cref="O:ExecuteQueryWithResults{T}"/>
-        public DbDataReader ExecuteReader ( DataCommand command )
-        {
-            return ExecuteReader(command, null);
-        }
+        public DbDataReader ExecuteReader ( DataCommand command ) => ExecuteReader(command, null);
 
         /// <summary>Executes a command and returns a data reader with the results.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -515,7 +796,7 @@ namespace P3Net.Kraken.Data.Common
         /// <seealso cref="O:ExecuteQueryWithResults{T}"/>
         public DbDataReader ExecuteReader ( DataCommand command, DataTransaction transaction )
         {
-            Verify.Argument("command", command).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
 
             using (var conn = CreateConnectionData(transaction))
             {
@@ -524,6 +805,55 @@ namespace P3Net.Kraken.Data.Common
                 //The reader is now responsible for connection cleanup
                 conn.Detach();
 
+                return dr;
+            };
+        }
+        #endregion
+
+        #region ExecuteReaderAsync
+
+        /// <summary>Executes a command and returns a data reader with the results.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>A <see cref="DbDataReader"/> containing the results.  The reader may be empty but it will
+        /// never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{T}"/>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{T}"/>
+        /// <preliminary />
+        public Task<DbDataReader> ExecuteReaderAsync ( DataCommand command ) => ExecuteReaderAsync(command, null, CancellationToken.None);
+
+        /// <summary>Executes a command and returns a data reader with the results.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="DbDataReader"/> containing the results.  The reader may be empty but it will
+        /// never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{T}"/>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{T}"/>
+        /// <preliminary />
+        public Task<DbDataReader> ExecuteReaderAsync ( DataCommand command, CancellationToken cancellationToken ) => ExecuteReaderAsync(command, null, cancellationToken);
+
+        /// <summary>Executes a command and returns a data reader with the results.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="DbDataReader"/> containing the results.  The reader may be empty but it will
+        /// never be <see langword="null"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="O:ExecuteQueryWithResultAsync{T}"/>
+        /// <seealso cref="O:ExecuteQueryWithResultsAsync{T}"/>
+        /// <preliminary />
+        public async Task<DbDataReader> ExecuteReaderAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+
+            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
+            {
+                var dr = await ExecuteReaderAsyncCore(conn, command, cancellationToken).ConfigureAwait(false);
+                                                
+                //The reader is now responsible for connection cleanup
+                conn.Detach();
+                                
                 return dr;
             };
         }
@@ -544,10 +874,7 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public object ExecuteScalar ( DataCommand command )
-        {
-            return ExecuteScalar(command, null);
-        }
+        public object ExecuteScalar ( DataCommand command ) => ExecuteScalar(command, null);
 
         /// <summary>Executes a command and returns the first result.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -557,7 +884,7 @@ namespace P3Net.Kraken.Data.Common
         /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
         public object ExecuteScalar ( DataCommand command, DataTransaction transaction )
         {
-            Verify.Argument("command", command).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
 
             using (var conn = CreateConnectionData(transaction))
             {
@@ -593,6 +920,86 @@ namespace P3Net.Kraken.Data.Common
         }
         #endregion
 
+        #region ExecuteScalarAsync
+
+        /// <summary>Executes a command and returns the first result.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>The first element from the result set.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <example>
+        /// <code lang="C#">
+        ///    private object LoadData ( ConnectionManager connMgr )
+        ///    {		
+        ///       var cmd = new StoredProcedure(...);
+        ///       return connMgr.ExecuteScalar(cmd);
+        ///    }
+        /// </code>
+        /// </example>
+        /// <preliminary />
+        public Task<object> ExecuteScalarAsync ( DataCommand command ) => ExecuteScalarAsync(command, null, CancellationToken.None);
+
+        /// <summary>Executes a command and returns the first result.</summary>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The first element from the result set.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task<object> ExecuteScalarAsync ( DataCommand command, CancellationToken cancellationToken ) => ExecuteScalarAsync(command, null, cancellationToken);
+
+        /// <summary>Executes a command and returns the first result.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The first element from the result set.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
+        /// <preliminary />
+        public async Task<object> ExecuteScalarAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+
+            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
+            {
+                return await ExecuteScalarAsyncCore(conn, command, cancellationToken).ConfigureAwait(false);
+            };
+        }
+
+        /// <summary>Executes a command and returns the first result.</summary>
+        /// <typeparam name="T">The type of the value returned.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <returns>The first element from the result set.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
+        /// <preliminary />
+        public Task<T> ExecuteScalarAsync<T> ( DataCommand command ) => ExecuteScalarAsync<T>(command, null, CancellationToken.None);
+
+        /// <summary>Executes a command and returns the first result.</summary>
+        /// <typeparam name="T">The type of the value returned.</typeparam>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The first element from the result set.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
+        /// <preliminary />
+        public Task<T> ExecuteScalarAsync<T> ( DataCommand command, CancellationToken cancellationToken ) => ExecuteScalarAsync<T>(command, null, cancellationToken);
+
+        /// <summary>Executes a command and returns the first result.</summary>
+        /// <typeparam name="T">The type of the value returned.</typeparam>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The first element from the result set.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
+        /// <preliminary />
+        public async Task<T> ExecuteScalarAsync<T> ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            var result = await ExecuteScalarAsync(command, transaction, cancellationToken).ConfigureAwait(false);
+
+            return ((result != null) && (result != DBNull.Value)) ? (T)Convert.ChangeType(result, typeof(T)) : default(T);
+        }
+        #endregion
+
         #region FillDataSet
 
         /// <summary>Fills a data set with the results of a command.</summary>
@@ -608,21 +1015,15 @@ namespace P3Net.Kraken.Data.Common
         ///    }
         /// </code>
         /// </example>
-        public void FillDataSet ( DataCommand command, DataSet ds )
-        {
-            FillDataSet(command, ds, null, null);
-        }
-
+        public void FillDataSet ( DataCommand command, DataSet ds ) => FillDataSet(command, ds, null, null);
+        
         /// <summary>Fills a data set with the results of a command.</summary>
         /// <param name="ds">The data set to fill.</param>
         /// <param name="tables">The tables to use for storing the results.</param>
         /// <param name="command">The command to execute.</param>
         /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
         /// <example>Refer to <see cref="FillDataSet(DataCommand, DataSet)">FillDataSet</see> for an example.</example>
-        public void FillDataSet ( DataCommand command, DataSet ds, string[] tables )
-        {
-            FillDataSet(command, ds, tables, null);
-        }
+        public void FillDataSet ( DataCommand command, DataSet ds, string[] tables ) => FillDataSet(command, ds, tables, null);
 
         /// <summary>Fills a data set with the results of a command.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -630,10 +1031,7 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="command">The command to execute.</param>
         /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
         /// <example>Refer to <see cref="FillDataSet(DataCommand, DataSet)">FillDataSet</see> for an example.</example>
-        public void FillDataSet ( DataCommand command, DataSet ds, DataTransaction transaction )
-        {
-            FillDataSet(command, ds, null, transaction);
-        }
+        public void FillDataSet ( DataCommand command, DataSet ds, DataTransaction transaction ) => FillDataSet(command, ds, null, transaction);
 
         /// <summary>Fills a data set with the results of a command.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -644,8 +1042,8 @@ namespace P3Net.Kraken.Data.Common
         /// <example>Refer to <see cref="FillDataSet(DataCommand, DataSet)">FillDataSet</see> for an example.</example>
         public void FillDataSet ( DataCommand command, DataSet ds, string[] tables, DataTransaction transaction )
         {
-            Verify.Argument("ds", ds).IsNotNull();
-            Verify.Argument("command", command).IsNotNull();
+            Verify.Argument(nameof(ds)).WithValue(ds).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
 
             using (var conn = CreateConnectionData(transaction))
             {
@@ -654,7 +1052,60 @@ namespace P3Net.Kraken.Data.Common
         }
         #endregion
 
-        #region QueryParameters
+        #region FillDataSetAsync
+
+        /// <summary>Fills a data set with the results of a command.</summary>
+        /// <param name="ds">The data set to fill.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task FillDataSetAsync ( DataCommand command, DataSet ds ) => FillDataSetAsync(command, ds, null, null, CancellationToken.None);
+
+        /// <summary>Fills a data set with the results of a command.</summary>
+        /// <param name="ds">The data set to fill.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task FillDataSetAsync ( DataCommand command, DataSet ds, CancellationToken cancellationToken ) => FillDataSetAsync(command, ds, null, null, cancellationToken);
+
+        /// <summary>Fills a data set with the results of a command.</summary>
+        /// <param name="ds">The data set to fill.</param>
+        /// <param name="tables">The tables to use for storing the results.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task FillDataSetAsync ( DataCommand command, DataSet ds, string[] tables, CancellationToken cancellationToken ) => FillDataSetAsync(command, ds, tables, null, cancellationToken);
+
+        /// <summary>Fills a data set with the results of a command.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="ds">The data set to fill.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public Task FillDataSetAsync ( DataCommand command, DataSet ds, DataTransaction transaction, CancellationToken cancellationToken ) => FillDataSetAsync(command, ds, null, transaction, cancellationToken);
+
+        /// <summary>Fills a data set with the results of a command.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="ds">The data set to fill.</param>
+        /// <param name="tables">The tables to use for storing the results.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <preliminary />
+        public async Task FillDataSetAsync ( DataCommand command, DataSet ds, string[] tables, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(ds)).WithValue(ds).IsNotNull();
+            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
+
+            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
+            {
+                await FillDataSetAsyncCore(conn, ds, command, tables, cancellationToken).ConfigureAwait(false);
+            };
+        }
+        #endregion
 
         /// <summary>Gets the parameters associated with a stored procedure.</summary>
         /// <param name="name">The name of the stored procedure.</param>
@@ -667,15 +1118,49 @@ namespace P3Net.Kraken.Data.Common
         /// manager supports this method.
         /// </remarks>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryParameters")]
-        public DataParameter[] QueryParameters ( string name )
+        public IEnumerable<DataParameter> QueryParameters ( string name )
         {
-            Verify.Argument("name", name).IsNotNullOrEmpty();
+            Verify.Argument(nameof(name)).WithValue(name).IsNotNullOrEmpty();
+
             if (!SupportsQueryParameters)
                 throw new NotSupportedException("The manager does not support QueryParameters.");
 
             return this.QueryParametersBase(name);
         }
-        #endregion
+
+        /// <summary>Gets the parameters associated with a stored procedure.</summary>
+        /// <param name="name">The name of the stored procedure.</param>
+        /// <returns>An array of data parameters, in ordinal order.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is empty.</exception>
+        /// <exception cref="NotSupportedException">The manager does not support this method.</exception>
+        /// <remarks>
+        /// Not all managers support this method.  Use <see cref="SupportsQueryParameters"/> to determine if the
+        /// manager supports this method.
+        /// </remarks>
+        /// <preliminary />
+        public Task<IEnumerable<DataParameter>> QueryParametersAsync ( string name ) => QueryParametersAsync(name, CancellationToken.None);
+
+        /// <summary>Gets the parameters associated with a stored procedure.</summary>
+        /// <param name="name">The name of the stored procedure.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An array of data parameters, in ordinal order.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is empty.</exception>
+        /// <exception cref="NotSupportedException">The manager does not support this method.</exception>
+        /// <remarks>
+        /// Not all managers support this method.  Use <see cref="SupportsQueryParameters"/> to determine if the
+        /// manager supports this method.
+        /// </remarks>
+        /// <preliminary />
+        public async Task<IEnumerable<DataParameter>> QueryParametersAsync ( string name, CancellationToken cancellationToken )
+        {
+            Verify.Argument(nameof(name)).WithValue(name).IsNotNullOrEmpty();
+            if (!SupportsQueryParameters)
+                throw new NotSupportedException("The manager does not support QueryParameters.");
+
+            return await this.QueryParametersAsyncBase(name, cancellationToken).ConfigureAwait(false);
+        }
 
         /// <summary>Sets the user context.</summary>
         /// <param name="userContext">The user context.</param>
@@ -689,7 +1174,7 @@ namespace P3Net.Kraken.Data.Common
 
             return this;
         }
-
+                
         #region UpdateDataSet
 
         /// <summary>Updates a <see cref="DataSet"/>.</summary>
@@ -720,10 +1205,7 @@ namespace P3Net.Kraken.Data.Common
         /// </code>
         /// </example>
         public void UpdateDataSet ( DataCommand insertCommand, DataCommand deleteCommand,
-                                    DataCommand updateCommand, DataSet ds, string table )
-        {
-            UpdateDataSet(insertCommand, deleteCommand, updateCommand, ds, table, null);
-        }
+                                    DataCommand updateCommand, DataSet ds, string table ) => UpdateDataSet(insertCommand, deleteCommand, updateCommand, ds, table, null);
 
         /// <summary>Updates a <see cref="DataSet"/>.</summary>
         /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
@@ -746,10 +1228,10 @@ namespace P3Net.Kraken.Data.Common
                                     DataCommand updateCommand, DataSet ds, string table, DataTransaction transaction )
         {
             //Validate
-            Verify.Argument("insertCommand", insertCommand).IsNotNull();
-            Verify.Argument("deleteCommand", deleteCommand).IsNotNull();
-            Verify.Argument("updateCommand", updateCommand).IsNotNull();
-            Verify.Argument("ds", ds).IsNotNull();
+            Verify.Argument(nameof(insertCommand)).WithValue(insertCommand).IsNotNull();
+            Verify.Argument(nameof(deleteCommand)).WithValue(deleteCommand).IsNotNull();
+            Verify.Argument(nameof(updateCommand)).WithValue(updateCommand).IsNotNull();
+            Verify.Argument(nameof(ds)).WithValue(ds).IsNotNull();
 
             //Initialize table name as needed
             table = (table ?? "").Trim();
@@ -762,18 +1244,88 @@ namespace P3Net.Kraken.Data.Common
             };
         }
         #endregion
-        
-        #region Protected Members
 
-        #region Attributes
+        #region UpdateDataSetAsync
+
+        /// <summary>Updates a <see cref="DataSet"/>.</summary>
+        /// <param name="insertCommand">Command to use for insertions.</param>
+        /// <param name="deleteCommand">Command to use for deletions.</param>
+        /// <param name="updateCommand">Command to use for updates.</param>
+        /// <param name="ds"><see cref="DataSet"/> to use.</param>
+        /// <param name="table">The table to use when updating the command.  If <see langword="null"/> or empty then the        
+        /// first table is used.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <remarks>
+        /// To support transactions, precede this call with ExecuteScalar("begin transaction").  Failure to
+        /// use transactions could cause failed updates to be partially applied.
+        /// <para/>
+        /// The command parameters can be <see langword="null"/> but the update will fail if the command is needed.		
+        /// </remarks>		
+        /// <exception cref="DBConcurrencyException">A concurrency error occurred.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> is <see langword="null"/>.</exception>	
+        /// <example>
+        /// <code lang="C#">
+        ///    public void UpdateData ( ConnectionManagerBase connMgr, DataSet ds )
+        ///    {
+        ///       var cmdInsert = new Query(...);
+        ///       var cmdUpdate = new Query(...);
+        ///       var cmdDelete = new Query(...);
+        /// 
+        ///       connMgr.UpdateDataSet(cmdInsert, cmdDelete, cmdUpdate, ds, null);
+        ///    }
+        /// </code>
+        /// </example>
+        public Task UpdateDataSetAsync ( DataCommand insertCommand, DataCommand deleteCommand,
+                                         DataCommand updateCommand, DataSet ds, string table, CancellationToken cancellationToken ) 
+                    => UpdateDataSetAsync(insertCommand, deleteCommand, updateCommand, ds, table, null, cancellationToken);
+
+        /// <summary>Updates a <see cref="DataSet"/>.</summary>
+        /// <param name="transaction">The transaction to execute within.  If it is <see langword="null"/> then no transaction is used.</param>
+        /// <param name="insertCommand">Command to use for insertions.</param>
+        /// <param name="deleteCommand">Command to use for deletions.</param>
+        /// <param name="updateCommand">Command to use for updates.</param>
+        /// <param name="ds"><see cref="DataSet"/> to use.</param>
+        /// <param name="table">The table to use when updating the command.  If <see langword="null"/> or empty then the
+        /// first table is used.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <remarks>
+        /// To support transactions, precede this call with ExecuteScalar("begin transaction").  Failure to
+        /// use transactions could cause failed updates to be partially applied.
+        /// <para/>
+        /// The command parameters can be <see langword="null"/> but the update will fail if the command is needed.
+        /// </remarks>		
+        /// <exception cref="DBConcurrencyException">A concurrency error occurred.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="ds"/> is <see langword="null"/>.</exception>
+        /// <example>Refer to <see cref="UpdateDataSet(DataCommand,DataCommand,DataCommand,DataSet,string)">UpdateDataSet</see> for an example.</example>
+        public async Task UpdateDataSetAsync ( DataCommand insertCommand, DataCommand deleteCommand,
+                                               DataCommand updateCommand, DataSet ds, string table, DataTransaction transaction, CancellationToken cancellationToken )
+        {
+            //Validate
+            Verify.Argument(nameof(insertCommand)).WithValue(insertCommand).IsNotNull();
+            Verify.Argument(nameof(deleteCommand)).WithValue(deleteCommand).IsNotNull();
+            Verify.Argument(nameof(updateCommand)).WithValue(updateCommand).IsNotNull();
+            Verify.Argument(nameof(ds)).WithValue(ds).IsNotNull();
+
+            //Initialize table name as needed
+            table = (table ?? "").Trim();
+            if (String.IsNullOrEmpty(table) && (ds.Tables.Count > 0))
+                table = ds.Tables[0].TableName;
+
+            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
+            {
+                await UpdateDataSetAsyncCore(conn, insertCommand, deleteCommand, updateCommand, ds, table, cancellationToken).ConfigureAwait(false);
+            };
+        }
+        #endregion
+
+        #region Protected Members
 
         /// <summary>Gets or sets the connection information.</summary>
         protected string ConnectionString
         {
-            get { return m_connString; }
-            set { m_connString = (value != null) ? value.Trim() : ""; }
+            get => _connString;
+            set => _connString = value?.Trim() ?? "";
         }
-        #endregion
 
         #region Abstract/Virtual Methods
 
@@ -812,10 +1364,9 @@ namespace P3Net.Kraken.Data.Common
         {
             throw new NotSupportedException("QueryParameters is not supported.");
         }
+
         #endregion
-
-        #region Methods
-
+                
         /// <summary>Begins a transaction.</summary>
         /// <param name="level">The level of the transaction.</param>
         /// <returns>The underlying transaction.</returns>
@@ -836,18 +1387,62 @@ namespace P3Net.Kraken.Data.Common
             };
         }
 
+        /// <summary>Begins a transaction.</summary>
+        /// <param name="level">The level of the transaction.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The underlying transaction.</returns>
+        protected virtual async Task<DataTransaction> BeginTransactionAsyncCore ( IsolationLevel level, CancellationToken cancellationToken )
+        {
+            DbConnection conn = null;
+            try
+            {
+                conn = await CreateConnectionBaseAsync(ConnectionString, cancellationToken).ConfigureAwait(false);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                return new DataTransaction(CreateTransactionBase(conn, level), true);
+            } catch (Exception)
+            {
+                if (conn != null)
+                    conn.Dispose();
+
+                throw;
+            };
+        }
+
         /// <summary>Populates a data set with data.</summary>
         /// <param name="conn">The connection information.</param>
         /// <param name="command">The command to execute.</param>
         /// <returns>The data set results.</returns>
         protected virtual DataSet ExecuteDataSetCore ( ConnectionData conn, DataCommand command )
         {
-            DataSet ds = new DataSet();
+            var ds = new DataSet();
 
             try
             {
                 ds.Locale = CultureInfo.InvariantCulture;
                 FillDataSetCore(conn, ds, command, null);
+                return ds;
+            } catch
+            {
+                ds.Dispose();
+                throw;
+            };
+        }
+
+        /// <summary>Populates a data set with data.</summary>
+        /// <param name="conn">The connection information.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The data set results.</returns>
+        protected virtual async Task<DataSet> ExecuteDataSetAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
+        {
+            var ds = new DataSet();
+
+            try
+            {
+                ds.Locale = CultureInfo.InvariantCulture;
+                await FillDataSetAsyncCore(conn, ds, command, null, cancellationToken).ConfigureAwait(false);
                 return ds;
             } catch
             {
@@ -877,10 +1472,29 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Executes a command and returns the results.</summary>
         /// <param name="conn">The connection information.</param>
         /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The results of the command.</returns>
+        protected virtual async Task<int> ExecuteNonQueryAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
+        {
+            using (var cmd = await PrepareCommandAsyncCore(conn, command, cancellationToken).ConfigureAwait(false))
+            {
+                await conn.OpenAsync(cancellationToken).ConfigureAwait(false);
+
+                int result = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+
+                //Copy the parameter values back
+                await UpdateParameterAsyncCore(cmd, command, cancellationToken).ConfigureAwait(false);
+                return result;
+            };
+        }
+
+        /// <summary>Executes a command and returns the results.</summary>
+        /// <param name="conn">The connection information.</param>
+        /// <param name="command">The command to execute.</param>
         /// <returns>The results of the command.</returns>
         protected virtual DbDataReader ExecuteReaderCore ( ConnectionData conn, DataCommand command )
         {
-            using (DbCommand cmd = PrepareCommandCore(conn, command))
+            using (var cmd = PrepareCommandCore(conn, command))
             {
                 conn.Open();
 
@@ -910,6 +1524,41 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Executes a command and returns the results.</summary>
         /// <param name="conn">The connection information.</param>
         /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The results of the command.</returns>
+        protected virtual async Task<DbDataReader> ExecuteReaderAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
+        {
+            using (var cmd = await PrepareCommandAsyncCore(conn, command, cancellationToken).ConfigureAwait(false))
+            {
+                await conn.OpenAsync(cancellationToken).ConfigureAwait(false);
+
+                //Can't close the connection if it is associated with a transaction so do the check now
+                var behavior = (conn.Transaction != null) ? CommandBehavior.Default : CommandBehavior.CloseConnection;
+
+                //Create the reader
+                DbDataReader dr = null;
+                try
+                {
+                    dr = await cmd.ExecuteReaderAsync(behavior, cancellationToken).ConfigureAwait(false);
+
+                    //Copy the parameter values back
+                    cancellationToken.ThrowIfCancellationRequested();
+                    await UpdateParameterAsyncCore(cmd, command, cancellationToken).ConfigureAwait(false);
+                } catch
+                {
+                    if (dr != null)
+                        dr.Close();
+
+                    throw;
+                };
+
+                return dr;
+            };
+        }
+
+        /// <summary>Executes a command and returns the results.</summary>
+        /// <param name="conn">The connection information.</param>
+        /// <param name="command">The command to execute.</param>
         /// <returns>The results of the command.</returns>
         protected virtual object ExecuteScalarCore ( ConnectionData conn, DataCommand command )
         {
@@ -921,6 +1570,25 @@ namespace P3Net.Kraken.Data.Common
 
                 //Copy the parameter values back
                 UpdateParameterCore(cmd, command);
+                return obj;
+            };
+        }
+
+        /// <summary>Executes a command and returns the results.</summary>
+        /// <param name="conn">The connection information.</param>
+        /// <param name="command">The command to execute.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The results of the command.</returns>
+        protected virtual async Task<object> ExecuteScalarAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
+        {
+            using (var cmd = await PrepareCommandAsyncCore(conn, command, cancellationToken).ConfigureAwait(false))
+            {
+                await conn.OpenAsync(cancellationToken).ConfigureAwait(false);
+
+                var obj = await cmd.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
+
+                //Copy the parameter values back
+                await UpdateParameterAsyncCore(cmd, command, cancellationToken).ConfigureAwait(false);
                 return obj;
             };
         }
@@ -973,6 +1641,30 @@ namespace P3Net.Kraken.Data.Common
                 if (cmdDb != null)
                     cmdDb.Dispose();
             };
+        }
+
+        /// <summary>Prepares the connection after it has been opened.</summary>
+        /// <param name="connection">The open connection.</param>
+        /// <remarks>
+        /// The default implementation checks to see if the connection manager supports user contexts.  If so then it calls
+        /// <see cref="SetUserContext"/>.
+        /// </remarks>
+        protected virtual void PrepareConnectionCore ( ConnectionData connection )
+        {
+            if (SupportsUserContext)
+            {
+                SetUserContextCore(connection, _userContext ?? "");
+            };
+        }
+
+        /// <summary>Sets the user context.</summary>
+        /// <param name="connection">The open connection.</param>
+        /// <param name="userContext">The user context to use.</param>
+        /// <remarks>
+        /// The default implementation does nothing.
+        /// </remarks>
+        protected virtual void SetUserContextCore ( ConnectionData connection, string userContext )
+        {
         }
 
         /// <summary>Updates a data set.</summary>
@@ -1030,14 +1722,11 @@ namespace P3Net.Kraken.Data.Common
                     cmdDelete.Dispose();
             };
         }
-        #endregion
 
         #endregion
 
         #region Private Members
-
-        #region Methods
-
+        
         private ConnectionData CreateConnectionData ( DataTransaction transaction )
         {
             ConnectionData data = null;
@@ -1105,31 +1794,7 @@ namespace P3Net.Kraken.Data.Common
             };
 
             return cmd;
-        }
-
-        /// <summary>Prepares the connection after it has been opened.</summary>
-        /// <param name="connection">The open connection.</param>
-        /// <remarks>
-        /// The default implementation checks to see if the connection manager supports user contexts.  If so then it calls
-        /// <see cref="SetUserContext"/>.
-        /// </remarks>
-        protected virtual void PrepareConnectionCore ( ConnectionData connection )
-        {
-            if (SupportsUserContext)
-            {
-                SetUserContextCore(connection, m_userContext ?? "");
-            };
-        }
-
-        /// <summary>Sets the user context.</summary>
-        /// <param name="connection">The open connection.</param>
-        /// <param name="userContext">The user context to use.</param>
-        /// <remarks>
-        /// The default implementation does nothing.
-        /// </remarks>
-        protected virtual void SetUserContextCore ( ConnectionData connection, string userContext )
-        {
-        }
+        }        
 
         /// <summary>Updates the command with any output or input/output parameter values.</summary>
         /// <param name="command">The command to copy the values from.</param>
@@ -1166,15 +1831,10 @@ namespace P3Net.Kraken.Data.Common
                 };
             };
         }
-        #endregion
-
-        #region Data
-
-        private string m_connString;
-        private string m_userContext;
-
-        #endregion
-
+        
+        private string _connString;
+        private string _userContext;
+        
         #endregion 
     }
 }

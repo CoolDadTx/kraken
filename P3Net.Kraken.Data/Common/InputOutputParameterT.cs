@@ -19,15 +19,7 @@ namespace P3Net.Kraken.Data.Common
         public InputOutputParameter(string name) : base(name, ParameterDirection.InputOutput)
         { }
         #endregion
-
-        /// <summary>Gets the current typed value.</summary>
-        /// <returns>The typed parameter value.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public T GetValue()
-        {
-            return TypedValue;
-        }
-
+        
         /// <summary>Sets the value of the parameter.</summary>
         /// <param name="value">The parameter value.</param>
         /// <returns>The updated parameter.</returns>

@@ -41,10 +41,7 @@ namespace P3Net.Kraken.Data.Common
                 return (T)Convert.ChangeType(Value, typeof(T));
             }
 
-            set
-            {
-                Value = value;
-            }
+            set => Value = value;
         }
     }
 }
