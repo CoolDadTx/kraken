@@ -10,6 +10,7 @@ using System.Data;
 using System.Linq;
 #endregion
 
+
 namespace P3Net.Kraken.Data
 {
     /// <summary>Extension methods for data tables.</summary>
