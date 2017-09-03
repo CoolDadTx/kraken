@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -16,18 +16,12 @@
     <OutputType>Library</OutputType>
     <RootNamespace>P3Net.Kraken</RootNamespace>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <SignAssembly>false</SignAssembly>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>        
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\Bin\Debug\</OutputPath>
