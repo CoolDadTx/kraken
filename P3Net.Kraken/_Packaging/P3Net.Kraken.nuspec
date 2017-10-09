@@ -18,7 +18,6 @@
             <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" />
             <frameworkAssembly assemblyName="System.Configuration" />
             <frameworkAssembly assemblyName="System.Core" />
-            <frameworkAssembly assemblyName="System.Net.Http" />
         </frameworkAssemblies>
     </metadata>
     <files>

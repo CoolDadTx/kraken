@@ -85,7 +85,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\_Infrastructure\AssemblyVer.cs">
@@ -130,7 +129,6 @@
     <Compile Include="IO\PathExtensions.cs" />
     <Compile Include="MismatchedCurrencyException.cs" />
     <Compile Include="Money.cs" />
-    <Compile Include="Net\Http\HttpClientManager.cs" />
     <Compile Include="Reflection\VisualBasicTypeNameProvider.cs" />
     <Compile Include="Reflection\CSharpTypeNameProvider.cs" />
     <Compile Include="Reflection\TypeNameProviderOptions.cs" />

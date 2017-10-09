@@ -5,8 +5,8 @@
  * Portions copyright Federation of State Medical Boards
  */
 using System;
-using System.Collections.Concurrent;
 using System.Net.Http;
+using System.Runtime.Caching;
 
 using P3Net.Kraken.Diagnostics;
 
@@ -27,17 +27,22 @@ namespace P3Net.Kraken.Net.Http
     /// </remarks>
     public static class HttpClientManager
     {
+        /// <summary>Gets or sets the default expiration interval for a client.</summary>
+        /// <value>The default is 10 minutes.</value>
+        public static TimeSpan DefaultExpirationInterval { get; set; } = new TimeSpan(0, 10, 0);
+
         /// <summary>Clears the factory of all clients.</summary>
         public static void Clear ()
         { 
             lock (s_clients)
             {
-                foreach (var client in s_clients.Values)
+                var keys = s_clients.GetValues(null).Keys;
+
+                foreach (var key in keys)
                 {
+                    var client = s_clients.Remove(key) as HttpClient;
                     SafeDispose(client);
                 };
-
-                s_clients.Clear();
             };            
         }
 
@@ -50,7 +55,7 @@ namespace P3Net.Kraken.Net.Http
         {
             Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
 
-            return s_clients.ContainsKey(clientName);
+            return s_clients.Contains(clientName);
         }
 
 
@@ -131,9 +136,10 @@ namespace P3Net.Kraken.Net.Http
         {
             lock (s_clients)
             {
-                var clients = new HttpClient[s_clients.Count];
+                var values = s_clients.GetValues(null).Values;
 
-                s_clients.Values.CopyTo(clients, 0);
+                var clients = new HttpClient[values.Count];
+                clients.CopyTo(clients, 0);
 
                 return clients;
             };
@@ -150,8 +156,8 @@ namespace P3Net.Kraken.Net.Http
         {
             Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
 
-            if (s_clients.TryRemove(clientName, out HttpClient client))
-                SafeDispose(client);
+            var client = s_clients.Remove(clientName) as HttpClient;
+            SafeDispose(client);
         }
         
         #region Private Members
@@ -164,19 +170,29 @@ namespace P3Net.Kraken.Net.Http
             return client;
         }
 
-        private static HttpClient GetCore ( string clientName, Func<HttpClient> creator ) => s_clients.GetOrAdd(clientName, s => creator());
+        private static HttpClient GetCore ( string clientName, Func<HttpClient> creator )
+        {
+            var client = s_clients.Get(clientName) as HttpClient;
+            if (client != null)
+                return client;
+
+            var policy = new CacheItemPolicy() {
+                SlidingExpiration = DefaultExpirationInterval,                
+            };
+
+            return s_clients.AddOrGetExisting(clientName, creator(), policy) as HttpClient;
+        }
 
         private static void SafeDispose ( HttpClient client )
         {
             try
             {
-                if (client != null)
-                    client.Dispose();
+                client?.Dispose();
             } catch
             { /* Ignore exceptions */ };
         }
 
-        private static readonly ConcurrentDictionary<string, HttpClient> s_clients = new ConcurrentDictionary<string, HttpClient>();
+        private static readonly MemoryCache s_clients = new MemoryCache(nameof(HttpClientManager));
         #endregion
     }
 }

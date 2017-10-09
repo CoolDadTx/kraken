@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceProcess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.ServiceProcess", "Tests\Tests.P3Net.Kraken.ServiceProcess\Tests.P3Net.Kraken.ServiceProcess.csproj", "{E7708ED9-6A14-4E6D-93CC-47AA144A0306}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Net.Http", "P3Net.Kraken.Net.Http\P3Net.Kraken.Net.Http.csproj", "{8580B2B9-44EC-4246-AD00-D942EDF13168}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8580B2B9-44EC-4246-AD00-D942EDF13168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8580B2B9-44EC-4246-AD00-D942EDF13168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8580B2B9-44EC-4246-AD00-D942EDF13168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8580B2B9-44EC-4246-AD00-D942EDF13168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
