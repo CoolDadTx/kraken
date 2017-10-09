@@ -6,11 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data.Common
@@ -45,8 +45,7 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="connectionString">The connection string to use.</param>
         protected ConnectionManager ( string connectionString )
         {
-            if (connectionString != null)
-                m_connString = connectionString.Trim();
+            ConnectionString = connectionString;
         }
         #endregion
 
@@ -59,6 +58,13 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Determines if the manager supports setting the user context.</summary>
         /// <value>The default is <see langword="false"/>.</value>
         public bool SupportsUserContext { get; protected set; }
+
+        /// <summary>Gets or sets the user context to use for commands.</summary>
+        public string UserContext
+        {
+            get => _userContext ?? "";
+            set => _userContext = value;
+        }
         #endregion        
 
         #region BeginTransaction
@@ -190,15 +196,7 @@ namespace P3Net.Kraken.Data.Common
         /// <returns>The results as a <see cref="DataSet"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
         /// <preliminary />
-        public async Task<DataSet> ExecuteDataSetAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
-
-            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
-            {
-                return await ExecuteDataSetCoreAsync(conn, command, cancellationToken).ConfigureAwait(false);
-            };
-        }        
+        public Task<DataSet> ExecuteDataSetAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken ) => Task.Run(() => ExecuteDataSet(command, transaction));
         #endregion
 
         #region ExecuteNonQuery
@@ -276,15 +274,7 @@ namespace P3Net.Kraken.Data.Common
         /// <returns>The number of rows affected.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
         /// <preliminary />
-        public async Task<int> ExecuteNonQueryAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
-
-            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
-            {
-                return await ExecuteNonQueryCoreAsync(conn, command, cancellationToken).ConfigureAwait(false);
-            };
-        }
+        public Task<int> ExecuteNonQueryAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken ) => Task.Run(() => ExecuteNonQuery(command, transaction));
         #endregion
 
         #region ExecuteQueryWithResult
@@ -449,11 +439,14 @@ namespace P3Net.Kraken.Data.Common
         public async Task<TResult> ExecuteQueryWithResultAsync<TResult> ( DataCommand command, Func<DbDataReader, TResult> converter, DataTransaction transaction, CancellationToken cancellationToken )
         {
             Verify.Argument(nameof(converter)).WithValue(converter).IsNotNull();
-
+            
             using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
-            {                
+            {
                 if (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
-                    return await converter(dr).ConfigureAwait(false);
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    return await Task.Run(() => converter(dr)).ConfigureAwait(false);
+                };
             };
 
             return default(TResult);
@@ -500,7 +493,10 @@ namespace P3Net.Kraken.Data.Common
             using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
             {
                 if (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
-                    return await converter(dr, data).ConfigureAwait(false);
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    return await Task.Run(() => converter(dr, data)).ConfigureAwait(false);
+                };
             };
 
             return default(TResult);
@@ -715,11 +711,10 @@ namespace P3Net.Kraken.Data.Common
             var items = new List<TResult>();
             using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
             {
-                while (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
+                while (await dr.ReadAsync(cancellationToken))
                 {
-                    items.Add(await converter(dr).ConfigureAwait(false));
-
-                    cancellationToken.ThrowIfCancellationRequested();
+                    items.Add(await Task.Run(() => converter(dr)).ConfigureAwait(false));
+                    cancellationToken.ThrowIfCancellationRequested();                    
                 };
             };
 
@@ -750,15 +745,14 @@ namespace P3Net.Kraken.Data.Common
             var items = new List<TResult>();
             using (var dr = await ExecuteReaderAsync(command, transaction, cancellationToken).ConfigureAwait(false))
             {
-                while (await dr.ReadAsync(cancellationToken).ConfigureAwait(false))
-                {                    
-                    items.Add(await converter(dr, data).ConfigureAwait(false));
-
+                while (await dr.ReadAsync(cancellationToken))
+                {
+                    items.Add(await Task.Run(() => converter(dr, data)).ConfigureAwait(false));
                     cancellationToken.ThrowIfCancellationRequested();
-                };                
+                };
             };
 
-            return items;
+            return items;            
         }
         #endregion
 
@@ -843,20 +837,8 @@ namespace P3Net.Kraken.Data.Common
         /// <seealso cref="O:ExecuteQueryWithResultAsync{T}"/>
         /// <seealso cref="O:ExecuteQueryWithResultsAsync{T}"/>
         /// <preliminary />
-        public async Task<DbDataReader> ExecuteReaderAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
-
-            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
-            {
-                var dr = await ExecuteReaderAsyncCore(conn, command, cancellationToken).ConfigureAwait(false);
-                                                
-                //The reader is now responsible for connection cleanup
-                conn.Detach();
-                                
-                return dr;
-            };
-        }
+        public Task<DbDataReader> ExecuteReaderAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+                                        => Task.Run(() => ExecuteReader(command, transaction));
         #endregion
 
         #region ExecuteScalar
@@ -954,15 +936,8 @@ namespace P3Net.Kraken.Data.Common
         /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
         /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
         /// <preliminary />
-        public async Task<object> ExecuteScalarAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
-
-            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
-            {
-                return await ExecuteScalarAsyncCore(conn, command, cancellationToken).ConfigureAwait(false);
-            };
-        }
+        public Task<object> ExecuteScalarAsync ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+                                    => Task.Run(() => ExecuteScalar(command, transaction));
 
         /// <summary>Executes a command and returns the first result.</summary>
         /// <typeparam name="T">The type of the value returned.</typeparam>
@@ -992,12 +967,8 @@ namespace P3Net.Kraken.Data.Common
         /// <exception cref="ArgumentNullException"><paramref name="command"/> is <see langword="null"/>.</exception>
         /// <example>Refer to <see cref="ExecuteScalar(DataCommand)">ExecuteScalar</see> for an example.</example>
         /// <preliminary />
-        public async Task<T> ExecuteScalarAsync<T> ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            var result = await ExecuteScalarAsync(command, transaction, cancellationToken).ConfigureAwait(false);
-
-            return ((result != null) && (result != DBNull.Value)) ? (T)Convert.ChangeType(result, typeof(T)) : default(T);
-        }
+        public Task<T> ExecuteScalarAsync<T> ( DataCommand command, DataTransaction transaction, CancellationToken cancellationToken )
+                                    => Task.Run(() => ExecuteScalar<T>(command, transaction));
         #endregion
 
         #region FillDataSet
@@ -1095,16 +1066,8 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <exception cref="ArgumentNullException"><paramref name="ds"/> or <paramref name="command"/> is <see langword="null"/>.</exception>
         /// <preliminary />
-        public async Task FillDataSetAsync ( DataCommand command, DataSet ds, string[] tables, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            Verify.Argument(nameof(ds)).WithValue(ds).IsNotNull();
-            Verify.Argument(nameof(command)).WithValue(command).IsNotNull();
-
-            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
-            {
-                await FillDataSetAsyncCore(conn, ds, command, tables, cancellationToken).ConfigureAwait(false);
-            };
-        }
+        public Task FillDataSetAsync ( DataCommand command, DataSet ds, string[] tables, DataTransaction transaction, CancellationToken cancellationToken )
+                               => Task.Run(() => FillDataSet(command, ds, tables, transaction));
         #endregion
 
         /// <summary>Gets the parameters associated with a stored procedure.</summary>
@@ -1116,8 +1079,7 @@ namespace P3Net.Kraken.Data.Common
         /// <remarks>
         /// Not all managers support this method.  Use <see cref="SupportsQueryParameters"/> to determine if the
         /// manager supports this method.
-        /// </remarks>
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryParameters")]
+        /// </remarks>        
         public IEnumerable<DataParameter> QueryParameters ( string name )
         {
             Verify.Argument(nameof(name)).WithValue(name).IsNotNullOrEmpty();
@@ -1153,14 +1115,8 @@ namespace P3Net.Kraken.Data.Common
         /// manager supports this method.
         /// </remarks>
         /// <preliminary />
-        public async Task<IEnumerable<DataParameter>> QueryParametersAsync ( string name, CancellationToken cancellationToken )
-        {
-            Verify.Argument(nameof(name)).WithValue(name).IsNotNullOrEmpty();
-            if (!SupportsQueryParameters)
-                throw new NotSupportedException("The manager does not support QueryParameters.");
-
-            return await this.QueryParametersAsyncBase(name, cancellationToken).ConfigureAwait(false);
-        }
+        public Task<IEnumerable<DataParameter>> QueryParametersAsync ( string name, CancellationToken cancellationToken )
+                                    => Task.Run(() => QueryParameters(name));
 
         /// <summary>Sets the user context.</summary>
         /// <param name="userContext">The user context.</param>
@@ -1168,9 +1124,10 @@ namespace P3Net.Kraken.Data.Common
         /// <remarks>
         /// Not all connection will support a user context.
         /// </remarks>
+        [Obsolete("Deprecated in 5.0. Use UserContext.")]
         public ConnectionManager SetUserContext ( string userContext )
         {
-            m_userContext = userContext;
+            _userContext = userContext;
 
             return this;
         }
@@ -1296,26 +1253,9 @@ namespace P3Net.Kraken.Data.Common
         /// </remarks>		
         /// <exception cref="DBConcurrencyException">A concurrency error occurred.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="ds"/> is <see langword="null"/>.</exception>
-        /// <example>Refer to <see cref="UpdateDataSet(DataCommand,DataCommand,DataCommand,DataSet,string)">UpdateDataSet</see> for an example.</example>
-        public async Task UpdateDataSetAsync ( DataCommand insertCommand, DataCommand deleteCommand,
-                                               DataCommand updateCommand, DataSet ds, string table, DataTransaction transaction, CancellationToken cancellationToken )
-        {
-            //Validate
-            Verify.Argument(nameof(insertCommand)).WithValue(insertCommand).IsNotNull();
-            Verify.Argument(nameof(deleteCommand)).WithValue(deleteCommand).IsNotNull();
-            Verify.Argument(nameof(updateCommand)).WithValue(updateCommand).IsNotNull();
-            Verify.Argument(nameof(ds)).WithValue(ds).IsNotNull();
-
-            //Initialize table name as needed
-            table = (table ?? "").Trim();
-            if (String.IsNullOrEmpty(table) && (ds.Tables.Count > 0))
-                table = ds.Tables[0].TableName;
-
-            using (var conn = await CreateConnectionDataAsync(transaction, cancellationToken).ConfigureAwait(false))
-            {
-                await UpdateDataSetAsyncCore(conn, insertCommand, deleteCommand, updateCommand, ds, table, cancellationToken).ConfigureAwait(false);
-            };
-        }
+        public Task UpdateDataSetAsync ( DataCommand insertCommand, DataCommand deleteCommand,
+                                         DataCommand updateCommand, DataSet ds, string table, DataTransaction transaction, CancellationToken cancellationToken )
+                        => Task.Run(() => UpdateDataSet(insertCommand, deleteCommand, updateCommand, ds, table, transaction));
         #endregion
 
         #region Protected Members
@@ -1323,8 +1263,8 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Gets or sets the connection information.</summary>
         protected string ConnectionString
         {
-            get => _connString;
-            set => _connString = value?.Trim() ?? "";
+            get => _connectionString;
+            set => _connectionString = value?.Trim() ?? "";
         }
 
         #region Abstract/Virtual Methods
@@ -1338,7 +1278,7 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="connectionString">The connection string to use.</param>
         /// <returns>The underlying connection object.</returns>
         protected abstract DbConnection CreateConnectionBase ( string connectionString );
-
+     
         /// <summary>Creates a data adapter.</summary>
         /// <returns>The underlying data adapter.</returns>
         protected abstract DbDataAdapter CreateDataAdapterBase ();
@@ -1359,14 +1299,10 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="name">The name of the stored procedure to query.</param>
         /// <returns>An array of parameters.</returns>
         /// <exception cref="NotSupportedException">Always thrown.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryParameters")]
-        protected virtual DataParameter[] QueryParametersBase ( string name )
-        {
-            throw new NotSupportedException("QueryParameters is not supported.");
-        }
+        protected virtual DataParameter[] QueryParametersBase ( string name ) => throw new NotSupportedException("QueryParameters is not supported.");
 
         #endregion
-                
+
         /// <summary>Begins a transaction.</summary>
         /// <param name="level">The level of the transaction.</param>
         /// <returns>The underlying transaction.</returns>
@@ -1378,37 +1314,13 @@ namespace P3Net.Kraken.Data.Common
                 conn = CreateConnectionBase(ConnectionString);
 
                 return new DataTransaction(CreateTransactionBase(conn, level), true);
-            } catch (Exception)
+            } catch
             {
-                if (conn != null)
-                    conn.Dispose();
+                conn?.Dispose();
 
                 throw;
             };
-        }
-
-        /// <summary>Begins a transaction.</summary>
-        /// <param name="level">The level of the transaction.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The underlying transaction.</returns>
-        protected virtual async Task<DataTransaction> BeginTransactionAsyncCore ( IsolationLevel level, CancellationToken cancellationToken )
-        {
-            DbConnection conn = null;
-            try
-            {
-                conn = await CreateConnectionBaseAsync(ConnectionString, cancellationToken).ConfigureAwait(false);
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                return new DataTransaction(CreateTransactionBase(conn, level), true);
-            } catch (Exception)
-            {
-                if (conn != null)
-                    conn.Dispose();
-
-                throw;
-            };
-        }
+        }        
 
         /// <summary>Populates a data set with data.</summary>
         /// <param name="conn">The connection information.</param>
@@ -1429,64 +1341,24 @@ namespace P3Net.Kraken.Data.Common
                 throw;
             };
         }
-
-        /// <summary>Populates a data set with data.</summary>
-        /// <param name="conn">The connection information.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The data set results.</returns>
-        protected virtual async Task<DataSet> ExecuteDataSetAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
-        {
-            var ds = new DataSet();
-
-            try
-            {
-                ds.Locale = CultureInfo.InvariantCulture;
-                await FillDataSetAsyncCore(conn, ds, command, null, cancellationToken).ConfigureAwait(false);
-                return ds;
-            } catch
-            {
-                ds.Dispose();
-                throw;
-            };
-        }
-
+        
         /// <summary>Executes a command and returns the results.</summary>
         /// <param name="conn">The connection information.</param>
         /// <param name="command">The command to execute.</param>
         /// <returns>The results of the command.</returns>
         protected virtual int ExecuteNonQueryCore ( ConnectionData conn, DataCommand command )
         {
-            using (DbCommand cmd = PrepareCommandCore(conn, command))
+            using (var cmd = PrepareCommandCore(conn, command))
             {
                 conn.Open();
 
-                int result = cmd.ExecuteNonQuery();
+                var result = cmd.ExecuteNonQuery();
 
                 //Copy the parameter values back
                 UpdateParameterCore(cmd, command);
                 return result;
             };
-        }
-
-        /// <summary>Executes a command and returns the results.</summary>
-        /// <param name="conn">The connection information.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The results of the command.</returns>
-        protected virtual async Task<int> ExecuteNonQueryAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
-        {
-            using (var cmd = await PrepareCommandAsyncCore(conn, command, cancellationToken).ConfigureAwait(false))
-            {
-                await conn.OpenAsync(cancellationToken).ConfigureAwait(false);
-
-                int result = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
-
-                //Copy the parameter values back
-                await UpdateParameterAsyncCore(cmd, command, cancellationToken).ConfigureAwait(false);
-                return result;
-            };
-        }
+        }        
 
         /// <summary>Executes a command and returns the results.</summary>
         /// <param name="conn">The connection information.</param>
@@ -1511,8 +1383,7 @@ namespace P3Net.Kraken.Data.Common
                     UpdateParameterCore(cmd, command);
                 } catch
                 {
-                    if (dr != null)
-                        dr.Close();
+                    dr?.Close();
 
                     throw;
                 };
@@ -1520,79 +1391,25 @@ namespace P3Net.Kraken.Data.Common
                 return dr;
             };
         }
-
-        /// <summary>Executes a command and returns the results.</summary>
-        /// <param name="conn">The connection information.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The results of the command.</returns>
-        protected virtual async Task<DbDataReader> ExecuteReaderAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
-        {
-            using (var cmd = await PrepareCommandAsyncCore(conn, command, cancellationToken).ConfigureAwait(false))
-            {
-                await conn.OpenAsync(cancellationToken).ConfigureAwait(false);
-
-                //Can't close the connection if it is associated with a transaction so do the check now
-                var behavior = (conn.Transaction != null) ? CommandBehavior.Default : CommandBehavior.CloseConnection;
-
-                //Create the reader
-                DbDataReader dr = null;
-                try
-                {
-                    dr = await cmd.ExecuteReaderAsync(behavior, cancellationToken).ConfigureAwait(false);
-
-                    //Copy the parameter values back
-                    cancellationToken.ThrowIfCancellationRequested();
-                    await UpdateParameterAsyncCore(cmd, command, cancellationToken).ConfigureAwait(false);
-                } catch
-                {
-                    if (dr != null)
-                        dr.Close();
-
-                    throw;
-                };
-
-                return dr;
-            };
-        }
-
+        
         /// <summary>Executes a command and returns the results.</summary>
         /// <param name="conn">The connection information.</param>
         /// <param name="command">The command to execute.</param>
         /// <returns>The results of the command.</returns>
         protected virtual object ExecuteScalarCore ( ConnectionData conn, DataCommand command )
         {
-            using (DbCommand cmd = PrepareCommandCore(conn, command))
+            using (var cmd = PrepareCommandCore(conn, command))
             {
                 conn.Open();
 
-                object obj = cmd.ExecuteScalar();
+                var obj = cmd.ExecuteScalar();
 
                 //Copy the parameter values back
                 UpdateParameterCore(cmd, command);
                 return obj;
             };
-        }
-
-        /// <summary>Executes a command and returns the results.</summary>
-        /// <param name="conn">The connection information.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The results of the command.</returns>
-        protected virtual async Task<object> ExecuteScalarAsyncCore ( ConnectionData conn, DataCommand command, CancellationToken cancellationToken )
-        {
-            using (var cmd = await PrepareCommandAsyncCore(conn, command, cancellationToken).ConfigureAwait(false))
-            {
-                await conn.OpenAsync(cancellationToken).ConfigureAwait(false);
-
-                var obj = await cmd.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
-
-                //Copy the parameter values back
-                await UpdateParameterAsyncCore(cmd, command, cancellationToken).ConfigureAwait(false);
-                return obj;
-            };
-        }
-
+        }        
+        
         /// <summary>Fills a dataset with the results of a command.</summary>
         /// <param name="conn">The underlying connection data to use.</param>
         /// <param name="ds">The dataset to populate.</param>
@@ -1602,7 +1419,6 @@ namespace P3Net.Kraken.Data.Common
         /// The default implementation uses a <see cref="DbDataAdapter"/> to fill the data set using
         /// the specified command.
         /// </remarks>
-        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Int32.ToString")]
         protected virtual void FillDataSetCore ( ConnectionData conn, DataSet ds, DataCommand command, string[] tables )
         {
             DbCommand cmdDb = null;
@@ -1612,19 +1428,17 @@ namespace P3Net.Kraken.Data.Common
                 conn.Open();
 
                 //Create the adapter
-                using (DbDataAdapter da = CreateDataAdapterBase())
+                using (var da = CreateDataAdapterBase())
                 {
                     //Add the tables as needed
                     if ((tables != null) && (tables.Length > 0))
                     {
-                        string strTable = "Table";
-                        for (int nIdx = 0;
-                             nIdx < tables.Length;
-                             ++nIdx)
+                        var strTable = "Table";
+                        for (var index = 0; index < tables.Length; ++index)
                         {
-                            Verify.Argument("tables", tables[nIdx]).IsNotNullOrEmpty("One or more table entries are invalid");
-                            da.TableMappings.Add(strTable, tables[nIdx]);
-                            strTable = String.Concat("Table", (nIdx + 1).ToString());
+                            Verify.Argument(nameof(tables)).WithValue(tables[index]).IsNotNullOrEmpty("One or more table entries are invalid");
+                            da.TableMappings.Add(strTable, tables[index]);
+                            strTable = $"Table{index + 1}";
                         };
                     };
 
@@ -1638,10 +1452,9 @@ namespace P3Net.Kraken.Data.Common
                 };
             } finally
             {
-                if (cmdDb != null)
-                    cmdDb.Dispose();
+                cmdDb?.Dispose();
             };
-        }
+        }        
 
         /// <summary>Prepares the connection after it has been opened.</summary>
         /// <param name="connection">The open connection.</param>
@@ -1688,7 +1501,7 @@ namespace P3Net.Kraken.Data.Common
                 conn.Open();
 
                 //Create the adapter
-                using (DbDataAdapter da = CreateDataAdapterBase())
+                using (var da = CreateDataAdapterBase())
                 {
                     if (insertCommand != null)
                     {
@@ -1714,19 +1527,16 @@ namespace P3Net.Kraken.Data.Common
                 };
             } finally
             {
-                if (cmdInsert != null)
-                    cmdInsert.Dispose();
-                if (cmdUpdate != null)
-                    cmdUpdate.Dispose();
-                if (cmdDelete != null)
-                    cmdDelete.Dispose();
+                cmdInsert?.Dispose();
+                cmdUpdate?.Dispose();
+                cmdDelete?.Dispose();
             };
         }
 
         #endregion
 
         #region Private Members
-        
+
         private ConnectionData CreateConnectionData ( DataTransaction transaction )
         {
             ConnectionData data = null;
@@ -1742,12 +1552,11 @@ namespace P3Net.Kraken.Data.Common
                 return data;
             } catch
             {
-                if (data != null)
-                    data.Dispose();
+                data?.Dispose();
 
                 throw;
             };
-        }
+        }        
 
         private DbCommand PrepareCommandCore ( ConnectionData conn, DataCommand command )
         {
@@ -1780,10 +1589,9 @@ namespace P3Net.Kraken.Data.Common
                 cmd.Connection = conn.Connection;
                 if (conn.Transaction != null)
                     cmd.Transaction = conn.Transaction;
-            } catch (Exception)
+            } catch
             {
-                if (cmd != null)
-                    cmd.Dispose();
+                cmd?.Dispose();
 
                 throw;
             } finally
@@ -1794,45 +1602,37 @@ namespace P3Net.Kraken.Data.Common
             };
 
             return cmd;
-        }        
-
-        /// <summary>Updates the command with any output or input/output parameter values.</summary>
-        /// <param name="command">The command to copy the values from.</param>
-        /// <param name="target">The target to copy the values to.</param>
-        /// <remarks>
-        /// The default implementation will copy the value from any input/output, output or return value parameters back
-        /// to the target.
-        /// </remarks>
+        }
+        
         private static void UpdateParameterCore ( DbCommand command, DataCommand target )
         {
             //If a parameter was added to store the return value
-            var sproc = target as StoredProcedure;
-            if (sproc != null)
+            if (target.SupportsReturnValue)
             {
                 //Get the return value from the call
                 var returnParam = (from p in command.Parameters.Cast<DbParameter>()
                                    where p.Direction == ParameterDirection.ReturnValue
                                    select p).FirstOrDefault();
                 if (returnParam != null)
-                    sproc.ReturnValue = TypeConversion.ToInt32OrDefault(returnParam.Value);
+                    target.ReturnValue = TypeConversion.ToInt32OrDefault(returnParam.Value);
             };
 
-            for (int nIdx = 0; nIdx < target.Parameters.Count; ++nIdx)
+            for (var index = 0; index < target.Parameters.Count; ++index)
             {
-                switch (command.Parameters[nIdx].Direction)
+                switch (command.Parameters[index].Direction)
                 {
                     case ParameterDirection.InputOutput:
                     case ParameterDirection.Output:
                     case ParameterDirection.ReturnValue:
                     {
-                        target.Parameters[nIdx].Value = command.Parameters[nIdx].Value;
+                        target.Parameters[index].Value = command.Parameters[index].Value;
                         break;
                     };
                 };
             };
-        }
-        
-        private string _connString;
+        }        
+
+        private string _connectionString;
         private string _userContext;
         
         #endregion 

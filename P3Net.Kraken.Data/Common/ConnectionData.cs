@@ -2,108 +2,82 @@
  * Copyright © 2007 Michael Taylor
  * All Rights Reserved
  */
-#region Imports
-
 using System;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
-
-#endregion
+using System.Threading;
+using System.Threading.Tasks;
+using P3Net.Kraken.ComponentModel;
 
 namespace P3Net.Kraken.Data.Common
 {
     /// <summary>Provides connection information for classes deriving from <see cref="ConnectionManager"/>.</summary>
     [ExcludeFromCodeCoverage]
-    public sealed class ConnectionData : IDisposable
+    public sealed class ConnectionData : DisposableObject
     {
         #region Construction
 
         internal ConnectionData ( DbConnection connection )
         {
-            m_connection = connection;
+            _connection = connection;
         }
 
         internal ConnectionData ( DbTransaction transaction )
         {
-            m_transaction = transaction;
+            _transaction = transaction;
         }
         #endregion
-
-        #region Public Members
-
-        #region Attributes
 
         /// <summary>Gets the underlying connection.</summary>
-        public DbConnection Connection
-        {
-            get { return m_connection ?? m_transaction.Connection; }
-        }
+        public DbConnection Connection => _connection ?? _transaction.Connection;        
 
         /// <summary>Gets the underlying transaction.</summary>
-        public DbTransaction Transaction
-        {
-            get { return m_transaction; }
-        }
-        #endregion
-
-        #region Methods
-
+        public DbTransaction Transaction => _transaction;
+        
         /// <summary>Detaches the connection from the object so it won't be closed.</summary>
         /// <returns>The connection.</returns>
-        public DbConnection Detach ()
-        {
-            var conn = m_connection;
-            m_connection = null;
-
-            return conn;
-        }
-
-        /// <summary>Disposes of the instance.</summary>
-        public void Dispose ()
-        {
-            Dispose(true);
-        }
-
+        public DbConnection Detach () => Interlocked.Exchange(ref _connection, null);
+        
         /// <summary>Opens the connection if it is not already opened.</summary>
         public void Open ()
         {
-            if ((m_connection != null) && (m_connection.State == ConnectionState.Closed))
-                m_connection.Open();
+            if (_connection?.State == ConnectionState.Closed)
+                _connection.Open();
         }
-        #endregion
 
-        #endregion
+        /// <summary>Opens the connection if it is not already opened.</summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        public Task OpenAsync ( CancellationToken cancellationToken )
+        {
+            if (_connection?.State == ConnectionState.Closed)
+                return _connection.OpenAsync(cancellationToken);
 
-        #region Private Members
+            return Task.CompletedTask;
+        }
 
-        #region Methods
+        /// <summary>Disposes of the object.</summary>
+        /// <param name="disposing"><see langword="true"/> if disposing.</param>
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private void Dispose ( bool disposing )
+        protected override void Dispose ( bool disposing )
         {
             if (disposing)
             {
                 try
                 {
-                    if ((m_connection != null) && (m_connection.State != ConnectionState.Closed))
-                        m_connection.Close();
+                    var conn = Detach();
+                    if ((conn?.State != ConnectionState.Closed))
+                        conn.Close();
                 } catch
-                { /* Ignore */
-                } finally
-                {
-                    m_connection = null;
-                };
+                { /* Ignore */ };
             };
         }
-        #endregion
 
-        #region Data
+        #region Private Members
 
-        private DbTransaction m_transaction;
-        private DbConnection m_connection;
-
-        #endregion
+        private readonly DbTransaction _transaction;
+        private DbConnection _connection;
 
         #endregion
     }

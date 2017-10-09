@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("P3Net.Kraken.Data")]
-[assembly: AssemblyDescription("Data access library for Kraken.")]
+[assembly: AssemblyDescription("Kraken library for data access.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]

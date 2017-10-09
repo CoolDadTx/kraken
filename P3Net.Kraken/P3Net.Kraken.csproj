@@ -17,7 +17,7 @@
     <RootNamespace>P3Net.Kraken</RootNamespace>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <SignAssembly>false</SignAssembly>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>        
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,7 +45,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>full</DebugType>
     <RunFxCop>false</RunFxCop>
-    <CodeAnalysisRuleSet>..\_Infrastructure\Kraken.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -71,7 +72,8 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <CodeAnalysisRuleSet>..\_Infrastructure\Kraken.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -80,14 +82,10 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\_Infrastructure\AssemblyVer.cs">
@@ -125,12 +123,14 @@
     <Compile Include="Diagnostics\ValidatableArgumentConstraintExtensions.cs" />
     <Compile Include="Diagnostics\ValidatedNotNullAttribute.cs" />
     <Compile Include="Diagnostics\Verify.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="IO\DirectoryExtensions.cs" />
     <Compile Include="IO\DirectoryInfoExtensions.cs" />
     <Compile Include="IO\NonclosingStream.cs" />
     <Compile Include="IO\PathExtensions.cs" />
     <Compile Include="MismatchedCurrencyException.cs" />
     <Compile Include="Money.cs" />
+    <Compile Include="Net\Http\HttpClientManager.cs" />
     <Compile Include="Reflection\VisualBasicTypeNameProvider.cs" />
     <Compile Include="Reflection\CSharpTypeNameProvider.cs" />
     <Compile Include="Reflection\TypeNameProviderOptions.cs" />
@@ -151,8 +151,8 @@
     <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\CustomAttributeProviderExtensions.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
-    <Compile Include="ServiceProcess\ServiceConfigurationInfo.cs" />
     <Compile Include="Text\CharComparer.cs" />
+    <Compile Include="UriExtensions.cs" />
     <Compile Include="Win32\RegistryExtensions.cs" />
     <Compile Include="ByteSize.cs" />
     <Compile Include="EnumExtensions.cs" />
@@ -173,15 +173,6 @@
     <Compile Include="Net\NetworkShare\NetworkShareInfo.cs" />
     <Compile Include="Net\NetworkShare\NetworkShareStatus.cs" />
     <Compile Include="Net\NetworkShare\NetworkShareType.cs" />
-    <Compile Include="ServiceProcess\NativeMethods.cs" />
-    <Compile Include="ServiceProcess\ServiceAction.cs" />
-    <Compile Include="ServiceProcess\ServiceActionMode.cs" />
-    <Compile Include="ServiceProcess\ServiceControllerExtensions.cs" />
-    <Compile Include="ServiceProcess\ServiceErrorControlMode.cs" />
-    <Compile Include="ServiceProcess\ServiceFailureActions.cs" />
-    <Compile Include="ServiceProcess\ServiceInstaller2.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="StringExtensions.cs" />
     <Compile Include="ComponentModel\DisposableCollection.cs" />
     <Compile Include="ComponentModel\DisposableObjectWithFinalizer.cs" />
@@ -219,7 +210,9 @@
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="_Packaging\P3Net.Kraken.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

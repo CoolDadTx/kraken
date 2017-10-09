@@ -1,34 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{96692C92-A028-4630-A669-49656267FFC5}</ProjectGuid>
+    <ProjectGuid>{94213B43-7585-4F32-8413-8E06329952A3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>P3Net.Kraken.ServiceModel</RootNamespace>
-    <AssemblyName>P3Net.Kraken.ServiceModel</AssemblyName>
+    <RootNamespace>P3Net.Kraken.ServiceProcess</RootNamespace>
+    <AssemblyName>P3Net.Kraken.ServiceProcess</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <RuntimeIdentifiers>win</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Bin\Debug\P3Net.Kraken.ServiceModel.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\bin\Debug\P3Net.Kraken.ServiceProcess.xml</DocumentationFile>
+    <CodeAnalysisRuleSet />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,45 +30,45 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\P3Net.Kraken.ServiceModel.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <DocumentationFile>..\bin\Release\P3Net.Kraken.ServiceProcess.xml</DocumentationFile>
+    <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\_Infrastructure\AssemblyVer.cs">
       <Link>Properties\AssemblyVer.cs</Link>
     </Compile>
-    <Compile Include="Channels\InProcChannelFactory.cs" />
-    <Compile Include="ISupportsPersistentChannel.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceChannelClient.cs" />
-    <Compile Include="Properties\GlobalSuppressions.cs" />
-    <Compile Include="ServiceClientFactory.cs" />
-    <Compile Include="ServiceClientWrapper.cs" />
+    <Compile Include="ServiceAction.cs" />
+    <Compile Include="ServiceActionMode.cs" />
+    <Compile Include="ServiceConfigurationInfo.cs" />
+    <Compile Include="ServiceControllerExtensions.cs" />
+    <Compile Include="ServiceErrorControlMode.cs" />
+    <Compile Include="ServiceFailureActions.cs" />
+    <Compile Include="ServiceInstaller2.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\P3Net.Kraken\P3Net.Kraken.csproj">
-      <Project>{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}</Project>
+      <Project>{bf45a218-fdd0-400b-afbc-f043c24cee0b}</Project>
       <Name>P3Net.Kraken</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Packaging\P3Net.Kraken.ServiceProcess.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="_Packaging\P3Net.Kraken.ServiceModel.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

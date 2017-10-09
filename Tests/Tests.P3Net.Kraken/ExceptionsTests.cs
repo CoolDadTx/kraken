@@ -1,9 +1,4 @@
-﻿#region Imports
-
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Reflection;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,16 +8,11 @@ using FluentAssertions;
 using P3Net.Kraken;
 using P3Net.Kraken.UnitTesting;
 
-#endregion
-
 namespace Tests.P3Net.Kraken
 {
-#pragma warning disable 618
     [TestClass]
-    public class ExceptionExtensionsTests : UnitTest
+    public class ExceptionsTests : UnitTest
     {
-        #region Tests
-        
         #region GetRootException
 
         [TestMethod]
@@ -82,7 +72,7 @@ namespace Tests.P3Net.Kraken
         public void IsFrameworkExceptionRegistered_IsCoreException ()
         {
             //Act
-            var actual = ExceptionExtensions.IsFrameworkExceptionRegistered(typeof(TargetInvocationException));
+            var actual = Exceptions.IsFrameworkExceptionRegistered(typeof(TargetInvocationException));
 
             //Assert
             actual.Should().BeTrue();
@@ -92,7 +82,7 @@ namespace Tests.P3Net.Kraken
         public void IsFrameworkExceptionRegistered_IsRegularException ()
         {
             //Act
-            var actual = ExceptionExtensions.IsFrameworkExceptionRegistered(typeof(ArgumentException));
+            var actual = Exceptions.IsFrameworkExceptionRegistered(typeof(ArgumentException));
 
             //Assert
             actual.Should().BeFalse();
@@ -102,7 +92,7 @@ namespace Tests.P3Net.Kraken
         public void IsFrameworkExceptionRegistered_IsNull ()
         {
             //Act
-            var actual = ExceptionExtensions.IsFrameworkExceptionRegistered(null);
+            var actual = Exceptions.IsFrameworkExceptionRegistered(null);
 
             //Assert
             actual.Should().BeFalse();
@@ -112,8 +102,8 @@ namespace Tests.P3Net.Kraken
         public void IsFrameworkExceptionRegistered_IsCustomException ()
         {
             //Act
-            ExceptionExtensions.RegisterFrameworkException(typeof(CustomException));
-            var actual = ExceptionExtensions.IsFrameworkExceptionRegistered(typeof(CustomException));
+            Exceptions.RegisterFrameworkException(typeof(CustomException));
+            var actual = Exceptions.IsFrameworkExceptionRegistered(typeof(CustomException));
 
             //Assert
             actual.Should().BeTrue();
@@ -125,10 +115,10 @@ namespace Tests.P3Net.Kraken
         [TestMethod]
         public void RegisterException_WithCustomException ()
         {
-            ExceptionExtensions.RegisterFrameworkException(typeof(CustomException));
+            Exceptions.RegisterFrameworkException(typeof(CustomException));
 
             //Act
-            var actual = ExceptionExtensions.IsFrameworkExceptionRegistered(typeof(CustomException));
+            var actual = Exceptions.IsFrameworkExceptionRegistered(typeof(CustomException));
 
             //Assert
             actual.Should().BeTrue();
@@ -137,11 +127,11 @@ namespace Tests.P3Net.Kraken
         [TestMethod]
         public void RegisterException_ExceptionAlreadyExists ()
         {
-            ExceptionExtensions.RegisterFrameworkException(typeof(CustomException));
-            ExceptionExtensions.RegisterFrameworkException(typeof(CustomException));
+            Exceptions.RegisterFrameworkException(typeof(CustomException));
+            Exceptions.RegisterFrameworkException(typeof(CustomException));
 
             //Act
-            var actual = ExceptionExtensions.IsFrameworkExceptionRegistered(typeof(CustomException));
+            var actual = Exceptions.IsFrameworkExceptionRegistered(typeof(CustomException));
 
             //Assert
             actual.Should().BeTrue();
@@ -150,12 +140,10 @@ namespace Tests.P3Net.Kraken
         [TestMethod]
         public void RegisterException_ExceptionIsNull ()
         {
-            Action action = () => ExceptionExtensions.RegisterFrameworkException(null);
+            Action action = () => Exceptions.RegisterFrameworkException(null);
 
             action.ShouldThrowArgumentNullException();
         }
-        #endregion
-
         #endregion
 
         #region Private Members
@@ -166,5 +154,4 @@ namespace Tests.P3Net.Kraken
         }
         #endregion
     }
-#pragma warning restore 618
 }

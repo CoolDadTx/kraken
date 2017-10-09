@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("P3Net.Kraken.UnitTesting")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Kraken library for unit testing.")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]

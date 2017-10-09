@@ -12,8 +12,8 @@ namespace Metadata
 	   public const string Copyright = "© Michael Taylor, All Rights Reserved";
 	   public const string Trademark = "";
 	   
-	   public const string Version = "4.6.0.0";
-	   public const string ProductVersion = "4.6.17091.1";
-	   public const string FileVersion = "4.6.17091.1";
+	   public const string Version = "5.0.0.0";
+	   public const string ProductVersion = "5.0.17091.1";
+	   public const string FileVersion = "5.0.17091.1";
    }
 }

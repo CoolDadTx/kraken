@@ -1,18 +1,18 @@
-﻿#region Imports
-
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-#endregion
 
-[assembly: AssemblyTitle("P3Net.Kraken.ServiceModel")]
-[assembly: AssemblyDescription("Kraken library for WCF service clients.")]
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("P3Net.Kraken.ServiceProcess")]
+[assembly: AssemblyDescription("Kraken library for Windows Services.")]
 [assembly: AssemblyCulture("")]
 
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: Guid("b1ef66b6-b911-4f7b-b885-5f8138831a34")]
+[assembly: Guid("A8E02419-C0AE-4E90-A5DB-23CC5AB22E11")]
 
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

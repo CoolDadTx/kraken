@@ -322,6 +322,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
+        [Obsolete("Deprecated in 5.0. Use string interpolation.")]
         public static string FormatWith ( this string source, object arg )
         {
             return String.Format(source, arg);
@@ -336,6 +337,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
+        [Obsolete("Deprecated in 5.0. Use string interpolation.")]
         public static string FormatWith ( this string source, object arg1, object arg2 )
         {
             return String.Format(source, arg1, arg2);
@@ -351,6 +353,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
+        [Obsolete("Deprecated in 5.0. Use string interpolation.")]
         public static string FormatWith ( this string source, object arg1, object arg2, object arg3 )
         {
             return String.Format(source, arg1, arg2, arg3);
@@ -364,6 +367,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
+        [Obsolete("Deprecated in 5.0. Use string interpolation.")]
         public static string FormatWith ( this string source, params object[] args )
         {
             return String.Format(source, args);
@@ -1142,7 +1146,30 @@ namespace P3Net.Kraken
             int start = index + token.Length;
             return (index >= 0) && (start < source.Length - 1) ? source.Substring(start) : "";
         }
-        #endregion        
+        #endregion
+
+        #region Strip
+
+        #region Strip...
+
+        /// <summary>Strips all non-digits characters from the string. </summary>
+        /// <param name="source">The source value.</param>
+        /// <remarks>The new value.</remarks>
+        public static string StripNonDigits ( this string source )
+        {
+            return new string(source.Where(c => Char.IsDigit(c)).ToArray());
+        }
+
+        /// <summary>Strips all non-alphanumeric characters from the string. </summary>
+        /// <param name="source">The source value.</param>
+        /// <remarks>The new value.</remarks>
+        public static string StripNonLetterOrDigits ( this string source )
+        {
+            return new string(source.Where(c => Char.IsLetterOrDigit(c)).ToArray());
+        }
+        #endregion
+
+        #endregion
 
         #region ToCamel
 

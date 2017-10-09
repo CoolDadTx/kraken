@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
-    <PackageReference Include="Moq" Version="4.7.99" />
+    <PackageReference Include="Moq" Version="4.7.137" />
     <PackageReference Include="MSTest.TestAdapter">
       <Version>1.1.18</Version>
     </PackageReference>
@@ -97,6 +97,7 @@
     <Compile Include="Diagnostics\ValidatableArgumentConstraintExtensionsTests.cs" />
     <Compile Include="Diagnostics\VerifyTests.cs" />
     <Compile Include="ComponentModel\EnumTypeConverterTests.cs" />
+    <Compile Include="ExceptionsTests.cs" />
     <Compile Include="Interop\SafeBStrHandleTests.cs" />
     <Compile Include="Interop\SafeComMemoryHandleTests.cs" />
     <Compile Include="Interop\SafeHGlobalHandleTests.cs" />
@@ -127,20 +128,10 @@
     <Compile Include="Reflection\TypeExtensionsTests.Properties.cs">
       <DependentUpon>TypeExtensionsTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ServiceProcess\BaseServiceTests.cs">
-    </Compile>
-    <Compile Include="ServiceProcess\ServiceControllerExtensionsTests.cs">
-    </Compile>
-    <Compile Include="ServiceProcess\ServiceInstaller2Tests.cs">
-    </Compile>
-    <Compile Include="ServiceProcess\TestServiceBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="StringExtensionsTests.Coalesce.cs" />
     <Compile Include="StringExtensionsTests.EnsureWith.cs">
       <DependentUpon>StringExtensionsTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestInstallContext.cs" />
     <Compile Include="Text\CharComparerTests.cs" />
     <Compile Include="Text\Parsers\TextTokenParserTests.cs" />
     <Compile Include="Text\StringComparisonExtensionsTests.cs" />

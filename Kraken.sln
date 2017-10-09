@@ -1,13 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Infrastructure", "_Infrastructure", "{D1E1A242-DAEA-47E8-B1FA-2CC2244863CE}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
 		_Infrastructure\AssemblyVer.cs = _Infrastructure\AssemblyVer.cs
 		_Infrastructure\CustomDictionary.xml = _Infrastructure\CustomDictionary.xml
-		_Infrastructure\Kraken.ruleset = _Infrastructure\Kraken.ruleset
+		ReleaseNotes.md = ReleaseNotes.md
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
@@ -38,15 +37,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.UnitTesting", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.UnitTesting", "Tests\Tests.P3Net.Kraken.UnitTesting\Tests.P3Net.Kraken.UnitTesting.csproj", "{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Web.Forms", "P3Net.Kraken.Web.Forms\P3Net.Kraken.Web.Forms.csproj", "{D43D798F-978C-47E6-B011-446825747FF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceProcess", "P3Net.Kraken.ServiceProcess\P3Net.Kraken.ServiceProcess.csproj", "{94213B43-7585-4F32-8413-8E06329952A3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{1E72D627-A76C-494A-823B-085DD7F42F5E}"
-	ProjectSection(SolutionItems) = preProject
-		Packaging\P3Net.Kraken.nuspec = Packaging\P3Net.Kraken.nuspec
-		Packaging\P3Net.Kraken.UnitTesting.nuspec = Packaging\P3Net.Kraken.UnitTesting.nuspec
-		Packaging\P3Net.Kraken.Web.Forms.nuspec = Packaging\P3Net.Kraken.Web.Forms.nuspec
-		Packaging\P3Net.Kraken.Windows.Forms.nuspec = Packaging\P3Net.Kraken.Windows.Forms.nuspec
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.ServiceProcess", "Tests\Tests.P3Net.Kraken.ServiceProcess\Tests.P3Net.Kraken.ServiceProcess.csproj", "{E7708ED9-6A14-4E6D-93CC-47AA144A0306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,10 +83,14 @@ Global
 		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D43D798F-978C-47E6-B011-446825747FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D43D798F-978C-47E6-B011-446825747FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D43D798F-978C-47E6-B011-446825747FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D43D798F-978C-47E6-B011-446825747FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94213B43-7585-4F32-8413-8E06329952A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94213B43-7585-4F32-8413-8E06329952A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94213B43-7585-4F32-8413-8E06329952A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94213B43-7585-4F32-8413-8E06329952A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7708ED9-6A14-4E6D-93CC-47AA144A0306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +100,10 @@ Global
 		{32F3834E-632E-4F46-B09F-A36522C0F52D} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
 		{BB85DB49-D391-4964-8920-CEC2B9AFFA54} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
 		{B7FDC30E-C6E8-4274-90E3-D95D9FC60055} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
+		{E7708ED9-6A14-4E6D-93CC-47AA144A0306} = {5E031AAA-BD7B-435C-BE9F-35C983E8286E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BD34E88-DE78-45DA-AFF9-103254EB18C2}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

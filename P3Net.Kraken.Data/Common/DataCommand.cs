@@ -2,18 +2,11 @@
  * Copyright © 2005 Michael Taylor
  * All Rights Reserved
  */
-#region Imports
-
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
-using System.Linq;
 
 using P3Net.Kraken.Collections;
 using P3Net.Kraken.Diagnostics;
-#endregion
 
 namespace P3Net.Kraken.Data.Common
 {
@@ -29,7 +22,7 @@ namespace P3Net.Kraken.Data.Common
         /// <exception cref="ArgumentException"><paramref name="commandText"/> is empty.</exception>
         public DataCommand ( string commandText, CommandType type )
         {
-            Verify.Argument("commandText", commandText).IsNotNullOrEmpty();
+            Verify.Argument(nameof(commandText)).WithValue(commandText).IsNotNullOrEmpty();
 
             CommandText = commandText;
             CommandType = type;
@@ -37,11 +30,7 @@ namespace P3Net.Kraken.Data.Common
             Parameters = new DataParameterCollection();
         }        
         #endregion
-
-        #region Public Members
-
-        #region Attributes
-
+                
         /// <summary>Gets the command to execute.</summary>
         public string CommandText { get; private set; }
 
@@ -50,12 +39,12 @@ namespace P3Net.Kraken.Data.Common
         /// <value>The default is zero.</value>
         public TimeSpan CommandTimeout
         {
-            get { return m_commandTimeout; }
+            get => _commandTimeout;
             set 
             {
-                Verify.Argument("value", value).IsGreaterThan(TimeSpan.Zero);
+                Verify.Argument(nameof(value)).WithValue(value).IsGreaterThan(TimeSpan.Zero);
                 
-                m_commandTimeout = value; 
+                _commandTimeout = value; 
             }
         }
 
@@ -65,18 +54,20 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Gets the parameters associated with the command.</summary>
         public DataParameterCollection Parameters { get; private set; }
 
+
+        /// <summary>Gets the return value after the stored procedure has been run.</summary>
+        /// <value>This property is only used if <see cref="SupportsReturnValue"/> is <see langword="true"/>.</value>
+        public int ReturnValue { get; protected internal set; }
+
+        /// <summary>Determines if the command supports having a return value.</summary>
+        public bool SupportsReturnValue { get; protected set; }
+
         /// <summary>Gets or sets how results are applied to a <see cref="DataRow"/> for Update commands.</summary>
         public UpdateRowSource UpdatedRowSource { get; set; }
-        #endregion
 
-        #region Methods
-        
         /// <summary>Gets a string representation of the class.</summary>
         /// <returns>A string representing the class.</returns>
-        public override string ToString()
-        {
-            return CommandText;
-        }
+        public override string ToString () => CommandText;
 
         /// <summary>Adds parameters to the command.</summary>
         /// <param name="parameters">The parameters to add.</param>
@@ -88,13 +79,10 @@ namespace P3Net.Kraken.Data.Common
 
             return this;
         }
-        #endregion
-
-        #endregion
         
         #region Private Members
 
-        private TimeSpan m_commandTimeout;
+        private TimeSpan _commandTimeout;
 
         #endregion 
     }
@@ -102,26 +90,17 @@ namespace P3Net.Kraken.Data.Common
     /// <summary>Represents a stored procedure command.</summary>
     public class StoredProcedure : DataCommand
     {
-        #region Construction
-        
-        /// <summary>Iniitializes an instance of the <see cref="StoredProcedure"/> class.</summary>
+        /// <summary>Initializes an instance of the <see cref="StoredProcedure"/> class.</summary>
         /// <param name="name">The name of the stored procedure.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="name"/> is empty.</exception>
         public StoredProcedure ( string name ) : base(name, CommandType.StoredProcedure)
         {
+            SupportsReturnValue = true;
         }
-        #endregion
-
-        #region Public Members
-
-        /// <summary>Gets the return value after the stored procedure has been run.</summary>
-        public int ReturnValue { get; internal set; }
-        #endregion
     }
 
     /// <summary>Represents an adhoc query command.</summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Adhoc")]
     public class AdhocQuery : DataCommand
     {
         #region Construction

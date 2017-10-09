@@ -31,21 +31,9 @@ namespace P3Net.Kraken
     ///    <item><see cref="System.Reflection.TargetInvocationException"/></item>
     /// </list>	
     /// </remarks>
-    [CodeNotAnalyzed]
-    [CodeNotTested]
+    [Obsolete("Deprecated in 5.0. Use Exceptions.")]
     public static class ExceptionExtensions
     {
-        #region Construction
-
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
-        static ExceptionExtensions ( )
-        {
-            s_frameworkExceptions.Add(typeof(System.Reflection.TargetInvocationException));
-        }
-        #endregion
-
-        #region Public Members
-
         /// <summary>Gets the root exception.</summary>
         /// <param name="value">The value to check.</param>
         /// <returns>The root exception.</returns>
@@ -80,22 +68,9 @@ namespace P3Net.Kraken
         /// End Sub
         /// </code>
         /// </example>
-        public static Exception GetRootException ( this Exception value )
+        public static Exception GetRootException ( Exception value )
         {
-            Exception root = value;
-
-            lock (s_frameworkExceptions)
-            {
-                while (root != null)
-                {
-                    if (!s_frameworkExceptions.Contains(root.GetType()))
-                        return root;
-
-                    root = root.InnerException;
-                };
-            };
-
-            return value;
+            return value.GetRootException();
         }
 
         /// <summary>Determines if the given exception type is registered.</summary>
@@ -103,13 +78,7 @@ namespace P3Net.Kraken
         /// <returns><see langword="true"/> if it is registered or <see langword="false"/> otherwise.</returns>        
         public static bool IsFrameworkExceptionRegistered ( Type exceptionType )
         {
-            if (exceptionType == null)
-                return false;
-
-            lock (s_frameworkExceptions)
-            {
-                return s_frameworkExceptions.Contains(exceptionType);
-            };
+            return Exceptions.IsFrameworkExceptionRegistered(exceptionType);
         }
 
         /// <summary>Registers an exception as a framework exception.</summary>
@@ -164,23 +133,7 @@ namespace P3Net.Kraken
         /// </example>
         public static void RegisterFrameworkException ( Type exceptionType )
         {
-            Verify.Argument("exceptionType", exceptionType).IsNotNull();
-
-            lock(s_frameworkExceptions)
-            {
-                if (!s_frameworkExceptions.Contains(exceptionType))
-                    s_frameworkExceptions.Add(exceptionType);            
-            };
+            Exceptions.RegisterFrameworkException(exceptionType);
         }
-        #endregion //Public Members
-
-        #region Private Members
-
-        #region Data
-        
-        private static List<Type> s_frameworkExceptions = new List<Type>();      
-        #endregion
-
-        #endregion //Private Members
     }
 }

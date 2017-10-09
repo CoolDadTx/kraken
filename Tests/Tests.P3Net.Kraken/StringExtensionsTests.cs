@@ -54,6 +54,7 @@ namespace Tests.P3Net.Kraken
 
         #region FormatWith
 
+#pragma warning disable 618
         [TestMethod]
         public void FormatWith_OneArgument ()
         {
@@ -110,6 +111,7 @@ namespace Tests.P3Net.Kraken
 
             actual.Should().Be(expected);
         }
+#pragma warning restore 618
         #endregion
 
         #region GetComparer

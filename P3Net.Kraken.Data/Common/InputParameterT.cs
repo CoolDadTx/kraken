@@ -24,7 +24,7 @@ namespace P3Net.Kraken.Data.Common
         /// <returns>The updated parameter.</returns>
         public InputParameter<T> WithValue(T value)
         {
-            this.Value = value;
+            Value = value;
 
             return this;
         }
