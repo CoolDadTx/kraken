@@ -3,43 +3,15 @@
  * All Rights Reserved
  */
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data
 {
     /// <summary>Provides extension methods for <see cref="DataRow"/>.</summary>
-    /// <example>
-    /// <code lang="C#">
-    /// Employee LoadEmployee ( DataRow row )
-    /// {
-    ///    var employee = new Employee();
-    ///    
-    ///    employee.Id = row.GetInt32Value("Id");
-    ///    employee.FirstName = row.GetStringValue("FirstName");
-    ///    employee.LastName = row.GetStringValue("LastName");
-    ///    employee.IsEnabled = row.GetBooleanValue("Enabled", true);
-    ///    
-    ///    //If the payrate was loaded
-    ///    if (row.ColumnExists("PayRate")
-    ///       employee.PayRate = row.GetDecimalValue("PayRate");
-    ///    
-    ///    //Try to retrieve the e-mail address
-    ///    string email;
-    ///    if (row.TryGetStringValue("Email", out email))
-    ///       employee.Email = email;
-    ///    
-    ///    return employee;
-    /// }
-    /// </code>
-    /// </example>
     public static class DataRowExtensions
     {
-        #region Public Members
-
         /// <summary>Determines if a column exists in the row.</summary>
         /// <param name="source">The source</param>
         /// <param name="columnName">The column to check.</param>
@@ -49,7 +21,7 @@ namespace P3Net.Kraken.Data
         /// <example>Refer to <see cref="DataRowExtensions"/> for an example.</example>
         public static bool ColumnExists ( this DataRow source, string columnName )
         {
-            Verify.Argument("columnName", columnName).IsNotNullOrEmpty();
+            Verify.Argument(nameof(columnName)).WithValue(columnName).IsNotNullOrEmpty();
 
             return CheckColumnExists(source, columnName);
         }
@@ -181,6 +153,25 @@ namespace P3Net.Kraken.Data
             return GetValueCore(source, columnName, Char.TryParse, defaultValue);
         }
 
+        /// <summary>Gets the value of a column as a Date. Invalid values return the default.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="columnName">The colum name.</param>
+        /// <returns>The value.</returns>
+        public static Date GetDateValueOrDefault ( this DataRow source, string columnName )
+        {
+            return source.GetDateTimeValueOrDefault(columnName).ToDate();
+        }
+
+        /// <summary>Gets the value of a column as a Date. Invalid values return the default.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="columnName">The colum name.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The value.</returns>
+        public static Date GetDateValueOrDefault ( this DataRow source, string columnName, Date defaultValue )
+        {
+            return source.GetDateTimeValueOrDefault(columnName, defaultValue).ToDate();
+        }
+
         /// <summary>Gets the obj of a column as a DateTime.  Invalid values return the default.</summary>
         /// <param name="source">The source</param>
         /// <param name="columnName">The column name.</param>
@@ -188,7 +179,7 @@ namespace P3Net.Kraken.Data
         /// <exception cref="ArgumentNullException"><paramref name="columnName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="columnName"/> is empty or does not exist.</exception>
         /// <example>Refer to <see cref="DataRowExtensions"/> for an example.</example>
-        /// <seealso cref="TryGetDecimalValue" />
+        /// <seealso cref="TryGetDateTimeValue" />
         /// <seealso cref="O:DataRowExtensions.Field{T}" />
         public static DateTime GetDateTimeValueOrDefault ( this DataRow source, string columnName )
         {
@@ -630,6 +621,33 @@ namespace P3Net.Kraken.Data
         /// <param name="result">The column obj.</param>
         /// <returns><see langword="true"/> if successful or <see langword="false"/> otherwise.</returns>
         /// <example>Refer to <see cref="DataRowExtensions"/> for an example.</example>
+        /// <seealso cref="O:GetDateValueOrDefault" />
+        /// <seealso cref="O:DataRowExtensions.Field{T}" />
+        public static bool TryGetDateValue ( this DataRow source, string columnName, out Date result )
+        {
+            return TryGetValueOrDefault(source, columnName, Date.TryParse, out result);
+        }
+
+        /// <summary>Tries to retrieve the obj of the column.</summary>
+        /// <param name="source">The source</param>
+        /// <param name="columnName">The column name.</param>
+        /// <param name="result">The column obj.</param>
+        /// <returns><see langword="true"/> if successful or <see langword="false"/> otherwise.</returns>
+        /// <example>Refer to <see cref="DataRowExtensions"/> for an example.</example>
+        /// <seealso cref="O:GetDateTimeValueOrDefault" />
+        /// <seealso cref="O:DataRowExtensions.Field{T}" />
+        public static bool TryGetDateTimeValue ( this DataRow source, string columnName, out DateTime result )
+        {
+            return TryGetValueOrDefault(source, columnName, DateTime.TryParse, out result);
+        }
+
+
+        /// <summary>Tries to retrieve the obj of the column.</summary>
+        /// <param name="source">The source</param>
+        /// <param name="columnName">The column name.</param>
+        /// <param name="result">The column obj.</param>
+        /// <returns><see langword="true"/> if successful or <see langword="false"/> otherwise.</returns>
+        /// <example>Refer to <see cref="DataRowExtensions"/> for an example.</example>
         /// <seealso cref="O:GetDecimalValueOrDefault" />
         /// <seealso cref="O:DataRowExtensions.Field{T}" />
         public static bool TryGetDecimalValue ( this DataRow source, string columnName, out decimal result )
@@ -782,30 +800,12 @@ namespace P3Net.Kraken.Data
             return TryGetValueOrDefault(source, columnName, UInt64.TryParse, out result);
         }
         #endregion
-
-        #endregion
-
+             
         #region Private Members
 
         private static bool BooleanTryParse ( string value, out bool result )
         {
-            //Try basics
-            if (Boolean.TryParse(value, out result))
-                return true;
-
-            //Try extras
-            if (String.Compare(value, "yes", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                result = true;
-                return true;
-            } else if (String.Compare(value, "no", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                result = false;
-                return true;
-            };
-
-            result = false;
-            return false;
+            return TypeConversion.TryConvertToBoolean(value, out result);
         }
 
         private static T GetValueCore<T> ( DataRow source, string columnName, TryParseDelegate<T> parser, T defaultValue ) where T : struct

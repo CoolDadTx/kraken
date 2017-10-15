@@ -5,7 +5,7 @@ using System.Data;
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using P3Net.Kraken;
 using P3Net.Kraken.Data;
 using P3Net.Kraken.UnitTesting;
 #endregion
@@ -124,6 +124,94 @@ namespace Tests.P3Net.Kraken.Data
             //Assert            
             actual.ReturnValue.Should().BeTrue();
             actual.Result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsInt8 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(sbyte), 10));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsInt16 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(short), 310));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsInt32 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(int), 515110));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsInt64 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(long), 57477810));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsUInt8 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(byte), 10));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsUInt16 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(ushort), 310));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsUInt32 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(uint), 515110));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryGetBooleanValue_ColumnIsUInt64 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(ulong), 57477810));
+
+            var actual = CallTryGetValue<bool>("Column1", target.TryGetBooleanValue);
+
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().BeTrue();
         }
         #endregion
 
@@ -318,6 +406,174 @@ namespace Tests.P3Net.Kraken.Data
 
             //Act            
             var actual = CallTryGetValue<char>("", target.TryGetCharValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+        #endregion
+
+        #region TryGetDateValue
+
+        [TestMethod]
+        public void TryGetDateValue_ColumnIsValidAndSet ()
+        {
+            //Arrange                    
+            var expected = Dates.May(10, 1998);
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(Date), expected));
+
+            //Act            
+            var actual = CallTryGetValue<Date>("Column1", target.TryGetDateValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void TryGetDateValue_ColumnIsValidAndNull ()
+        {
+            //Arrange                    
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(Date)));
+
+            //Act            
+            var actual = CallTryGetValue<Date>("Column1", target.TryGetDateValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().Be(Date.None);
+        }
+
+        [TestMethod]
+        public void TryGetDateValue_ColumnValueIsInvalid ()
+        {
+            //Arrange                    
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(string), "Bad"));
+
+            //Act            
+            var actual = CallTryGetValue<Date>("Column1", target.TryGetDateValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetDateValue_ColumnIsMissing ()
+        {
+            //Arrange                    
+            var target = CreateRow();
+
+            //Act            
+            var actual = CallTryGetValue<Date>("Column1", target.TryGetDateValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetDateValue_ColumnIsNull ()
+        {
+            //Arrange                    
+            var target = CreateRow();
+
+            //Act            
+            var actual = CallTryGetValue<Date>(null, target.TryGetDateValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetDateValue_ColumnIsEmpty ()
+        {
+            //Arrange                    
+            var target = CreateRow();
+
+            //Act            
+            var actual = CallTryGetValue<Date>("", target.TryGetDateValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+        #endregion
+
+        #region TryGetDateTimeValue
+
+        [TestMethod]
+        public void TryGetDateTimeValue_ColumnIsValidAndSet ()
+        {
+            //Arrange                    
+            var expected = new DateTime(2012, 4, 19, 12, 34, 56);
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(DateTime), expected));
+
+            //Act            
+            var actual = CallTryGetValue<DateTime>("Column1", target.TryGetDateTimeValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void TryGetDateTimeValue_ColumnIsValidAndNull ()
+        {
+            //Arrange                    
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(DateTime)));
+
+            //Act            
+            var actual = CallTryGetValue<DateTime>("Column1", target.TryGetDateTimeValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeTrue();
+            actual.Result.Should().Be(DateTime.MinValue);
+        }
+
+        [TestMethod]
+        public void TryGetDateTimeValue_ColumnValueIsInvalid ()
+        {
+            //Arrange                    
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(string), "Bad"));
+
+            //Act            
+            var actual = CallTryGetValue<DateTime>("Column1", target.TryGetDateTimeValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetDateTimeValue_ColumnIsMissing ()
+        {
+            //Arrange                    
+            var target = CreateRow();
+
+            //Act            
+            var actual = CallTryGetValue<DateTime>("Column1", target.TryGetDateTimeValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetDateTimeValue_ColumnIsNull ()
+        {
+            //Arrange                    
+            var target = CreateRow();
+
+            //Act            
+            var actual = CallTryGetValue<DateTime>(null, target.TryGetDateTimeValue);
+
+            //Assert
+            actual.ReturnValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryGetDateTimeValue_ColumnIsEmpty ()
+        {
+            //Arrange                    
+            var target = CreateRow();
+
+            //Act            
+            var actual = CallTryGetValue<DateTime>("", target.TryGetDateTimeValue);
 
             //Assert
             actual.ReturnValue.Should().BeFalse();

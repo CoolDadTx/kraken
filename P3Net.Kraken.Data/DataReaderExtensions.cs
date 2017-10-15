@@ -4,50 +4,15 @@
  */
 using System;
 using System.Data;
-using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-using P3Net.Kraken.Collections;
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data
 {
     /// <summary>Provides extension methods for <see cref="IDataRecord"/> implementations.</summary>
-    /// <example>
-    /// <code langword="C#">
-    ///    public Person GetPerson ( int id )
-    ///    {
-    ///       DataCommand cmd = new DataCommand("GetPerson", CommandType.StoredProcedure);
-    ///       cmd.AddParameter("@id", id);
-    ///       using (var dr = ConnectionManager.ExecuteReader(cmd))
-    ///       {
-    ///           if (dr.Read())
-    ///              return ParsePerson(dr);
-    ///       };
-    /// 
-    ///       return null;
-    ///    }
-    /// 
-    ///    public Person ParsePerson ( IDataRecord dr )
-    ///    {
-    ///       Person p = new Person(dr.GetInt32("id"));
-    /// 
-    ///       p.Name = dr.GetString("name");
-    ///       p.PayRate = dr.GetDecimal("payrate");
-    ///       p.IsActive = dr.GetBoolean("active", true);
-    ///       
-    ///       if (!dr.IsDBNull("boss"))
-    ///          p.Boss = dr.GetInt32("boss");
-    /// 
-    ///       return p;
-    ///    }
-    /// </code>
-    /// </example>
     public static class DataReaderExtensions
     {
-        #region Public Members
-
         #region FieldExists
 
         /// <summary>Determines if a specific field is in the result set.</summary>
@@ -69,7 +34,7 @@ namespace P3Net.Kraken.Data
         /// </example>
         public static bool FieldExists ( this IDataReader source, string name )
         {
-            Verify.Argument("name", name).IsNotNullOrEmpty();
+            Verify.Argument(nameof(name)).WithValue(name).IsNotNullOrEmpty();
 
             return (from i in GetNames(source)
                     where String.Compare(i, name, StringComparison.OrdinalIgnoreCase) == 0
@@ -134,9 +99,9 @@ namespace P3Net.Kraken.Data
         /// </example>
         public static bool GetBooleanOrDefault ( this IDataRecord source, int ordinal, bool defaultValue )
         {
-            if (!source.IsDBNull(ordinal))
-                return source.GetBoolean(ordinal);
-
+            if (TypeConversion.TryConvertToBoolean(source[ordinal], out bool result))
+                return result;
+            
             return defaultValue;
         }
 
@@ -458,6 +423,97 @@ namespace P3Net.Kraken.Data
             int ordinal = VerifyGetOrdinal(source, name);
 
             return source.GetDataTypeName(ordinal);
+        }
+        #endregion
+
+        #region GetDate
+
+        /// <summary>Gets the value of a column as a Date. Invalid values return the default.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="columnName">The column name.</param>
+        /// <returns>The value.</returns>
+        public static Date GetDate ( this IDataRecord source, string columnName )
+        {
+            int ordinal = VerifyGetOrdinal(source, columnName);
+
+            return source.GetDate(ordinal);
+        }
+
+        /// <summary>Gets the value of a column as a Date. Invalid values return the default.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="ordinal">The column ordinal.</param>
+        /// <returns>The value.</returns>
+        public static Date GetDate ( this IDataRecord source, int ordinal )
+        {
+            return source.GetDateTime(ordinal).ToDate();
+        }
+        #endregion GetDate
+
+        #region GetDateOrDefault
+
+        /// <summary>Gets the column value or the default value if the column is not set.</summary>
+        /// <param name="source">The source</param>
+        /// <param name="ordinal">The zero-based ordinal.</param>
+        /// <returns>The typed value or the default type value if the column was not set.</returns>
+        /// <exception cref="InvalidCastException">The column is not of the appropriate type.</exception>
+        /// <exception cref="InvalidOperationException">The reader is closed.</exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// <paramref name="ordinal"/> is less than zero.
+        /// <para>-or-</para>
+        /// <paramref name="ordinal"/> is too big for the reader.
+        /// </exception>
+        public static Date GetDateOrDefault ( this IDataRecord source, int ordinal )
+        {
+            return GetDateOrDefault(source, ordinal, Date.None);
+        }
+
+        /// <summary>Gets the column value or the default value if the column is not set.</summary>
+        /// <param name="source">The source</param>
+        /// <param name="ordinal">The zero-based ordinal.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The typed value or the default type value if the column was not set.</returns>
+        /// <exception cref="InvalidCastException">The column is not of the appropriate type.</exception>
+        /// <exception cref="InvalidOperationException">The reader is closed.</exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// <paramref name="ordinal"/> is less than zero.
+        /// <para>-or-</para>
+        /// <paramref name="ordinal"/> is too big for the reader.
+        /// </exception>
+        public static Date GetDateOrDefault ( this IDataRecord source, int ordinal, Date defaultValue )
+        {
+            if (!source.IsDBNull(ordinal))
+                return source.GetDate(ordinal);
+
+            return defaultValue;
+        }
+
+        /// <summary>Gets the column value or the default value if the column is not set.</summary>
+        /// <param name="source">The source</param>
+        /// <param name="name">The name of the column to retrieve.</param>
+        /// <returns>The typed value or the default type value if the column was not set.</returns>
+        /// <exception cref="InvalidCastException">The column is not of the appropriate type.</exception>
+        /// <exception cref="InvalidOperationException">The reader is closed.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is not a valid field name.</exception>
+        public static Date GetDateOrDefault ( this IDataRecord source, string name )
+        {
+            return GetDateOrDefault(source, name, Date.None);
+        }
+
+        /// <summary>Gets the column value or the default value if the column is not set.</summary>
+        /// <param name="source">The source</param>
+        /// <param name="name">The name of the column to retrieve.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The typed value or the default type value if the column was not set.</returns>
+        /// <exception cref="InvalidCastException">The column is not of the appropriate type.</exception>
+        /// <exception cref="InvalidOperationException">The reader is closed.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is not a valid field name.</exception>
+        public static Date GetDateOrDefault ( this IDataRecord source, string name, Date defaultValue )
+        {
+            int ordinal = VerifyGetOrdinal(source, name);
+
+            return GetDateOrDefault(source, ordinal, defaultValue);
         }
         #endregion
 
@@ -2170,12 +2226,9 @@ namespace P3Net.Kraken.Data
             return source.IsDBNull(ordinal);
         }
         #endregion
-
-        #endregion
-
+        
         #region Private Members
 
-        [ExcludeFromCodeCoverage]
         private static T Coerce<T> ( IDataRecord source, int ordinal ) where T : struct
         {
             var value = source.GetValue(ordinal);
@@ -2183,12 +2236,11 @@ namespace P3Net.Kraken.Data
             return TypeConversion.Coerce<T>(value);
         }
 
-        [ExcludeFromCodeCoverage]
         private static int VerifyGetOrdinal ( IDataRecord source, string name )
         {
             int ordinal = source.GetOrdinal(name);
             if (ordinal < 0)
-                throw new ArgumentException("Field does not exist.", "name");
+                throw new ArgumentException("Field does not exist.", nameof(name));
 
             return ordinal;
         }

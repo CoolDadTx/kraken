@@ -60,6 +60,7 @@
     <Compile Include="Common\ConnectionData.cs" />
     <Compile Include="Common\DataCommand.cs">
     </Compile>
+    <Compile Include="Common\DataCommandExtensions.cs" />
     <Compile Include="Common\DataParameterT.cs" />
     <Compile Include="Common\DataParameter.cs" />
     <Compile Include="Common\DataParameterCollection.cs" />

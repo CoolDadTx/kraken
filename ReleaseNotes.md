@@ -1,12 +1,38 @@
-P3Net.Kraken
--------------
-1) [Breaking Change] Removed ConfigurationElementEx and ConfigurationSectionEx
-2) [Preliminary] Added ConfigurationElementCollection<T> and ConfigurationElementCollection<TValue, TKey>
+## P3Net.Kraken
 
-P3Net.Kraken.Data
-----------------------
-1) Added OfType to InputParameter, InputOutputParameter for cases where the value is not known at creation.
-2) [Preliminary] Added Async support to ConnectionManager
-3) [Breaking Change] Changed return type of ExecuteQueryWithResults from T[] to IEnumerable<T>
-4) [Breaking Change] Changed return type of QueryParameters from DataParameter[] to IEnumerable<DataParameter>
+### ```TypeConversion```
 
+- [New] ```TryConvertToBooleean``` added to convert to boolean values using the rules defined in other areas of the library.
+
+## P3Net.Kraken.Configuration
+
+- [Breaking Change] Removed ```ConfigurationElementEx``` and ```ConfigurationSectionEx```.
+- [New] Added ```ConfigurationElementCollection<T>``` and ```ConfigurationElementCollection<TValue, TKey>```.
+
+##P3Net.Kraken.Data
+
+### ```ConnectionManager```
+
+- [New] (Preliminary) Added Async support for query methods.
+- [Breaking Change] Changed return type of ```ExecuteQueryWithResults``` from ```T[]``` to ```IEnumerable<T>```.
+- [Breaking Change] Changed return type of ```QueryParameters``` from ```DataParameter[]``` to ```IEnumerable<DataParameter>```.
+- [Breaking Change] Moved ```WithParameters``` to ```DataCommandExtensions``` as an extension method so it returns the correct type of the command.
+
+### ```DataCommand```
+
+- [New] Added ```OfType``` to ```InputParameter```, ```InputOutputParameter``` for cases where the value is not known at creation.
+
+### ```DataCommandExtensions```
+
+[New] Added type for ```DataCommand``` extensions.
+
+### ```DataReaderExtensions```
+
+- ```GetBooleanOrDefault``` has been updated to use ```TypeConversion.ToBooleanOrDefault```.
+- [New] Added ```GetDate``` and ```GetDateOrDefault``` methods to work with ```Date``` values.
+
+### ```DataRowExtensions```
+
+- ```GetBooleanValueOrDefault``` and ```TryGetBooleanValue``` have been updated to use ```TypeConversion.ToBooleanOrDefault```.
+- [New] Added ```GetDateValueOrDefault``` and ```TryGetDateValue``` methods to work with ```Date``` values.
+- [New] Added ```TryGetDateTimeValue``` to be symmetric with other types.

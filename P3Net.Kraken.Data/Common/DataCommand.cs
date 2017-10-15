@@ -26,8 +26,6 @@ namespace P3Net.Kraken.Data.Common
 
             CommandText = commandText;
             CommandType = type;
-
-            Parameters = new DataParameterCollection();
         }        
         #endregion
                 
@@ -52,7 +50,7 @@ namespace P3Net.Kraken.Data.Common
         public CommandType CommandType { get; private set; }
 
         /// <summary>Gets the parameters associated with the command.</summary>
-        public DataParameterCollection Parameters { get; private set; }
+        public DataParameterCollection Parameters { get; private set; } = new DataParameterCollection();
 
 
         /// <summary>Gets the return value after the stored procedure has been run.</summary>
@@ -68,17 +66,6 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Gets a string representation of the class.</summary>
         /// <returns>A string representing the class.</returns>
         public override string ToString () => CommandText;
-
-        /// <summary>Adds parameters to the command.</summary>
-        /// <param name="parameters">The parameters to add.</param>
-        /// <returns>The updated command.</returns>
-        public DataCommand WithParameters ( params DataParameter[] parameters )
-        {
-            if (parameters != null)
-                Parameters.AddRange(parameters);
-
-            return this;
-        }
         
         #region Private Members
 

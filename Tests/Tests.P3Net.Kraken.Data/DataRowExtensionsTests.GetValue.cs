@@ -5,7 +5,7 @@ using System.Data;
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using P3Net.Kraken;
 using P3Net.Kraken.Data;
 using P3Net.Kraken.UnitTesting;
 #endregion
@@ -125,6 +125,86 @@ namespace Tests.P3Net.Kraken.Data
 
             //Assert
             actual.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsInt8 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(sbyte), 4));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsInt16 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(short), 4));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsInt32 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(int), 654321));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsInt64 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(long), 567890123));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsUInt8 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(byte), 4));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsUInt16 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(ushort), 4));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsUInt32 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(uint), 654321));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanValueOrDefault_ColumnIsUInt64 ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(ulong), 567890123));
+
+            var actual = target.GetBooleanValueOrDefault("Column1");
+
+            actual.Should().BeTrue();
         }
         #endregion
 
@@ -333,6 +413,81 @@ namespace Tests.P3Net.Kraken.Data
 
             //Act
             target.GetCharValueOrDefault("");
+        }
+        #endregion
+
+        #region GetDateValueOrDefault
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnIsValidAndSet ()
+        {
+            var expected = Dates.March(4, 1980);
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(Date), expected));
+
+            var actual = target.GetDateValueOrDefault("Column1");
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnIsValidAndNull ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(Date)));
+
+            var actual = target.GetDateValueOrDefault("Column1");
+
+            actual.Should().Be(Date.None);
+        }
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnValueIsNullUseCustomDefault ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(Date)));
+
+            var expected = Dates.April(10, 1976);
+            var actual = target.GetDateValueOrDefault("Column1", expected);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnValueIsInvalid ()
+        {
+            var target = CreateRow(new ColumnDefinition("Column1", typeof(string), "Bad"));
+
+            var actual = target.GetDateValueOrDefault("Column1");
+
+            actual.Should().Be(Date.None);
+        }
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnIsMissing ()
+        {
+            var target = CreateRow();
+
+            Action action = () => target.GetDateValueOrDefault("Column1");
+
+            action.ShouldThrowArgumentException();
+        }
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnIsNull ()
+        {
+            var target = CreateRow();
+
+            Action action = () => target.GetDateValueOrDefault(null);
+
+            action.ShouldThrowArgumentNullException();
+        }
+
+        [TestMethod]
+        public void GetDateValueOrDefault_ColumnIsEmpty ()
+        {
+            var target = CreateRow();
+
+            Action action = () => target.GetDateValueOrDefault("");
+
+            action.ShouldThrowArgumentException();
         }
         #endregion
 

@@ -5,7 +5,7 @@ using System.Data;
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using P3Net.Kraken;
 using P3Net.Kraken.Data;
 using P3Net.Kraken.UnitTesting;
 #endregion
@@ -364,6 +364,62 @@ namespace Tests.P3Net.Kraken.Data
             //Act
             target.Read();
             target.GetChars("", 0, actual, 0, actual.Length);
+        }
+        #endregion
+
+        #region GetDate
+
+        [TestMethod]
+        public void GetDate_ColumnExists ()
+        {
+            var expected = Dates.February(4, 1987);
+
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow((DateTime)expected);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetDate("Column1");
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDate_ColumnDoesNotExist ()
+        {
+            var schema = new DataTable()
+                            .InsertRow(null);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDate("Column1");
+            action.ShouldThrowArgumentException();
+        }
+
+        [TestMethod]
+        public void GetDate_ColumnIsNull ()
+        {
+            var schema = new DataTable()
+                            .InsertRow();
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDate(null);
+            action.ShouldThrowArgumentNullException();
+        }
+
+        [TestMethod]
+        public void GetDate_ColumnIsEmpty ()
+        {
+            var schema = new DataTable()
+                            .InsertRow();
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDate("");
+            action.ShouldThrowArgumentException();
         }
         #endregion
 

@@ -653,6 +653,306 @@ namespace Tests.P3Net.Kraken
             //Assert
             actual.Should().Be(expected);
         }
-        #endregion        
+        #endregion
+
+        #region TryConvertToBoolean
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithNull ()
+        {
+            object target = null;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithDBNull ()
+        {
+            object target = DBNull.Value;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithBoolean_True ()
+        {
+            var target = true;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithBoolean_False ()
+        {
+            var target = false;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_Empty ()
+        {
+            var target = "";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_0 ()
+        {
+            var target = "0";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_1 ()
+        {
+            var target = "1";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_False ()
+        {
+            var target = "false";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_True ()
+        {
+            var target = "true";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_Yes ()
+        {
+            var target = "yes";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithString_No ()
+        {
+            var target = "no";
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt64_0 ()
+        {
+            var target = 0L;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt64_1 ()
+        {
+            var target = 1L;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt32_0 ()
+        {
+            var target = 0;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt32_1 ()
+        {
+            var target = 1;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt16_0 ()
+        {
+            var target = (short)0;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt16_1 ()
+        {
+            var target = (short)1;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt8_0 ()
+        {
+            var target = (sbyte)0;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithInt8_1 ()
+        {
+            var target = (sbyte)1;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt64_0 ()
+        {
+            var target = 0UL;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt64_1 ()
+        {
+            var target = 1UL;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt32_0 ()
+        {
+            var target = 0U;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt32_1 ()
+        {
+            var target = 1U;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt16_0 ()
+        {
+            var target = (ushort)0;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt16_1 ()
+        {
+            var target = (ushort)1;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt8_0 ()
+        {
+            var target = (byte)0;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeFalse();
+            actualResult.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void TryConvertToBoolean_WithUInt8_1 ()
+        {
+            var target = (byte)1;
+
+            var actualResult = TypeConversion.TryConvertToBoolean(target, out bool actual);
+
+            actual.Should().BeTrue();
+            actualResult.Should().BeTrue();
+        }
+        #endregion
     }
 }

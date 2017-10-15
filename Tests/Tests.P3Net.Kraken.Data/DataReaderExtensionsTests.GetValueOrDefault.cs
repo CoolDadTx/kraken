@@ -5,7 +5,7 @@ using System.Data;
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using P3Net.Kraken;
 using P3Net.Kraken.Data;
 using P3Net.Kraken.UnitTesting;
 #endregion
@@ -166,6 +166,118 @@ namespace Tests.P3Net.Kraken.Data
             //Act
             target.Read();
             target.GetBooleanOrDefault(1);
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsInt8 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(sbyte))
+                            .InsertRow(4);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsInt16 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(short))
+                            .InsertRow(46);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsInt32 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(int))
+                            .InsertRow(252679);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsInt64 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(long))
+                            .InsertRow(56633737);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsUInt8 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(byte))
+                            .InsertRow(4);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsUInt16 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(ushort))
+                            .InsertRow(46);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsUInt32 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(uint))
+                            .InsertRow(252679);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetBooleanOrDefault_ColumnIsUInt64 ()
+        {
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(ulong))
+                            .InsertRow(56633737);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetBooleanOrDefault("Column1");
+
+            actual.Should().BeTrue();
         }
         #endregion
 
@@ -515,6 +627,164 @@ namespace Tests.P3Net.Kraken.Data
         }
         #endregion
 
+        #region GetDateOrDefault
+
+        [TestMethod]
+        public void GetDateOrDefault_ColumnValueIsSet ()
+        {
+            var expected = Dates.July(4, 1990);
+
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow((DateTime)expected);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetDateOrDefault("Column1");
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_ColumnValueIsNull ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow(null);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetDateOrDefault("Column1");
+
+            actual.Should().Be(Date.None);
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_IsNullWithCustomDefault ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow();
+            var expected = Dates.October(8, 2015);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetDateOrDefault("Column1", expected);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_ColumnIsMissing ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow(null);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDateOrDefault("Column2");
+
+            action.ShouldThrowArgumentException();
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_ColumnIsNull ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow();
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDateOrDefault(null);
+
+            action.ShouldThrowArgumentNullException();
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_ColumnIsEmpty ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow();
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDateOrDefault("");
+
+            action.ShouldThrowArgumentException();
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_WithOrdinal_ColumnValueIsSet ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var expected = Dates.November(4, 2013);
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow((DateTime)expected);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetDateOrDefault(0);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_WithOrdinal_IsNullWithCustomDefault ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow();
+            var expected = Dates.December(10, 1990);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            var actual = target.GetDateOrDefault(0, expected);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_WithOrdinal_TooSmall ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow();
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDateOrDefault(-1);
+
+            action.ShouldThrow<IndexOutOfRangeException>();
+        }
+
+        [TestMethod]
+        public void GetDateOrDefault_WithOrdinal_TooLarge ()
+        {
+            //Have to use DT because the reader will fail on a "Date"
+            var schema = new DataTable()
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow(DateTime.Now);
+            var target = new TestDataReader(schema);
+
+            target.Read();
+            Action action = () => target.GetDateOrDefault(1);
+
+            action.ShouldThrow<IndexOutOfRangeException>();
+        }
+        #endregion
+
         #region GetDateTimeOrDefault
 
         [TestMethod]
@@ -557,7 +827,7 @@ namespace Tests.P3Net.Kraken.Data
         {
             //Arrange
             var schema = new DataTable()
-                            .AddColumn("Column1", typeof(byte))
+                            .AddColumn("Column1", typeof(DateTime))
                             .InsertRow();
             var expected = new DateTime(2012, 4, 17, 12, 34, 56);
             var target = new TestDataReader(schema);
@@ -571,48 +841,45 @@ namespace Tests.P3Net.Kraken.Data
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetDateTimeOrDefault_ColumnIsMissing ()
         {
-            //Arrange
             var schema = new DataTable()
                             .AddColumn("Column1", typeof(DateTime))
                             .InsertRow(null);
             var target = new TestDataReader(schema);
 
-            //Act
             target.Read();
-            target.GetDateTimeOrDefault("Column2");
+            Action action = () => target.GetDateTimeOrDefault("Column2");
+
+            action.ShouldThrowArgumentException();
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetDateTimeOrDefault_ColumnIsNull ()
         {
-            //Arrange
             var schema = new DataTable()
-                            .AddColumn("Column1", typeof(int))
+                            .AddColumn("Column1", typeof(DateTime))
                             .InsertRow();
             var target = new TestDataReader(schema);
 
-            //Act
             target.Read();
-            target.GetDateTimeOrDefault(null);
+            Action action = () => target.GetDateTimeOrDefault(null);
+
+            action.ShouldThrowArgumentNullException();
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetDateTimeOrDefault_ColumnIsEmpty ()
         {
-            //Arrange
             var schema = new DataTable()
-                            .AddColumn("Column1", typeof(int))
+                            .AddColumn("Column1", typeof(DateTime))
                             .InsertRow();
             var target = new TestDataReader(schema);
 
-            //Act
             target.Read();
-            target.GetDateTimeOrDefault("");
+            Action action = () => target.GetDateTimeOrDefault("");
+
+            action.ShouldThrowArgumentException();
         }
 
         [TestMethod]
@@ -652,31 +919,31 @@ namespace Tests.P3Net.Kraken.Data
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void GetDateTimeOrDefault_WithOrdinal_TooSmall ()
         {
             var schema = new DataTable()
-                            .AddColumn("Column1", typeof(int))
+                            .AddColumn("Column1", typeof(DateTime))
                             .InsertRow();
             var target = new TestDataReader(schema);
 
-            //Act
             target.Read();
-            target.GetDateTimeOrDefault(-1);
+            Action action = () => target.GetDateTimeOrDefault(-1);
+
+            action.ShouldThrow<IndexOutOfRangeException>();
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void GetDateTimeOrDefault_WithOrdinal_TooLarge ()
         {
             var schema = new DataTable()
-                            .AddColumn("Column1", typeof(decimal))
-                            .InsertRow(0);
+                            .AddColumn("Column1", typeof(DateTime))
+                            .InsertRow();
             var target = new TestDataReader(schema);
 
-            //Act
             target.Read();
-            target.GetDateTimeOrDefault(1);
+            Action action = () => target.GetDateTimeOrDefault(1);
+
+            action.ShouldThrow<IndexOutOfRangeException>();
         }
         #endregion
 

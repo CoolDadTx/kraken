@@ -1,17 +1,11 @@
-﻿#region Imports
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Linq;
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 using P3Net.Kraken.Data.Common;
 using P3Net.Kraken.UnitTesting;
-#endregion
 
 namespace Tests.P3Net.Kraken.Data.Common
 {
@@ -86,38 +80,6 @@ namespace Tests.P3Net.Kraken.Data.Common
 
             //Assert
             actual.Should().Be(expected);
-        }
-        #endregion
-
-        #region WithParameters
-
-        [TestMethod]
-        public void WithParameters_SomeParameters ()
-        {
-            var target = new DataCommand("sproc", CommandType.StoredProcedure);
-            var expected = new DataParameter[] {
-                new DataParameter("@in1", DbType.Int32),
-                new DataParameter("@out1", DbType.String),
-                new DataParameter("@inout1", DbType.DateTime)
-            };
-
-            //Act
-            target.WithParameters(expected);
-
-            //Assert
-            target.Parameters.Should().ContainInOrder(expected);
-        }
-
-        [TestMethod]
-        public void WithParameters_NoParameters ()
-        {
-            var target = new DataCommand("SELECT * FROM Tables", CommandType.Text);
-
-            //Act
-            target.WithParameters();
-
-            //Assert
-            target.Parameters.Should().BeEmpty();
         }
         #endregion
     }

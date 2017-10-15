@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Common\AdhocQueryTests.cs" />
     <Compile Include="Common\ConnectionManagerTests.cs" />
+    <Compile Include="Common\DataCommandExtensionsTests.cs" />
     <Compile Include="Common\DataCommandTests.cs" />
     <Compile Include="Common\DataParameterCollectionTests.cs" />
     <Compile Include="Common\DataParameterTests.cs" />

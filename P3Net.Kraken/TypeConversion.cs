@@ -199,6 +199,69 @@ namespace P3Net.Kraken
 
             return Convert.ToBoolean(value);
         }
+
+        /// <summary>Attempts to convert a value to a boolean value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if successful or <see langword="false"/> if conversion failed.</returns>
+        /// <remarks>
+        /// The following rules are used to handle the conversion.
+        /// <list type="bullet">
+        /// <item>If <paramref name="value"/> is <see langword="null"/> or <see cref="DBNull.Value"/> then return <see langword="false"/>.</item>
+        /// <item>If <paramref name="value"/> is already a boolean then return the value.</item>
+        /// <item>If <paramref name="value"/> is an empty string then return <see langword="false"/>.</item>
+        /// <item>If <see cref="Boolean.TryParse"/> is successful then return the parsed value.</item>
+        /// <item>If <paramref name="value"/> is "Yes" then return <see langword="true"/>. If <paramref name="value"/> is "No" then return <see langword="false"/>.</item>
+        /// <item>If <paramref name="value"/> can be converted to <see cref="Int64"/> or <see cref="UInt64"/> then return <see langword="true"/> if the value is not zero otherwise return <see langword="false"/>.</item>
+        /// </list>
+        /// </remarks>
+        public static bool TryConvertToBoolean ( object value, out bool result )
+        {
+            result = false;
+
+            //Null or DBNull
+            if (value == null || value == DBNull.Value)
+                return false;
+
+            //Boolean
+            if (value is bool booleanResult)
+            {
+                result = booleanResult;
+                return true;
+            };
+
+            //Empty string
+            var str = value.ToString();
+            if (String.IsNullOrEmpty(str))
+                return false;
+
+            //Try the standard parsing
+            if (Boolean.TryParse(str, out result))
+                return true;
+
+            //Check for Yes/No
+            if (String.Compare(str, "yes", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                result = true;
+                return true;
+            } else if (String.Compare(str, "no", StringComparison.OrdinalIgnoreCase) == 0)
+                return true;
+
+            //Try numerics
+            if (Int64.TryParse(str, out long lresult))
+            {
+                result = lresult != 0;
+                return true;
+            }
+
+            if (UInt64.TryParse(str, out ulong ulresult))
+            {
+                result = ulresult != 0;
+                return true;
+            };
+
+            return false;
+        }
         #endregion
 
         #region ToByteOrDefault
