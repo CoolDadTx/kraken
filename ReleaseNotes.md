@@ -9,7 +9,7 @@
 - [Breaking Change] Removed ```ConfigurationElementEx``` and ```ConfigurationSectionEx```.
 - [New] Added ```ConfigurationElementCollection<T>``` and ```ConfigurationElementCollection<TValue, TKey>```.
 
-##P3Net.Kraken.Data
+## P3Net.Kraken.Data
 
 ### ```ConnectionManager```
 
@@ -36,3 +36,7 @@
 - ```GetBooleanValueOrDefault``` and ```TryGetBooleanValue``` have been updated to use ```TypeConversion.ToBooleanOrDefault```.
 - [New] Added ```GetDateValueOrDefault``` and ```TryGetDateValue``` methods to work with ```Date``` values.
 - [New] Added ```TryGetDateTimeValue``` to be symmetric with other types.
+
+## P3Net.Kraken.Net.Http
+
+[New] Added new package to support working with HTTP clients.

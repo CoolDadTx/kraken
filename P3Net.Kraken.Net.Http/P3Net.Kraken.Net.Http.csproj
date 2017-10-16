@@ -41,7 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionHandling\ErrorResponse.cs" />
+    <Compile Include="Headers\HeaderLinkUrl.cs" />
+    <Compile Include="Headers\HttpResponseHeadersExtensions.cs" />
+    <Compile Include="Headers\StandardHeaders.cs" />
+    <Compile Include="Headers\StandardLinkTypes.cs" />
+    <Compile Include="HttpClientExtensions.cs" />
     <Compile Include="HttpClientManager.cs" />
+    <Compile Include="HttpContentExtensions.cs" />
+    <Compile Include="HttpResponseMessageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
