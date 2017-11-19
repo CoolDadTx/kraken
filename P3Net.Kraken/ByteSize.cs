@@ -477,7 +477,7 @@ namespace P3Net.Kraken
         [ExcludeFromCodeCoverage]
         int IComparable.CompareTo ( object obj )
         {
-            return this.CompareTo((ByteSize)obj);
+            return CompareTo((ByteSize)obj);
         }
         #endregion
 

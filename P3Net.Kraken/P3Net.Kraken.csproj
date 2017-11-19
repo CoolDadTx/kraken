@@ -127,6 +127,7 @@
     <Compile Include="IO\DirectoryInfoExtensions.cs" />
     <Compile Include="IO\NonclosingStream.cs" />
     <Compile Include="IO\PathExtensions.cs" />
+    <Compile Include="Linq\LinqExtensions.cs" />
     <Compile Include="MismatchedCurrencyException.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="Reflection\VisualBasicTypeNameProvider.cs" />
@@ -210,6 +211,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_Packaging\P3Net.Kraken.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility">
+      <Version>0.1.2-alpha</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

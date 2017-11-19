@@ -3,10 +3,8 @@
  * All Rights Reserved
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+
 
 namespace P3Net.Kraken
 {
@@ -29,6 +27,12 @@ namespace P3Net.Kraken
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception.</param>
         public MismatchedCurrencyException ( string message, Exception innerException ) : base(message, innerException)
+        { }
+
+        /// <summary>Initializes an instance of the <see cref="MismatchedCurrencyException"/> class.</summary>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
+        protected MismatchedCurrencyException ( SerializationInfo info, StreamingContext context ) : base(info, context)
         { }
         #endregion
     }

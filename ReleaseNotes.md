@@ -37,6 +37,11 @@
 - [New] Added ```GetDateValueOrDefault``` and ```TryGetDateValue``` methods to work with ```Date``` values.
 - [New] Added ```TryGetDateTimeValue``` to be symmetric with other types.
 
+## P3Net.Kraken.Linq [New]
+
+Added new namespace and ```LinqExtensions``` to include some asynchronous LINQ commands. The separate namespace prevents collisions with other implementations (such as Entity Framework).
+
+
 ## P3Net.Kraken.Net.Http
 
 [New] Added new package to support working with HTTP clients.

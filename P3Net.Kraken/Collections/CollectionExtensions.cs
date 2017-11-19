@@ -39,10 +39,13 @@ namespace P3Net.Kraken.Collections
         /// </example>
         public static void AddRange<T> ( this ICollection<T> source, IEnumerable<T> items )
         {
-            Verify.Argument("items", items).IsNotNull();
+            Verify.Argument(nameof(items)).WithValue(items).IsNotNull();
 
             if (!items.IsNullOrEmpty())
-                items.ForEach(i => source.Add(i));
+            {
+                foreach (var item in items)
+                    source.Add(item);
+            };
         }
     }
 }

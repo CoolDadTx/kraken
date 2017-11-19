@@ -118,5 +118,10 @@
   <ItemGroup>
     <None Include="_Packaging\P3Net.Kraken.Windows.Forms.nuspec" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility">
+      <Version>0.1.2-alpha</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

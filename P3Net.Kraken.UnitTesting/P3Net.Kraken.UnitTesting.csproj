@@ -46,7 +46,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility">
+      <Version>0.1.2-alpha</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

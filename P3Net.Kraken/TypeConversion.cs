@@ -13,12 +13,10 @@ namespace P3Net.Kraken
     /// <summary>Provides support for converting between types.</summary>
     /// <remarks>
     /// This class provides equivalent functionality to <see cref="Convert"/> with some modifications to handle invalid values.  Unless otherwise
-    /// specified <see langword="null"/>, empty strings, blank strings and <see cref="DBNull.Value"/> are mappsed to the type's default value.
+    /// specified <see langword="null"/>, empty strings, blank strings and <see cref="DBNull.Value"/> are mapped to the type's default value.
     /// </remarks>
     public static class TypeConversion
     {
-        #region Public Members
-
         #region Coerce
 
         /// <summary>Coerces a smaller numeric type to a larger type.</summary>
@@ -34,7 +32,7 @@ namespace P3Net.Kraken
         /// <exception cref="InvalidCastException">The value's type cannot be coerced to the desired type.</exception>
         public static T Coerce<T> ( object value ) where T : struct
         {
-            Verify.Argument("value", value).IsNotNull();
+            Verify.Argument(nameof(value)).WithValue(value).IsNotNull();
 
             Type desiredType = typeof(T);
             Type valueType = value.GetType();
@@ -43,7 +41,7 @@ namespace P3Net.Kraken
                 return (T)value;
 
             if (!IsNumericType(valueType))
-                throw new ArgumentException("Value type is not a primitive.", "value");
+                throw new ArgumentException("Value type is not a primitive.", nameof(value));
 
             //Make sure the types are compatible first - doesn't seem to be any framework functionality to give us this information
             if (desiredType == typeof(decimal))
@@ -87,7 +85,7 @@ namespace P3Net.Kraken
                     return (T)Convert.ChangeType(value, typeof(byte));
             };
 
-            throw new InvalidCastException(String.Format("Cannot coerce from '{0}' to '{1}'", valueType.Name, desiredType.Name));
+            throw new InvalidCastException($"Cannot coerce from '{valueType.Name}' to '{desiredType.Name}'");
         }
         #endregion
 
@@ -122,10 +120,7 @@ namespace P3Net.Kraken
         ///		TypeConversion.ToBooleanOrDefault("abc"):	//error
         /// </code>
         /// </example>
-        public static bool ToBooleanOrDefault ( string value )
-        {
-            return ToBooleanOrDefault(value, false);
-        }
+        public static bool ToBooleanOrDefault ( string value ) => ToBooleanOrDefault(value, false);
 
         /// <summary>Converts a string to a boolean value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -173,10 +168,7 @@ namespace P3Net.Kraken
         /// If the value is a string then calls the string overload of this method.  If it is <see cref="DBNull.Value"/> then it returns <see langword="false"/>.
         /// Otherwise it calls <see cref="O:Convert.ToBooleanOrDefault"/>.
         /// </remarks>
-        public static bool ToBooleanOrDefault ( object value )
-        {
-            return ToBooleanOrDefault(value, false);
-        }
+        public static bool ToBooleanOrDefault ( object value ) => ToBooleanOrDefault(value, false);
 
         /// <summary>Converts an object to a boolean value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -190,7 +182,7 @@ namespace P3Net.Kraken
         /// </remarks>
         public static bool ToBooleanOrDefault ( object value, bool defaultValue )
         {
-            string str = value as string;
+            var str = value as string;
             if (str != null)
                 return ToBooleanOrDefault(str, defaultValue);
 
@@ -278,10 +270,7 @@ namespace P3Net.Kraken
         ///		TypeConversion.ToByteOrDefault(null);		//0
         /// </code>
         /// </example>
-        public static byte ToByteOrDefault ( string value )
-        {
-            return ToByteOrDefault(value, 0);
-        }
+        public static byte ToByteOrDefault ( string value ) => ToByteOrDefault(value, 0);
 
         /// <summary>Converts a string to a byte value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -304,10 +293,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>            
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static byte ToByteOrDefault ( object value )
-        {
-            return ToByteOrDefault(value, 0);
-        }
+        public static byte ToByteOrDefault ( object value ) => ToByteOrDefault(value, 0);
 
         /// <summary>Converts an object to a byte value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -342,10 +328,7 @@ namespace P3Net.Kraken
         ///		TypeConversion.ToCharOrDefault(null);		// Char.MinValue
         /// </code>
         /// </example>
-        public static char ToCharOrDefault ( string value )
-        {
-            return ToCharOrDefault(value, default(char));
-        }
+        public static char ToCharOrDefault ( string value ) => ToCharOrDefault(value, default(char));
 
         /// <summary>Converts a string to a character value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -365,10 +348,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as a character.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>            
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
-        public static char ToCharOrDefault ( object value )
-        {
-            return ToCharOrDefault(value, default(char));
-        }
+        public static char ToCharOrDefault ( object value ) => ToCharOrDefault(value, default(char));
 
         /// <summary>Converts an object to a character value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -389,6 +369,98 @@ namespace P3Net.Kraken
         }
         #endregion
 
+        #region ToDateOrDefault
+
+        /// <summary>Converts a string to a <see cref="Date"/> value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns><paramref name="value"/> as a <see cref="Date"/>.</returns>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
+        /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
+        /// <example>
+        /// <code lang="C#">
+        ///		TypeConversion.ToDateOrDefault("12/04/2004");			// Dec 4, 2004
+        ///		TypeConversion.ToDateOrDefault("03/12/2000 15:31:30");	// Mar 12, 2000
+        /// </code>
+        /// </example>
+        public static Date ToDateOrDefault ( string value ) => ToDateOrDefault(value, Date.None);
+
+        /// <summary>Converts a string to a <see cref="Date"/> value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns><paramref name="value"/> as a <see cref="Date"/>.</returns>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
+        /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
+        /// <example>
+        /// <code lang="C#">
+        ///		TypeConversion.ToDateOrDefault("12/04/2004");			// Dec 4, 2004
+        ///		TypeConversion.ToDateOrDefault("03/12/2000 15:31:30");	// Mar 12, 2000
+        /// </code>
+        /// </example>
+        public static Date ToDateOrDefault ( string value, Date defaultValue )
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return defaultValue;
+
+            return Date.Parse(value);
+        }
+
+        /// <summary>Converts a string to a <see cref="Date"/> value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="format">The format of the string to parse.</param>
+        /// <returns><paramref name="value"/> as a <see cref="Date"/>.</returns>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
+        /// <example>
+        /// <code lang="C#">
+        ///		TypeConversion.ToDateOrDefault("12/04/2004", "g");			// Dec 4, 2004
+        ///		TypeConversion.ToDateOrDefault("03/12/2000 15:31:30", "f");	// Mar 12, 2000
+        /// </code>
+        /// </example>		
+        public static Date ToDateOrDefault ( string value, string format ) => ToDateOrDefault(value, format, Date.None);
+
+        /// <summary>Converts a string to a <see cref="Date"/> value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="format">The format of the string to parse.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns><paramref name="value"/> as a <see cref="Date"/>.</returns>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
+        /// <example>
+        /// <code lang="C#">
+        ///		TypeConversion.ToDateOrDefault("12/04/2004", "g");			// Dec 4, 2004
+        ///		TypeConversion.ToDateOrDefault("03/12/2000 15:31:30", "f");	// Mar 12, 2000
+        /// </code>
+        /// </example>		
+        public static Date ToDateOrDefault ( string value, string format, Date defaultValue )
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return defaultValue;
+
+            return DateTime.ParseExact(value, format, DateTimeFormatInfo.CurrentInfo).ToDate();
+        }
+
+        /// <summary>Converts an object to a <see cref="Date"/> value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns><paramref name="value"/> as a <see cref="Date"/>.</returns>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>   
+        public static Date ToDateOrDefault ( object value ) => ToDateOrDefault(value, Date.None);
+
+        /// <summary>Converts an object to a <see cref="Date"/> value.</summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns><paramref name="value"/> as a <see cref="Date"/>.</returns>
+        /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>   
+        public static Date ToDateOrDefault ( object value, Date defaultValue )
+        {
+            string str = value as string;
+            if (str != null)
+                return ToDateOrDefault(str, defaultValue);
+
+            if (value == null || value == DBNull.Value)
+                return defaultValue;
+
+            return Convert.ToDateTime(value).ToDate();
+        }
+        #endregion
+
         #region ToDateTimeOrDefault
 
         /// <summary>Converts a string to a <see cref="DateTime"/> value.</summary>
@@ -402,10 +474,7 @@ namespace P3Net.Kraken
         ///		TypeConversion.ToDateTimeOrDefault("03/12/2000 15:31:30");	// Mar 12, 2000 3:31:30 PM
         /// </code>
         /// </example>
-        public static DateTime ToDateTimeOrDefault ( string value )
-        {
-            return ToDateTimeOrDefault(value, DateTime.MinValue);
-        }
+        public static DateTime ToDateTimeOrDefault ( string value ) => ToDateTimeOrDefault(value, DateTime.MinValue);
 
         /// <summary>Converts a string to a <see cref="DateTime"/> value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -438,10 +507,7 @@ namespace P3Net.Kraken
         ///		TypeConversion.ToDateTimeOrDefault("03/12/2000 15:31:30", "f");	// Mar 12, 2000 3:31:30 PM
         /// </code>
         /// </example>		
-        public static DateTime ToDateTimeOrDefault ( string value, string format )
-        {
-            return ToDateTimeOrDefault(value, format, DateTime.MinValue);
-        }
+        public static DateTime ToDateTimeOrDefault ( string value, string format ) => ToDateTimeOrDefault(value, format, DateTime.MinValue);
 
         /// <summary>Converts a string to a <see cref="DateTime"/> value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -467,10 +533,7 @@ namespace P3Net.Kraken
         /// <param name="value">The value to convert.</param>
         /// <returns><paramref name="value"/> as a <see cref="DateTime"/>.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>   
-        public static DateTime ToDateTimeOrDefault ( object value )
-        {
-            return ToDateTimeOrDefault(value, DateTime.MinValue);
-        }
+        public static DateTime ToDateTimeOrDefault ( object value ) => ToDateTimeOrDefault(value, DateTime.MinValue);
 
         /// <summary>Converts an object to a <see cref="DateTime"/> value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -503,10 +566,7 @@ namespace P3Net.Kraken
         ///		TypeConversion.ToDecimalOrDefault(null);		//0.0M
         /// </code>
         /// </example>
-        public static decimal ToDecimalOrDefault ( string value )
-        {
-            return ToDecimalOrDefault(value, 0);
-        }
+        public static decimal ToDecimalOrDefault ( string value ) => ToDecimalOrDefault(value, 0);
 
         /// <summary>Converts a string to a decimal value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -526,10 +586,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as a decimal.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
-        public static decimal ToDecimalOrDefault ( object value )
-        {
-            return ToDecimalOrDefault(value, 0);
-        }
+        public static decimal ToDecimalOrDefault ( object value ) => ToDecimalOrDefault(value, 0);
 
         /// <summary>Converts an object to a decimal value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -556,10 +613,7 @@ namespace P3Net.Kraken
         /// <param name="value">The value to convert.</param>
         /// <returns><paramref name="value"/> as an 8-byte real value.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
-        public static double ToDoubleOrDefault ( string value )
-        {
-            return ToDoubleOrDefault(value, 0);
-        }
+        public static double ToDoubleOrDefault ( string value ) => ToDoubleOrDefault(value, 0);
 
         /// <summary>Converts a string to a double value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -579,10 +633,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as an 8-byte real value.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
-        public static double ToDoubleOrDefault ( object value )
-        {
-            return ToDoubleOrDefault(value, 0);
-        }
+        public static double ToDoubleOrDefault ( object value ) => ToDoubleOrDefault(value, 0);
 
         /// <summary>Converts an object to a double value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -610,10 +661,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as a signed 16-bit integer.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>            
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static short ToInt16OrDefault ( string value )
-        {
-            return ToInt16OrDefault(value, 0);
-        }
+        public static short ToInt16OrDefault ( string value ) => ToInt16OrDefault(value, 0);
 
         /// <summary>Converts a string to a short value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -636,10 +684,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>            
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static short ToInt16OrDefault ( object value )
-        {
-            return ToInt16OrDefault(value, 0);
-        }
+        public static short ToInt16OrDefault ( object value ) => ToInt16OrDefault(value, 0);
 
         /// <summary>Converts an object to a short value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -668,10 +713,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as a signed 32-bit integer.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static int ToInt32OrDefault ( string value )
-        {
-            return ToInt32OrDefault(value, 0);
-        }
+        public static int ToInt32OrDefault ( string value ) => ToInt32OrDefault(value, 0);
 
         /// <summary>Converts a string to an int value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -694,10 +736,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static int ToInt32OrDefault ( object value )
-        {
-            return ToInt32OrDefault(value, 0);
-        }
+        public static int ToInt32OrDefault ( object value ) => ToInt32OrDefault(value, 0);
 
         /// <summary>Converts an object to an int value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -726,10 +765,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as a signed 64-bit integer.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static long ToInt64OrDefault ( string value )
-        {
-            return ToInt64OrDefault(value, 0);
-        }
+        public static long ToInt64OrDefault ( string value ) => ToInt64OrDefault(value, 0);
 
         /// <summary>Converts a string to a long value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -752,10 +788,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
-        public static long ToInt64OrDefault ( object value )
-        {
-            return ToInt64OrDefault(value, 0);
-        }
+        public static long ToInt64OrDefault ( object value ) => ToInt64OrDefault(value, 0);
 
         /// <summary>Converts an object to a long value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -785,10 +818,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>            
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static sbyte ToSByteOrDefault ( string value )
-        {
-            return ToSByteOrDefault(value, 0);
-        }
+        public static sbyte ToSByteOrDefault ( string value ) => ToSByteOrDefault(value, 0);
 
         /// <summary>Converts a string to a signed byte value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -813,10 +843,7 @@ namespace P3Net.Kraken
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static sbyte ToSByteOrDefault ( object value )
-        {
-            return ToSByteOrDefault(value, 0);
-        }
+        public static sbyte ToSByteOrDefault ( object value ) => ToSByteOrDefault(value, 0);
 
         /// <summary>Converts an object to a signed byte value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -845,10 +872,7 @@ namespace P3Net.Kraken
         /// <param name="value">The value to convert.</param>
         /// <returns><paramref name="value"/> as a 4-byte real value.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
-        public static float ToSingleOrDefault ( string value )
-        {
-            return ToSingleOrDefault(value, 0);
-        }
+        public static float ToSingleOrDefault ( string value ) => ToSingleOrDefault(value, 0);
 
         /// <summary>Converts a string to a single value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -868,10 +892,7 @@ namespace P3Net.Kraken
         /// <returns><paramref name="value"/> as a 4-byte real value.</returns>
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
-        public static float ToSingleOrDefault ( object value )
-        {
-            return ToSingleOrDefault(value, 0);
-        }
+        public static float ToSingleOrDefault ( object value ) => ToSingleOrDefault(value, 0);
 
         /// <summary>Converts an object to a single value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -898,10 +919,7 @@ namespace P3Net.Kraken
         /// <param name="value">The value to convert.</param>
         /// <returns>The value as a string.</returns>
         /// <remarks>If <paramref name="value"/> is <see langword="null"/> then an empty string is returned.</remarks>
-        public static string ToStringOrEmpty ( object value )
-        {
-            return ToStringOrEmpty(value, "");
-        }
+        public static string ToStringOrEmpty ( object value ) => ToStringOrEmpty(value, "");
 
         /// <summary>Converts an object to a single value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -925,10 +943,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static ushort ToUInt16OrDefault ( string value )
-        {
-            return ToUInt16OrDefault(value, 0);
-        }
+        public static ushort ToUInt16OrDefault ( string value ) => ToUInt16OrDefault(value, 0);
 
         /// <summary>Converts a string to a ushort value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -953,10 +968,7 @@ namespace P3Net.Kraken
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static ushort ToUInt16OrDefault ( object value )
-        {
-            return ToUInt16OrDefault(value, 0);
-        }
+        public static ushort ToUInt16OrDefault ( object value ) => ToUInt16OrDefault(value, 0);
 
         /// <summary>Converts an object to a ushort value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -987,10 +999,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static uint ToUInt32OrDefault ( string value )
-        {
-            return ToUInt32OrDefault(value, 0);
-        }
+        public static uint ToUInt32OrDefault ( string value ) => ToUInt32OrDefault(value, 0);
 
         /// <summary>Converts a string to a uint value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -1015,10 +1024,7 @@ namespace P3Net.Kraken
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static uint ToUInt32OrDefault ( object value )
-        {
-            return ToUInt32OrDefault(value, 0);
-        }
+        public static uint ToUInt32OrDefault ( object value ) => ToUInt32OrDefault(value, 0);
 
         /// <summary>Converts an object to a uint value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -1049,10 +1055,7 @@ namespace P3Net.Kraken
         /// <exception cref="FormatException"><paramref name="value"/> is not in correct format for type.</exception>        
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static ulong ToUInt64OrDefault ( string value )
-        {
-            return ToUInt64OrDefault(value, 0);
-        }
+        public static ulong ToUInt64OrDefault ( string value ) => ToUInt64OrDefault(value, 0);
 
         /// <summary>Converts a string to a ulong value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -1077,10 +1080,7 @@ namespace P3Net.Kraken
         /// <exception cref="InvalidCastException"><paramref name="value"/> can not be converted to the appropriate type.</exception>
         /// <exception cref="OverflowException">The resulting value is too large for the type.</exception>
         [CLSCompliant(false)]
-        public static ulong ToUInt64OrDefault ( object value )
-        {
-            return ToUInt64OrDefault(value, 0);
-        }
+        public static ulong ToUInt64OrDefault ( object value ) => ToUInt64OrDefault(value, 0);
 
         /// <summary>Converts an object to a ulong value.</summary>
         /// <param name="value">The value to convert.</param>
@@ -1103,8 +1103,6 @@ namespace P3Net.Kraken
         }
         #endregion
 
-        #endregion
-
         #region Private Members
 
         private static bool IsNumericType ( Type type )
@@ -1114,12 +1112,7 @@ namespace P3Net.Kraken
                                typeof(ulong), typeof(uint), typeof(ushort), typeof(byte));
         }
 
-        private static bool IsType ( Type baseType, params Type[] possibleTypes )
-        {
-            return (from t in possibleTypes
-                    where baseType == t
-                    select t).Any();
-        }
+        private static bool IsType ( Type baseType, params Type[] possibleTypes ) => possibleTypes.Any(t => t == baseType);
 
         private static NumberStyles PrepareInt ( ref string value )
         {
@@ -1133,6 +1126,5 @@ namespace P3Net.Kraken
             return styles;
         }
         #endregion
-
     }
 }

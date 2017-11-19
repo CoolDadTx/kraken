@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -504,7 +505,7 @@ namespace P3Net.Kraken.IO
         public static long GetDirectorySize ( string pathName, bool includeChildren )
         {
             if (pathName == null)
-                throw new ArgumentNullException("pathName");
+                throw new ArgumentNullException(nameof(pathName));
             pathName = pathName.Trim();
 			if (pathName.Length == 0)
 				return 0L;
@@ -512,8 +513,8 @@ namespace P3Net.Kraken.IO
             //We are going to use a stack to enumerate the directories because we don't want
             //to blow the runtime stack with a recursive call and furthermore the stack won't shrink
             //once allocated so we don't want to waste memory either
-            Stack dirStack = new Stack();
-            DirectoryInfo dir = new DirectoryInfo(pathName);
+            var dirStack = new Stack<DirectoryInfo>();
+            var dir = new DirectoryInfo(pathName);
             if (!dir.Exists)
                 return 0;
             dirStack.Push(dir);

@@ -23,11 +23,12 @@ namespace P3Net.Kraken.Collections
         /// </remarks>
         /// <returns>The original list after the action has been performed.</returns>
         /// <seealso cref="ForEachIf{T}" />
+        [Obsolete("Deprecated in 5.0. Use LINQ.")]
         public static IEnumerable<T> ForEach<T> ( this IEnumerable<T> source, Action<T> action )
         {
-            Verify.Argument("action", action).IsNotNull();
+            Verify.Argument(nameof(action)).WithValue(action).IsNotNull();
 
-            foreach (T item in source)
+            foreach (var item in source)
             {
                 action(item);
             };
@@ -48,10 +49,11 @@ namespace P3Net.Kraken.Collections
         /// </remarks>		
         /// <returns>The original list after the action has been performed.</returns>
         /// <seealso cref="ForEach{T}"/>
+        [Obsolete("Deprecated in 5.0. Use LINQ.")]
         public static IEnumerable<T> ForEachIf<T> ( this IEnumerable<T> source, Action<T> action, Predicate<T> predicate )
         {
-            Verify.Argument("action", action).IsNotNull();
-            Verify.Argument("predicate", predicate).IsNotNull();
+            Verify.Argument(nameof(action)).WithValue(action).IsNotNull();
+            Verify.Argument(nameof(predicate)).WithValue(predicate).IsNotNull();
 
             source.ForEach(i =>
             {
@@ -68,7 +70,7 @@ namespace P3Net.Kraken.Collections
         /// <returns>The source if it is not <see langword="null"/> or an empty list otherwise.</returns>
         public static IEnumerable<T> GetValueOrEmpty<T> ( this IEnumerable<T> source )
         {
-            return source ?? new T[0];
+            return source ?? Enumerable.Empty<T>();
         }
 
         /// <summary>Determines if the source is <see langword="null"/> or empty.</summary>
@@ -77,7 +79,7 @@ namespace P3Net.Kraken.Collections
         /// <returns><see langword="true"/> if the source is <see langword="null"/> or empty.</returns>
         public static bool IsNullOrEmpty<T> ( this IEnumerable<T> source )
         {
-            return (source == null) || !source.Any();
+            return !source?.Any() ?? true;
         }
 
         /// <summary>Orders a list of items using the given selector.</summary>
@@ -123,18 +125,18 @@ namespace P3Net.Kraken.Collections
         /// </remarks>
         public static IOrderedEnumerable<TItem> OrderThenByDirection<TItem, TKey> ( this IEnumerable<TItem> source, Func<TItem, TKey> selector, bool isDescending )
         {
-            var ordered = source as IOrderedEnumerable<TItem>;
-            if (ordered == null)
+            if (source is IOrderedEnumerable<TItem> ordered)
             {
                 if (isDescending)
-                    return source.OrderByDescending(selector);
+                    return ordered.ThenByDescending(selector);
                 else
-                    return source.OrderBy(selector);
-            } else if (isDescending)
-            {
-                return ordered.ThenByDescending(selector);
-            } else
-                return ordered.ThenBy(selector);
+                    return ordered.ThenBy(selector);
+            };
+
+            if (isDescending)
+                return source.OrderByDescending(selector);
+            else
+                return source.OrderBy(selector);                            
         }
 
         /// <summary>Removes items from the list if a condition is met.</summary>
@@ -143,14 +145,32 @@ namespace P3Net.Kraken.Collections
         /// <param name="condition">The condition to check.</param>
         /// <returns>The filtered list.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="condition"/> is <see langword="null"/>.</exception>
+        [Obsolete("Deprecated in 5.0. Use LINQ.")]
         public static IEnumerable<T> RemoveIf<T> ( this IEnumerable<T> source, Func<T, bool> condition )
         {
-            Verify.Argument("condition", condition).IsNotNull();
+            Verify.Argument(nameof(condition)).WithValue(condition).IsNotNull();
 
             if (source != null)
                 return source.Where(x => !condition(x));
 
             return Enumerable.Empty<T>();
+        }
+
+        /// <summary>Adds paging to a query.</summary>
+        /// <param name="source">The source value.</param>
+        /// <param name="pageIndex">The zero-based index of the page.</param>
+        /// <param name="pageSize">The size of a page.</param>
+        /// <returns>The query.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="pageIndex"/> is less than zero.
+        /// <para>-or-</para>
+        /// <paramref name="pageSize"/> is less than one.
+        /// </exception>
+        public static IEnumerable<T> WithPaging<T> ( this IEnumerable<T> source, int pageIndex, int pageSize )
+        {
+            Verify.Argument(nameof(pageIndex)).WithValue(pageIndex).IsGreaterThanOrEqualToZero();
+            Verify.Argument(nameof(pageSize)).WithValue(pageSize).IsGreaterThanZero();
+
+            return source.Skip(pageIndex * pageSize).Take(pageSize);
         }
     }
 }
