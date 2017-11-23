@@ -94,7 +94,7 @@ namespace P3Net.Kraken.Interop
 
             m_zeroFree = false;
         }
-        
+
         /// <summary>Creates a managed pointer for an ANSI string with memory allocated using <b>CoTaskMemAlloc</b>.</summary>
         /// <param name="value">The string to copy.</param>
         /// <returns>The new pointer.</returns>
@@ -126,6 +126,7 @@ namespace P3Net.Kraken.Interop
         ///    End Sub
         /// </code>
         /// </example>
+        [Obsolete("Deprecated in 5.0. Do not use SecureString.")]
         public static SafeComMemoryHandle SecureStringToAnsi ( System.Security.SecureString value )
         {
             if (value == null)
@@ -143,6 +144,7 @@ namespace P3Net.Kraken.Interop
         /// <example>
         /// Refer to <see cref="SecureStringToAnsi"/> for an equivalent example.
         /// </example>
+        [Obsolete("Deprecated in 5.0. Do not use SecureString.")]
         public static SafeComMemoryHandle SecureStringToUnicode ( System.Security.SecureString value )
         {
             if (value == null)

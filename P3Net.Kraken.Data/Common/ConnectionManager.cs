@@ -4,6 +4,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
@@ -42,10 +43,11 @@ namespace P3Net.Kraken.Data.Common
         { /* Do nothing */ }
 
         /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
-        /// <param name="connectionString">The connection string to use.</param>
-        protected ConnectionManager ( string connectionString )
+        /// <param name="connectionStringOrName">The connection string to use or a connection string name in the configuration.</param>
+        protected ConnectionManager ( string connectionStringOrName )
         {
-            ConnectionString = connectionString;
+            if (!String.IsNullOrEmpty(connectionStringOrName))
+                ConnectionString = GetConnectionString(connectionStringOrName);
         }
         #endregion
 
@@ -509,7 +511,7 @@ namespace P3Net.Kraken.Data.Common
         /// <typeparam name="TResult">The type of the objects to return.</typeparam>
         /// <param name="command">The command to execute.</param>
         /// <param name="converter">The method used to convert a row to an object.</param>
-        /// <returns>An array containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
+        /// <returns>An enumerable list containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
@@ -624,7 +626,7 @@ namespace P3Net.Kraken.Data.Common
         /// <typeparam name="TResult">The type of the objects to return.</typeparam>
         /// <param name="command">The command to execute.</param>
         /// <param name="converter">The method used to convert a row to an object.</param>
-        /// <returns>An array containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
+        /// <returns>An enumerable list containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
@@ -641,7 +643,7 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="command">The command to execute.</param>
         /// <param name="converter">The method used to convert a row to an object.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>An array containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
+        /// <returns>An enumerable list containing the objects that were parsed.  The array will never be <see langword="null"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="command"/> or <paramref name="converter"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This method combines the functionality of <see cref="O:ExecuteReader"/> with the standard code used to load data
@@ -1127,7 +1129,7 @@ namespace P3Net.Kraken.Data.Common
         [Obsolete("Deprecated in 5.0. Use UserContext.")]
         public ConnectionManager SetUserContext ( string userContext )
         {
-            _userContext = userContext;
+            UserContext = userContext;
 
             return this;
         }
@@ -1184,7 +1186,6 @@ namespace P3Net.Kraken.Data.Common
         public void UpdateDataSet ( DataCommand insertCommand, DataCommand deleteCommand,
                                     DataCommand updateCommand, DataSet ds, string table, DataTransaction transaction )
         {
-            //Validate
             Verify.Argument(nameof(insertCommand)).WithValue(insertCommand).IsNotNull();
             Verify.Argument(nameof(deleteCommand)).WithValue(deleteCommand).IsNotNull();
             Verify.Argument(nameof(updateCommand)).WithValue(updateCommand).IsNotNull();
@@ -1433,12 +1434,12 @@ namespace P3Net.Kraken.Data.Common
                     //Add the tables as needed
                     if ((tables != null) && (tables.Length > 0))
                     {
-                        var strTable = "Table";
+                        var tableName = "Table";
                         for (var index = 0; index < tables.Length; ++index)
                         {
                             Verify.Argument(nameof(tables)).WithValue(tables[index]).IsNotNullOrEmpty("One or more table entries are invalid");
-                            da.TableMappings.Add(strTable, tables[index]);
-                            strTable = $"Table{index + 1}";
+                            da.TableMappings.Add(tableName, tables[index]);
+                            tableName = $"Table{index + 1}";
                         };
                     };
 
@@ -1454,7 +1455,30 @@ namespace P3Net.Kraken.Data.Common
             {
                 cmdDb?.Dispose();
             };
-        }        
+        }
+
+        /// <summary>Gets a connection string given its name or raw connection string.</summary>
+        /// <param name="connectionStringOrName">The connection string or name.</param>
+        /// <returns>The connection string.</returns>
+        protected string GetConnectionString ( string connectionStringOrName )
+        {
+            if (String.IsNullOrEmpty(connectionStringOrName))
+                return "";
+
+            //Look it up
+            try
+            {
+                var conn = ConfigurationManager.ConnectionStrings[connectionStringOrName];
+
+                if (conn != null)
+                    return conn.ConnectionString;
+            } catch
+            {
+            };
+
+            return connectionStringOrName;
+        }
+
 
         /// <summary>Prepares the connection after it has been opened.</summary>
         /// <param name="connection">The open connection.</param>
@@ -1465,9 +1489,7 @@ namespace P3Net.Kraken.Data.Common
         protected virtual void PrepareConnectionCore ( ConnectionData connection )
         {
             if (SupportsUserContext)
-            {
                 SetUserContextCore(connection, _userContext ?? "");
-            };
         }
 
         /// <summary>Sets the user context.</summary>

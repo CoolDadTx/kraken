@@ -5,7 +5,6 @@
 using System;
 using System.Data;
 
-using P3Net.Kraken.Collections;
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data.Common
@@ -47,10 +46,10 @@ namespace P3Net.Kraken.Data.Common
         }
 
         /// <summary>Gets the type of command to execute.</summary>
-        public CommandType CommandType { get; private set; }
+        public CommandType CommandType { get; }
 
         /// <summary>Gets the parameters associated with the command.</summary>
-        public DataParameterCollection Parameters { get; private set; } = new DataParameterCollection();
+        public DataParameterCollection Parameters { get; } = new DataParameterCollection();
 
 
         /// <summary>Gets the return value after the stored procedure has been run.</summary>

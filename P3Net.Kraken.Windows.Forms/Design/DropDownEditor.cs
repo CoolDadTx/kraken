@@ -5,7 +5,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -15,7 +14,6 @@ namespace P3Net.Kraken.Design
 {
     /// <summary>Provides a type editor that displays its contents in a drop down list.</summary>
     [CodeNotTested]
-    [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust"), PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
     public class DropDownEditor : UITypeEditor
     {
         #region Construction

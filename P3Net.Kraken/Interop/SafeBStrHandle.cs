@@ -119,7 +119,7 @@ namespace P3Net.Kraken.Interop
         ///    End Sub
         /// </code>
         /// </example>
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Str")]
+        [Obsolete("Deprecated in 5.0. Do not use SecureString.")]
         public static SafeBStrHandle SecureStringToBStr ( System.Security.SecureString value)
         {
             if (value == null)
