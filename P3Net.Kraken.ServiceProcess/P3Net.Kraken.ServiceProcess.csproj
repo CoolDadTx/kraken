@@ -11,8 +11,9 @@
     <AssemblyName>P3Net.Kraken.ServiceProcess</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,7 +66,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.1.2-alpha" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="_Packaging\P3Net.Kraken.ServiceProcess.nuspec" />
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +77,7 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.DotNet.Analyzers.Compatibility.0.1.2-alpha\build\Microsoft.DotNet.Analyzers.Compatibility.targets" Condition="Exists('..\packages\Microsoft.DotNet.Analyzers.Compatibility.0.1.2-alpha\build\Microsoft.DotNet.Analyzers.Compatibility.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.DotNet.Analyzers.Compatibility.0.1.2-alpha\build\Microsoft.DotNet.Analyzers.Compatibility.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.DotNet.Analyzers.Compatibility.0.1.2-alpha\build\Microsoft.DotNet.Analyzers.Compatibility.targets'))" />
-  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)_Packaging\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

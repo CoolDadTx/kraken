@@ -13,7 +13,7 @@ namespace Metadata
 	   public const string Trademark = "";
 	   
 	   public const string Version = "5.0.0.0";
-	   public const string ProductVersion = "5.0.17091.1";
-	   public const string FileVersion = "5.0.17091.1";
+	   public const string ProductVersion = "5.0.17327.1";
+	   public const string FileVersion = "5.0.17327.1";
    }
 }

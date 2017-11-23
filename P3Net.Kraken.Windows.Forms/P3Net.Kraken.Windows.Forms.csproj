@@ -124,4 +124,7 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)_Packaging\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

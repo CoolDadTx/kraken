@@ -83,4 +83,7 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)_Packaging\*.*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
