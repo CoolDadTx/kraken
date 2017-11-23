@@ -14,7 +14,8 @@ namespace Tests.P3Net.Kraken.Collections
 {
     [TestClass]
     public class EnumerableExtensionsTests : UnitTest
-    {                
+    {
+#pragma warning disable 618
         #region ForEach
 
         [TestMethod]
@@ -80,6 +81,7 @@ namespace Tests.P3Net.Kraken.Collections
             action.ShouldThrowArgumentNullException();
         }
         #endregion
+#pragma warning restore 618
 
         #region GetValueOrEmpty
 
@@ -274,6 +276,7 @@ namespace Tests.P3Net.Kraken.Collections
         }
         #endregion
 
+#pragma warning disable 618    
         #region RemoveIf
 
         [TestMethod]
@@ -338,6 +341,7 @@ namespace Tests.P3Net.Kraken.Collections
             actual.Should().BeEmpty();
         }
         #endregion
+#pragma warning restore 618
 
         #region Private Members
 

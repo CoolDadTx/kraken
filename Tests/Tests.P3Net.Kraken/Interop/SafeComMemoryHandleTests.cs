@@ -257,6 +257,7 @@ namespace Tests.P3Net.Kraken.Interop
 
         #endregion
 
+#pragma warning disable 618
         #region SecureStringToAnsi
 
         [TestMethod]
@@ -340,6 +341,8 @@ namespace Tests.P3Net.Kraken.Interop
             target.IsClosed.Should().BeTrue();
         }
         #endregion
+
+#pragma warning restore 618
 
         #region StringToAnsi
 

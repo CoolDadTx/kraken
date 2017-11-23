@@ -27,13 +27,13 @@ namespace P3Net.Kraken.Net.Http
         public static async Task<T> DeserializeJsonAsync<T> ( this HttpResponseMessage source, CancellationToken cancellationToken )
         {
             source.ThrowIfError();
+            
+            //Handle 204 responses (no content) or 200 with no body
+            if (source.StatusCode == System.Net.HttpStatusCode.NoContent || source.Content == null)
+                return default(T);
 
             if (!source.IsJsonResponse())
                 throw new Exception("Unsupported media type - cannot deserialize JSON");
-
-            //Handle 204 responses (no content)
-            if (source.StatusCode == System.Net.HttpStatusCode.NoContent)
-                return default(T);
 
             var str = await source.Content.ReadAsStringAsync().ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
@@ -45,13 +45,88 @@ namespace P3Net.Kraken.Net.Http
             return JsonConvert.DeserializeObject<T>(str);
         }
 
+        /// <summary>Gets the message error.</summary>
+        /// <param name="source">The source.</param>
+        /// <returns>The exception, if any.</returns>
+        /// <remarks>
+        /// WARNING: This method will clear the Content value.
+        /// </remarks>
+        public static Exception GetError ( this HttpResponseMessage source )
+        {
+            try
+            {
+                source.EnsureSuccessStatusCode();
+            } catch (HttpRequestException e)
+            {
+                return e;
+            };
+
+            return null;
+        }
+
+        /// <summary>Handles the response as a JSON string of the provided type.</summary>
+        /// <typeparam name="T">The expected type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <returns>The typed response.</returns>
+        /// <exception cref="Exception">Deserialization failed.</exception>
+        /// <remarks>
+        /// The underlying response is automatically disposed when the method completes.
+        /// </remarks>
+        /// <preliminary />
+        public static Task<T> HandleJsonAsync<T> ( this HttpResponseMessage source ) => HandleJsonAsync<T>(source, CancellationToken.None);
+
+        /// <summary>Handles the response as a JSON string of the provided type.</summary>
+        /// <typeparam name="T">The expected type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The typed response.</returns>
+        /// <exception cref="Exception">Deserialization failed.</exception>
+        /// <remarks>
+        /// The underlying response is automatically disposed when the method completes.
+        /// </remarks>
+        /// <preliminary />
+        public static async Task<T> HandleJsonAsync<T> ( this HttpResponseMessage source, CancellationToken cancellationToken )
+        {
+            using (source)
+            {
+                return await source.DeserializeJsonAsync<T>(cancellationToken).ConfigureAwait(false);
+            };
+        }
+
+        /// <summary>Handles the response as a JSON string of the provided type.</summary>
+        /// <typeparam name="T">The expected type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <returns>The typed response.</returns>
+        /// <exception cref="Exception">Deserialization failed.</exception>
+        /// <remarks>
+        /// The underlying response is automatically disposed when the method completes.
+        /// </remarks>
+        /// <preliminary />
+        public static Task<T> HandleJsonAsync<T> ( this Task<HttpResponseMessage> source ) => HandleJsonAsync<T>(source, CancellationToken.None);
+
+        /// <summary>Handles the response as a JSON string of the provided type.</summary>
+        /// <typeparam name="T">The expected type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The typed response.</returns>
+        /// <exception cref="Exception">Deserialization failed.</exception>
+        /// <remarks>
+        /// The underlying response is automatically disposed when the method completes.
+        /// </remarks>
+        /// <preliminary />
+        public static async Task<T> HandleJsonAsync<T> ( this Task<HttpResponseMessage> source, CancellationToken cancellationToken )
+        {
+            using (var response = await source)
+            {
+                return await response.DeserializeJsonAsync<T>(cancellationToken).ConfigureAwait(false);
+            };
+        }
+
         /// <summary>Determines if the content is a JSON response.</summary>
         /// <param name="source">The source.</param>
         /// <returns><see langword="true"/> if the content is JSON.</returns>
         public static bool IsJsonResponse ( this HttpResponseMessage source )
-        {
-            return source.Content?.Headers.ContentType.MediaType.IndexOf("json", StringComparison.OrdinalIgnoreCase) >= 0;
-        }
+                            => source.Content?.Headers.ContentType.MediaType.IndexOf("json", StringComparison.OrdinalIgnoreCase) >= 0;
 
         /// <summary>Throws an exception if the message indicates an error.</summary>
         /// <param name="source">The source.</param>
@@ -60,10 +135,7 @@ namespace P3Net.Kraken.Net.Http
         /// to get the content body containing the error, if possible. If it is unable to locate any useful
         /// error information then the standard HttpResponseException is thrown with the error information.
         /// </remarks>
-        public static void ThrowIfError ( this HttpResponseMessage source )
-        {
-            ThrowIfErrorAsync(source).Wait();
-        }
+        public static void ThrowIfError ( this HttpResponseMessage source ) => ThrowIfErrorAsync(source).Wait();
 
         /// <summary>Throws an exception if the message indicates an error.</summary>
         /// <param name="source">The source.</param>
@@ -96,26 +168,7 @@ namespace P3Net.Kraken.Net.Http
 
             //Default
             source.EnsureSuccessStatusCode();
-        }
-
-        /// <summary>Gets the message error.</summary>
-        /// <param name="source">The source.</param>
-        /// <returns>The exception, if any.</returns>
-        /// <remarks>
-        /// WARNING: This method will clear the Content value.
-        /// </remarks>
-        public static Exception GetError ( this HttpResponseMessage source )
-        {
-            try
-            {
-                source.EnsureSuccessStatusCode();
-            } catch (HttpRequestException e)
-            {
-                return e;
-            };
-
-            return null;
-        }
+        }       
 
         public static async Task<string> TryGetErrorMessageAsync ( this HttpResponseMessage source )
         {

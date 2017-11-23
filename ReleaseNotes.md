@@ -42,6 +42,16 @@
 Added new namespace and ```LinqExtensions``` to include some asynchronous LINQ commands. The separate namespace prevents collisions with other implementations (such as Entity Framework).
 
 
-## P3Net.Kraken.Net.Http
+## P3Net.Kraken.Net.Http [New]
 
-[New] Added new package to support working with HTTP clients.
+Added new package and assembly to support working with HTTP clients.
+
+- [New] Added ```ErrorResponse``` to represent a standardized response for errors.
+- [New] Added ```HeaderLinkUrl``` to work with LINK elements in headers.
+- [New] Added ```HttpClientExtensions``` with extensions for working with ```HttpClient``` and JSON.
+- [New] Added ```HttpClientManager``` to help manage the lifetime of ```HttpClient``` instances.
+- [New] Added ```HttpContentExtensions``` with extensions for working with ```HttpContent```.
+- [New] Added ```HttpResponseHeadersExtensions``` with extensions for working with ```HttpResponseHeaders```.
+- [New] Added ```HttpResponseMessageExtensions``` with extensions for working with ```HttpResponseMessage```.
+- [New] Added ```Standardheaders``` to work with standard HTTP headers.
+- [New] Added ```StandardLinkTypes``` to identify standard LINK element types.

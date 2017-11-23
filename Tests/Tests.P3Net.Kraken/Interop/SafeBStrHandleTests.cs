@@ -254,6 +254,8 @@ namespace Tests.P3Net.Kraken.Interop
         }
         #endregion
 
+#pragma warning disable 618
+
         #region SecureStringToBStr
 
         [TestMethod]
@@ -284,6 +286,7 @@ namespace Tests.P3Net.Kraken.Interop
             };
         }
         #endregion
+#pragma warning restore 618
 
         #region StringToBStr
 

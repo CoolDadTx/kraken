@@ -25,14 +25,17 @@ namespace P3Net.Kraken.Net.Http
     /// <item>The factory does not clean up the clients on shutdown since the process will handle this automatically.</item>
     /// </list>
     /// </remarks>
-    public static class HttpClientManager
+    public class HttpClientManager
     {
+        /// <summary>Provides a default instance that can be used across an entire application.</summary>
+        public static readonly HttpClientManager Default = new HttpClientManager();
+
         /// <summary>Gets or sets the default expiration interval for a client.</summary>
         /// <value>The default is 10 minutes.</value>
-        public static TimeSpan DefaultExpirationInterval { get; set; } = new TimeSpan(0, 10, 0);
+        public TimeSpan DefaultExpirationInterval { get; set; } = new TimeSpan(0, 10, 0);
 
         /// <summary>Clears the factory of all clients.</summary>
-        public static void Clear ()
+        public void Clear ()
         { 
             lock (s_clients)
             {
@@ -51,7 +54,7 @@ namespace P3Net.Kraken.Net.Http
         /// <returns><see langword="true"/> if the client exists or <see langword="false"/> otherwise.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
-        public static bool Exists ( string clientName )
+        public bool Exists ( string clientName )
         {
             Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
 
@@ -66,12 +69,7 @@ namespace P3Net.Kraken.Net.Http
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
         /// <exception cref="UriFormatException"><paramref name="clientUri"/> is not a valid URL.</exception>
-        public static HttpClient Get ( string clientName, string clientUri )
-        {
-            Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
-
-            return GetCore(clientName, () => CreateCore(new Uri(clientUri, UriKind.Absolute), null));
-        }
+        public HttpClient Get ( string clientName, string clientUri ) => Get(clientName, new Uri(clientUri), null);
 
         /// <summary>Gets a client.</summary>
         /// <param name="clientName">The name of the client.</param>
@@ -79,12 +77,7 @@ namespace P3Net.Kraken.Net.Http
         /// <returns>The client.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
-        public static HttpClient Get ( string clientName, Uri clientUri )
-        {
-            Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
-
-            return GetCore(clientName, () => CreateCore(clientUri, null));
-        }
+        public HttpClient Get ( string clientName, Uri clientUri ) => Get(clientName, clientUri, null);
 
         /// <summary>Gets a client.</summary>
         /// <param name="clientName">The name of the client.</param>
@@ -94,12 +87,7 @@ namespace P3Net.Kraken.Net.Http
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
         /// <exception cref="UriFormatException"><paramref name="clientUri"/> is not a valid URL.</exception>
-        public static HttpClient Get ( string clientName, string clientUri, HttpMessageHandler handler )
-        {
-            Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
-
-            return GetCore(clientName, () => CreateCore(new Uri(clientUri, UriKind.Absolute), handler));            
-        }
+        public HttpClient Get ( string clientName, string clientUri, HttpMessageHandler handler ) => Get(clientName, new Uri(clientUri), handler);
 
         /// <summary>Gets a client.</summary>
         /// <param name="clientName">The name of the client.</param>
@@ -108,7 +96,7 @@ namespace P3Net.Kraken.Net.Http
         /// <returns>The client.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> or <paramref name="clientUri"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
-        public static HttpClient Get ( string clientName, Uri clientUri, HttpMessageHandler handler )
+        public HttpClient Get ( string clientName, Uri clientUri, HttpMessageHandler handler )
         {
             Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
             Verify.Argument(nameof(clientUri)).WithValue(clientUri).IsNotNull();
@@ -122,7 +110,7 @@ namespace P3Net.Kraken.Net.Http
         /// <returns>The client.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> or <paramref name="creator "/>is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
-        public static HttpClient Get ( string clientName, Func<HttpClient> creator )
+        public HttpClient Get ( string clientName, Func<HttpClient> creator )
         {
             Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
             Verify.Argument(nameof(creator)).WithValue(creator).IsNotNull();
@@ -132,7 +120,7 @@ namespace P3Net.Kraken.Net.Http
 
         /// <summary>Gets all the clients.</summary>
         /// <returns>The clients.</returns>        
-        public static HttpClient[] GetAll ()
+        public HttpClient[] GetAll ()
         {
             lock (s_clients)
             {
@@ -152,7 +140,7 @@ namespace P3Net.Kraken.Net.Http
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>        
-        public static void Remove ( string clientName )
+        public void Remove ( string clientName )
         {
             Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
 
@@ -162,7 +150,7 @@ namespace P3Net.Kraken.Net.Http
         
         #region Private Members
 
-        private static HttpClient CreateCore ( Uri clientUri, HttpMessageHandler handler )
+        private HttpClient CreateCore ( Uri clientUri, HttpMessageHandler handler )
         {
             var client = (handler != null) ? new HttpClient(handler) : new HttpClient();
             client.BaseAddress = clientUri;
@@ -170,7 +158,7 @@ namespace P3Net.Kraken.Net.Http
             return client;
         }
 
-        private static HttpClient GetCore ( string clientName, Func<HttpClient> creator )
+        private HttpClient GetCore ( string clientName, Func<HttpClient> creator )
         {
             var client = s_clients.Get(clientName) as HttpClient;
             if (client != null)
@@ -180,10 +168,13 @@ namespace P3Net.Kraken.Net.Http
                 SlidingExpiration = DefaultExpirationInterval,                
             };
 
-            return s_clients.AddOrGetExisting(clientName, creator(), policy) as HttpClient;
+            //AddOrGetExisting returns null if the item isn't in the cache yet
+            client = creator();
+            s_clients.AddOrGetExisting(clientName, client, policy);
+            return client;
         }
 
-        private static void SafeDispose ( HttpClient client )
+        private void SafeDispose ( HttpClient client )
         {
             try
             {
@@ -192,7 +183,7 @@ namespace P3Net.Kraken.Net.Http
             { /* Ignore exceptions */ };
         }
 
-        private static readonly MemoryCache s_clients = new MemoryCache(nameof(HttpClientManager));
+        private readonly MemoryCache s_clients = new MemoryCache(nameof(HttpClientManager));
         #endregion
     }
 }

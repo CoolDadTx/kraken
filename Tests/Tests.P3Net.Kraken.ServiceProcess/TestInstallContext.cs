@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Configuration.Install;
 using System.Diagnostics;
 
@@ -62,9 +63,9 @@ namespace Tests.P3Net.Kraken
         {			
             //InstallUtil is great but we can't programmatically access its information
             //so we'll do the installation manually using the underlying class helper
-            TransactedInstaller mainInstaller = PrepareInstaller();
+            var mainInstaller = PrepareInstaller();
 
-            mainInstaller.Install(new Hashtable());
+            mainInstaller.Install(new Dictionary<string, object>());
             IsInstalled = true;			
         }
 

@@ -32,7 +32,7 @@ namespace P3Net.Kraken
         /// <summary>Initializes an instance of the <see cref="MismatchedCurrencyException"/> class.</summary>
         /// <param name="info">The serialization information.</param>
         /// <param name="context">The streaming context.</param>
-        public MismatchedCurrencyException ( SerializationInfo info, StreamingContext context ) : base(info, context)
+        private MismatchedCurrencyException ( SerializationInfo info, StreamingContext context ) : base(info, context)
         { }
         #endregion
     }
