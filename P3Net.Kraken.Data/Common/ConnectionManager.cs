@@ -53,6 +53,13 @@ namespace P3Net.Kraken.Data.Common
 
         #region Attributes
 
+        /// <summary>Gets the connection string to use.</summary>
+        public string ConnectionString
+        {
+            get => _connectionString ?? "";
+            protected set => _connectionString = GetConnectionString(value ?? "");
+        }
+
         /// <summary>Determines if the manager supports querying for parameter information.</summary>
         /// <value>The default value is <see langword="false"/>.</value>
         public bool SupportsQueryParameters { get; protected set; }
@@ -1260,14 +1267,7 @@ namespace P3Net.Kraken.Data.Common
         #endregion
 
         #region Protected Members
-
-        /// <summary>Gets or sets the connection information.</summary>
-        protected string ConnectionString
-        {
-            get => _connectionString;
-            set => _connectionString = value?.Trim() ?? "";
-        }
-
+        
         #region Abstract/Virtual Methods
 
         /// <summary>Creates a command.</summary>
@@ -1460,25 +1460,24 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Gets a connection string given its name or raw connection string.</summary>
         /// <param name="connectionStringOrName">The connection string or name.</param>
         /// <returns>The connection string.</returns>
+        /// <exception cref="Exception"><paramref name="connectionStringOrName"/> is a connection string name and it cannot be found.</exception>
         protected string GetConnectionString ( string connectionStringOrName )
         {
             if (String.IsNullOrEmpty(connectionStringOrName))
                 return "";
 
+            //Connection strings are key-value pairs so if there is an equal or semicolon then we're dealing with
+            //a connection string
+            if (connectionStringOrName.IndexOfAny(new char[] { '=', ';' }) >= 0)
+                return connectionStringOrName;
+
             //Look it up
-            try
-            {
-                var conn = ConfigurationManager.ConnectionStrings[connectionStringOrName];
+            var conn = ConfigurationManager.ConnectionStrings[connectionStringOrName];
+            if (conn != null)
+                return conn.ConnectionString;
 
-                if (conn != null)
-                    return conn.ConnectionString;
-            } catch
-            {
-            };
-
-            return connectionStringOrName;
+            throw new Exception("Connection string not found.");
         }
-
 
         /// <summary>Prepares the connection after it has been opened.</summary>
         /// <param name="connection">The open connection.</param>

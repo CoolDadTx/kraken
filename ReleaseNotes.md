@@ -1,3 +1,5 @@
+# Version 6.0
+
 ## P3Net.Kraken
 
 ### ```TypeConversion```
@@ -17,6 +19,11 @@
 - [Breaking Change] Changed return type of ```ExecuteQueryWithResults``` from ```T[]``` to ```IEnumerable<T>```.
 - [Breaking Change] Changed return type of ```QueryParameters``` from ```DataParameter[]``` to ```IEnumerable<DataParameter>```.
 - [Breaking Change] Moved ```WithParameters``` to ```DataCommandExtensions``` as an extension method so it returns the correct type of the command.
+
+- [New] ```ConnectionString``` 
+This property specifies the connection string being used. When set (by the constructor or a derived type) the value
+is analyzed to determine if it is a connection string or name. When specifying a connection string name, if the name cannot be found then an exception is thrown rather than waiting until the connection is created later.
+
 
 ### ```DataCommand```
 

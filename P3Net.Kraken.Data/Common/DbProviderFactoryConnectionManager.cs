@@ -25,9 +25,9 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
         /// <param name="factory">The underlying factory to use.</param>
         /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        protected DbProviderFactoryConnectionManager ( DbProviderFactory factory ) 
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory ) 
         {
-            Verify.Argument("factory", factory).IsNotNull();
+            Verify.Argument(nameof(factory)).WithValue(factory).IsNotNull();
 
             Factory = factory;
 
@@ -38,7 +38,7 @@ namespace P3Net.Kraken.Data.Common
         /// <param name="factory">The underlying factory to use.</param>
         /// <param name="connectionString">The connection string to use.</param>
         /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        protected DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : this(factory)
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : this(factory)
         {
             ConnectionString = connectionString;
         }

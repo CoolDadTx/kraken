@@ -170,6 +170,9 @@ namespace P3Net.Kraken.Net.Http
             source.EnsureSuccessStatusCode();
         }       
 
+        /// <summary>Attempts to get the error message associated with the response.</summary>
+        /// <param name="source">The source.</param>
+        /// <returns>The error message, if any.</returns>
         public static async Task<string> TryGetErrorMessageAsync ( this HttpResponseMessage source )
         {
             //Start with the reason phrase

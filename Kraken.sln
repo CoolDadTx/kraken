@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Infrastructure", "_Infrastructure", "{D1E1A242-DAEA-47E8-B1FA-2CC2244863CE}"
 	ProjectSection(SolutionItems) = preProject
@@ -27,11 +27,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.ServiceModel", "Tests\Tests.P3Net.Kraken.ServiceModel\Tests.P3Net.Kraken.ServiceModel.csproj", "{32F3834E-632E-4F46-B09F-A36522C0F52D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.Data", "Tests\Tests.P3Net.Kraken.Data\Tests.P3Net.Kraken.Data.csproj", "{BB85DB49-D391-4964-8920-CEC2B9AFFA54}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{68E9045A-2FB5-48FE-83FC-BAE1C765DF3E}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.UnitTesting", "P3Net.Kraken.UnitTesting\P3Net.Kraken.UnitTesting.csproj", "{78155561-D33E-4D70-B619-329E8327B42D}"
 EndProject
