@@ -90,7 +90,7 @@ namespace Tests.P3Net.Kraken.ComponentModel
             var target = new EnumTypeConverter<DateTimeKind>();
             Action action = () => target.ConvertFrom("abc");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
 
         [TestMethod]

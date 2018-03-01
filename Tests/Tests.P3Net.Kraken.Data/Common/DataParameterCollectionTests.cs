@@ -78,7 +78,7 @@ namespace Tests.P3Net.Kraken.Data.Common
    
             Action action = () => target.Add(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 
@@ -106,7 +106,7 @@ namespace Tests.P3Net.Kraken.Data.Common
 
             Action action = () => target[0] = null;
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
     }

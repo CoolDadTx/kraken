@@ -29,7 +29,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
 
             Action action = () => new HeaderLinkUrl(expected);
 
-            action.ShouldThrow<UriFormatException>();
+            action.Should().Throw<UriFormatException>();
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => new HeaderLinkUrl((string)null);
 
-            action.ShouldThrow<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => new HeaderLinkUrl("");
 
-            action.ShouldThrow<UriFormatException>();
+            action.Should().Throw<UriFormatException>();
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => new HeaderLinkUrl(@"d:Fdfa:fagaga:24252:q5q35q:aafdadfa:");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
 
             Action action = () => new HeaderLinkUrl(expected);
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => new HeaderLinkUrl((Uri)null);
 
-            action.ShouldThrow<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 
@@ -128,7 +128,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
 
             Action action = () => HeaderLinkUrl.Parse(expected);
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => HeaderLinkUrl.Parse((string)null);
 
-            action.ShouldThrow<ArgumentNullException>();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -144,7 +144,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => HeaderLinkUrl.Parse("");
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace Tests.P3Net.Kraken.Net.Http.Headers
         {
             Action action = () => HeaderLinkUrl.Parse(@"D:\/\Temp\/f\test.dat");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
         #endregion
 

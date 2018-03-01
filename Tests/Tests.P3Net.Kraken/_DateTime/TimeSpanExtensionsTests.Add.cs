@@ -50,7 +50,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MaxValue.AddDays(1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MinValue.AddDays(-1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
         #endregion
 
@@ -95,7 +95,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MaxValue.AddHours(1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MinValue.AddHours(-1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
         #endregion
 
@@ -140,7 +140,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MaxValue.AddMinutes(1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MinValue.AddMinutes(-1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
         #endregion
 
@@ -185,7 +185,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MaxValue.AddSeconds(1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MinValue.AddSeconds(-1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
         #endregion
 
@@ -230,7 +230,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MaxValue.AddMilliseconds(1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
 
         [TestMethod]
@@ -238,7 +238,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MinValue.AddMilliseconds(-1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
         #endregion
 
@@ -275,7 +275,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MaxValue.AddTicks(1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
 
         [TestMethod]
@@ -283,7 +283,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => TimeSpan.MinValue.AddTicks(-1);
 
-            action.ShouldThrow<OverflowException>();
+            action.Should().Throw<OverflowException>();
         }
         #endregion
     }

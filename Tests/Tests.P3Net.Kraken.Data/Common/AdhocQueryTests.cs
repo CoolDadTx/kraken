@@ -34,7 +34,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new AdhocQuery(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new AdhocQuery("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
     }
 }

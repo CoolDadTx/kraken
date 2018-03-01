@@ -40,7 +40,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new DataTransaction(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace Tests.P3Net.Kraken.Data.Common
             target.Commit();
             Action action = () => target.Commit();
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
         #endregion
 
@@ -239,7 +239,7 @@ namespace Tests.P3Net.Kraken.Data.Common
 
             Action action = () => target.Rollback();
 
-            action.ShouldThrow<InvalidOperationException>();
+            action.Should().Throw<InvalidOperationException>();
         }
         #endregion
 

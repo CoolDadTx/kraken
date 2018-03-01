@@ -369,7 +369,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new ByteSize(10).ToString("Hello \\");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
 
         [TestMethod]
@@ -377,7 +377,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new ByteSize(10).ToString("\"Hello \\");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
 
         [TestMethod]
@@ -385,7 +385,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new ByteSize(10).ToString("\"Hello");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
     }
 }

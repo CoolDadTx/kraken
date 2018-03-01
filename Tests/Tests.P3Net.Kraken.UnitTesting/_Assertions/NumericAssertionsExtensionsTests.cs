@@ -29,7 +29,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeApproximately(target - 1);
             
-            action.ShouldThrow<AssertFailedException>();
+            action.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeApproximately(target - 1, expectedMessage);
 
-            action.ShouldThrow<AssertFailedException>().ContainingMessage(expectedMessage);
+            action.Should().Throw<AssertFailedException>().ContainingMessage(expectedMessage);
         }
         #endregion
 
@@ -61,7 +61,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeApproximately(target - 1);
 
-            action.ShouldThrow<AssertFailedException>();
+            action.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeApproximately(target - 1, expectedMessage);
 
-            action.ShouldThrow<AssertFailedException>().ContainingMessage(expectedMessage);
+            action.Should().Throw<AssertFailedException>().ContainingMessage(expectedMessage);
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeApproximately(target - 1);
             
-            action.ShouldThrow<AssertFailedException>();
+            action.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeApproximately(target - 1, expectedMessage);
 
-            action.ShouldThrow<AssertFailedException>().ContainingMessage(expectedMessage);
+            action.Should().Throw<AssertFailedException>().ContainingMessage(expectedMessage);
         }
         #endregion
 
@@ -129,7 +129,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeExactly((int)target);
 
-            action.ShouldThrow<AssertFailedException>();
+            action.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeExactly((int)target, expectedMessage);
 
-            action.ShouldThrow<AssertFailedException>().ContainingMessage(expectedMessage);
+            action.Should().Throw<AssertFailedException>().ContainingMessage(expectedMessage);
         }
         #endregion
 
@@ -161,7 +161,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeExactly((int)target);
 
-            action.ShouldThrow<AssertFailedException>();
+            action.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeExactly((int)target, expectedMessage);
 
-            action.ShouldThrow<AssertFailedException>().ContainingMessage(expectedMessage);
+            action.Should().Throw<AssertFailedException>().ContainingMessage(expectedMessage);
         }
         #endregion
 
@@ -193,7 +193,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeExactly((int)target);
 
-            action.ShouldThrow<AssertFailedException>();
+            action.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
@@ -204,7 +204,7 @@ namespace Tests.P3Net.Kraken.UnitTesting
 
             Action action = () => target.Should().BeExactly((int)target, expectedMessage);
 
-            action.ShouldThrow<AssertFailedException>().ContainingMessage(expectedMessage);
+            action.Should().Throw<AssertFailedException>().ContainingMessage(expectedMessage);
         }
         #endregion
 

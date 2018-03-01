@@ -87,7 +87,7 @@
     <Compile Include="..\_Infrastructure\AssemblyVer.cs">
       <Link>Properties\AssemblyVer.cs</Link>
     </Compile>
-    <Compile Include="_Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Design\DropDownEditor.cs" />
     <Compile Include="Diagnostics\TextBoxTraceListener.cs" />
     <Compile Include="Diagnostics\TreeViewTraceListener.cs" />
@@ -120,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility">
-      <Version>0.1.2-alpha</Version>
+      <Version>0.1.3-alpha</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

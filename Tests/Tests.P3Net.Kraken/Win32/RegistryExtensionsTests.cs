@@ -190,7 +190,7 @@ namespace Tests.P3Net.Kraken.Win32
 
                 Action action = () => target.GetValueAsDouble("SomeValue");
 
-                action.ShouldThrow<FormatException>();
+                action.Should().Throw<FormatException>();
             };
         }
 
@@ -292,7 +292,7 @@ namespace Tests.P3Net.Kraken.Win32
 
                 Action action = () => target.GetValueAsInt32("SomeValue");
 
-                action.ShouldThrow<FormatException>();
+                action.Should().Throw<FormatException>();
             };
         }
 
@@ -394,7 +394,7 @@ namespace Tests.P3Net.Kraken.Win32
 
                 Action action = () => target.GetValueAsInt64("SomeValue");
 
-                action.ShouldThrow<FormatException>();
+                action.Should().Throw<FormatException>();
             };
         }
 

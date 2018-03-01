@@ -27,7 +27,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsValid();
 
-            action.ShouldThrow<ValidationException>();
+            action.Should().Throw<ValidationException>();
         }
 
         #region Private Members

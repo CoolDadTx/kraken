@@ -59,7 +59,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Date.Parse("Hello");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
         #endregion
 
@@ -101,7 +101,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Date.ParseExact("03-25-2013", "yyyy-MM-dd", DateTimeFormatInfo.CurrentInfo);
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
         #endregion
 

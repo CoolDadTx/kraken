@@ -30,7 +30,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new DataCommand(null, CommandType.StoredProcedure);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new DataCommand("", CommandType.Text);
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 
@@ -63,7 +63,7 @@ namespace Tests.P3Net.Kraken.Data.Common
             var target = new DataCommand("sproc", CommandType.StoredProcedure);
             Action action = () => target.CommandTimeout = new TimeSpan(0, 0, -1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

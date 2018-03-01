@@ -34,7 +34,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new StoredProcedure(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new StoredProcedure("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
     }
 }

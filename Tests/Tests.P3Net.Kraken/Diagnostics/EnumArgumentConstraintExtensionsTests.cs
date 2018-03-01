@@ -27,7 +27,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsValidEnum();
 
-            action.ShouldThrow<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -48,7 +48,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsValidEnumAndNotZero();
 
-            action.ShouldThrow<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsValidEnumAndNotZero();
 
-            action.ShouldThrow<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -79,7 +79,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsIn(SimpleEnum.Second, SimpleEnum.Third);
 
-            action.ShouldThrow<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -100,7 +100,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsNotIn(SimpleEnum.First, SimpleEnum.Third);
 
-            action.ShouldThrow<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

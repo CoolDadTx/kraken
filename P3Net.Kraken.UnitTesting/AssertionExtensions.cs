@@ -24,18 +24,20 @@ namespace P3Net.Kraken.UnitTesting
         /// <summary>Asserts that an action throws an argument exception.</summary>
         /// <param name="source">The source.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentException> instead.")]
         public static ExceptionAssertions<ArgumentException> ShouldThrowArgumentException ( this Action source )
         {
-            return source.ShouldThrow<ArgumentException>();
+            return source.Should().Throw<ArgumentException>();
         }
 
         /// <summary>Asserts that an action throws an argument exception.</summary>
         /// <param name="source">The source.</param>
         /// <param name="reason">The reason message.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentException> instead.")]
         public static ExceptionAssertions<ArgumentException> ShouldThrowArgumentException ( this Action source, string reason )
         {
-            return source.ShouldThrow<ArgumentException>(reason);
+            return source.Should().Throw<ArgumentException>(reason);
         }
 
         /// <summary>Asserts that an action throws an argument exception.</summary>
@@ -43,9 +45,10 @@ namespace P3Net.Kraken.UnitTesting
         /// <param name="reason">The reason message.</param>
         /// <param name="reasonArgs">The reason arguments.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentException> instead.")]
         public static ExceptionAssertions<ArgumentException> ShouldThrowArgumentException ( this Action source, string reason, params object[] reasonArgs )
         {
-            return source.ShouldThrow<ArgumentException>(reason, reasonArgs);
+            return source.Should().Throw<ArgumentException>(reason, reasonArgs);
         }
         #endregion
 
@@ -54,18 +57,20 @@ namespace P3Net.Kraken.UnitTesting
         /// <summary>Asserts that an action throws an argument exception.</summary>
         /// <param name="source">The source.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentNullException> instead.")]
         public static ExceptionAssertions<ArgumentNullException> ShouldThrowArgumentNullException ( this Action source )
         {
-            return source.ShouldThrow<ArgumentNullException>();
+            return source.Should().Throw<ArgumentNullException>();
         }
 
         /// <summary>Asserts that an action throws an argument exception.</summary>
         /// <param name="source">The source.</param>
         /// <param name="reason">The reason message.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentNullException> instead.")]
         public static ExceptionAssertions<ArgumentNullException> ShouldThrowArgumentNullException ( this Action source, string reason )
         {
-            return source.ShouldThrow<ArgumentNullException>(reason);
+            return source.Should().Throw<ArgumentNullException>(reason);
         }
 
         /// <summary>Asserts that an action throws an argument exception.</summary>
@@ -73,9 +78,10 @@ namespace P3Net.Kraken.UnitTesting
         /// <param name="reason">The reason message.</param>
         /// <param name="reasonArgs">The reason arguments.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentNullException> instead.")]
         public static ExceptionAssertions<ArgumentNullException> ShouldThrowArgumentNullException ( this Action source, string reason, params object[] reasonArgs )
         {
-            return source.ShouldThrow<ArgumentNullException>(reason, reasonArgs);
+            return source.Should().Throw<ArgumentNullException>(reason, reasonArgs);
         }
         #endregion
 
@@ -84,18 +90,20 @@ namespace P3Net.Kraken.UnitTesting
         /// <summary>Asserts that an action throws an argument out of range exception.</summary>
         /// <param name="source">The source.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentOutOfRangeException> instead.")]
         public static ExceptionAssertions<ArgumentOutOfRangeException> ShouldThrowArgumentOutOfRangeException ( this Action source )
         {
-            return source.ShouldThrow<ArgumentOutOfRangeException>();
+            return source.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         /// <summary>Asserts that an action throws an argument out of range exception.</summary>
         /// <param name="source">The source.</param>
         /// <param name="reason">The reason message.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentOutOfRangeException> instead.")]
         public static ExceptionAssertions<ArgumentOutOfRangeException> ShouldThrowArgumentOutOfRangeException ( this Action source, string reason )
         {
-            return source.ShouldThrow<ArgumentOutOfRangeException>(reason);
+            return source.Should().Throw<ArgumentOutOfRangeException>(reason);
         }
 
         /// <summary>Asserts that an action throws an argument out of range exception.</summary>
@@ -103,9 +111,10 @@ namespace P3Net.Kraken.UnitTesting
         /// <param name="reason">The reason message.</param>
         /// <param name="reasonArgs">The reason arguments.</param>
         /// <returns>The assertion.</returns>
+        [Obsolete("Deprecated in 6.0. Use Should().Throw<ArgumentOutOfRangeException> instead.")]
         public static ExceptionAssertions<ArgumentOutOfRangeException> ShouldThrowArgumentOutOfRangeException ( this Action source, string reason, params object[] reasonArgs )
         {
-            return source.ShouldThrow<ArgumentOutOfRangeException>(reason, reasonArgs);
+            return source.Should().Throw<ArgumentOutOfRangeException>(reason, reasonArgs);
         }
         #endregion
     }

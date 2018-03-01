@@ -689,7 +689,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateOrDefault("Column2");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -704,7 +704,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateOrDefault(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -719,7 +719,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateOrDefault("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -766,7 +766,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateOrDefault(-1);
 
-            action.ShouldThrow<IndexOutOfRangeException>();
+            action.Should().Throw<IndexOutOfRangeException>();
         }
 
         [TestMethod]
@@ -781,7 +781,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateOrDefault(1);
 
-            action.ShouldThrow<IndexOutOfRangeException>();
+            action.Should().Throw<IndexOutOfRangeException>();
         }
         #endregion
 
@@ -851,7 +851,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateTimeOrDefault("Column2");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -865,7 +865,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateTimeOrDefault(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -879,7 +879,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateTimeOrDefault("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -929,7 +929,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateTimeOrDefault(-1);
 
-            action.ShouldThrow<IndexOutOfRangeException>();
+            action.Should().Throw<IndexOutOfRangeException>();
         }
 
         [TestMethod]
@@ -943,7 +943,7 @@ namespace Tests.P3Net.Kraken.Data
             target.Read();
             Action action = () => target.GetDateTimeOrDefault(1);
 
-            action.ShouldThrow<IndexOutOfRangeException>();
+            action.Should().Throw<IndexOutOfRangeException>();
         }
         #endregion
 

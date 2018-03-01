@@ -188,7 +188,7 @@ namespace Tests.P3Net.Kraken.Collections
 
             var actual = target.OrderBy(v => v.Field1).OrderThenBy(v => v.Field2);
 
-            actual.ShouldAllBeEquivalentTo(expected);
+            actual.Should().ContainInOrder(expected);
         }
 
         [TestMethod]
@@ -216,7 +216,7 @@ namespace Tests.P3Net.Kraken.Collections
 
             var actual = target.OrderBy(v => v.Field1).OrderThenByDescending(v => v.Field2);
 
-            actual.ShouldAllBeEquivalentTo(expected);
+            actual.Should().ContainInOrder(expected);
         }
 
         [TestMethod]
@@ -244,7 +244,7 @@ namespace Tests.P3Net.Kraken.Collections
 
             var actual = target.OrderBy(v => v.Field1).OrderThenByDirection(v => v.Field2, false);
 
-            actual.ShouldAllBeEquivalentTo(expected);
+            actual.Should().ContainInOrder(expected);
         }
 
         [TestMethod]
@@ -272,7 +272,7 @@ namespace Tests.P3Net.Kraken.Collections
 
             var actual = target.OrderBy(v => v.Field1).OrderThenByDirection(v => v.Field2, true);
 
-            actual.ShouldAllBeEquivalentTo(expected);
+            actual.Should().ContainInOrder(expected);
         }
         #endregion
 

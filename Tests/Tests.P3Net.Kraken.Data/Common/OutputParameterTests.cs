@@ -32,7 +32,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {            
             Action action = () => OutputParameter.Named(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {                    
             Action action = () => OutputParameter.Named("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 

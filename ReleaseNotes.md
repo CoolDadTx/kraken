@@ -1,5 +1,9 @@
 # Version 6.0
 
+## General Changes
+
+All packages were updated to latest versions of their dependencies.
+
 ## P3Net.Kraken
 
 ### ```TypeConversion```
@@ -48,7 +52,6 @@ is analyzed to determine if it is a connection string or name. When specifying a
 
 Added new namespace and ```LinqExtensions``` to include some asynchronous LINQ commands. The separate namespace prevents collisions with other implementations (such as Entity Framework).
 
-
 ## P3Net.Kraken.Net.Http [New]
 
 Added new package and assembly to support working with HTTP clients.
@@ -62,3 +65,11 @@ Added new package and assembly to support working with HTTP clients.
 - [New] Added ```HttpResponseMessageExtensions``` with extensions for working with ```HttpResponseMessage```.
 - [New] Added ```Standardheaders``` to work with standard HTTP headers.
 - [New] Added ```StandardLinkTypes``` to identify standard LINK element types.
+
+## P3Net.Kraken.UnitTesting
+
+```AssertionExtensions```
+
+- [Deprecated] ```ShouldThrowArgumentException``` Use ```Should().Throw<ArgumentException>``` instead.
+- [Deprecated] ```ShouldThrowArgumentNullException``` Use ```Should().Throw<ArgumentNullException>``` instead.
+- [Deprecated] ```ShouldThrowArgumentOutOfRangeException``` Use ```Should().Throw<ArgumentOutOfRangeException>``` instead.

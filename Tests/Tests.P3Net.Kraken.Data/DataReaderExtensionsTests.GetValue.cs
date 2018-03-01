@@ -395,7 +395,7 @@ namespace Tests.P3Net.Kraken.Data
 
             target.Read();
             Action action = () => target.GetDate("Column1");
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -407,7 +407,7 @@ namespace Tests.P3Net.Kraken.Data
 
             target.Read();
             Action action = () => target.GetDate(null);
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -419,7 +419,7 @@ namespace Tests.P3Net.Kraken.Data
 
             target.Read();
             Action action = () => target.GetDate("");
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 

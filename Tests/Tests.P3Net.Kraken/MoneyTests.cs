@@ -108,7 +108,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => money1.Add(money2);
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => { var result = money1 + money2; };
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -245,7 +245,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => money1.Subtract(money2);
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -345,7 +345,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => { var result = money1 - money2; };
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -440,7 +440,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => money1.Divide(money2);
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -539,7 +539,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => { var result = money1 / money2; };
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -641,7 +641,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => target.CompareTo(other);
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         [TestMethod]
@@ -674,7 +674,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => target.CompareTo(other);
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
         
         [TestMethod]
@@ -1018,7 +1018,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => left.Equals(right);
 
-            action.ShouldThrow<MismatchedCurrencyException>();
+            action.Should().Throw<MismatchedCurrencyException>();
         }
 
         public void EqualOp_MoneyToMoney_IsTrue ()

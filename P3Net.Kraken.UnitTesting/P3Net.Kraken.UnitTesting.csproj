@@ -45,11 +45,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="FluentAssertions" Version="5.1.2" />
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility">
-      <Version>0.1.2-alpha</Version>
+      <Version>0.1.3-alpha</Version>
     </PackageReference>
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.0-beta2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,15 +62,15 @@
       <Link>Properties\AssemblyVer.cs</Link>
     </Compile>
     <Compile Include="AssertionExtensions.cs" />
-    <Compile Include="_Assertions\ExceptionAssertionExtensions.cs" />
-    <Compile Include="_Assertions\DateTimeAssertionsExtensions.cs" />
-    <Compile Include="_Assertions\IntPtrAssertions.cs" />
-    <Compile Include="_Assertions\MethodInfoAssertionsExtensions.cs" />
-    <Compile Include="_Assertions\NumericAssertionsExtensions.cs" />
+    <Compile Include="Assertions\ExceptionAssertionExtensions.cs" />
+    <Compile Include="Assertions\DateTimeAssertionsExtensions.cs" />
+    <Compile Include="Assertions\IntPtrAssertions.cs" />
+    <Compile Include="Assertions\MethodInfoAssertionsExtensions.cs" />
+    <Compile Include="Assertions\NumericAssertionsExtensions.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\XmlStringExtensions.cs" />
-    <Compile Include="_Assertions\PropertyInfoAssertionsExtensions.cs" />
+    <Compile Include="Assertions\PropertyInfoAssertionsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\_Infrastructure\CustomDictionary.xml">

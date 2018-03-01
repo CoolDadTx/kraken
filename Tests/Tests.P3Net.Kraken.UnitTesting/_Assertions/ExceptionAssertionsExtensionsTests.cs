@@ -21,7 +21,7 @@ namespace Tests.P3Net.Kraken.UnitTesting._Assertions
 
             Action action = () => { throw new Exception(expectedMessage); };
 
-            action.ShouldThrow<Exception>().ContainingMessage(expectedMessage);
+            action.Should().Throw<Exception>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace Tests.P3Net.Kraken.UnitTesting._Assertions
             
             Action action = () => { throw new Exception(expectedMessage); };
 
-            action.ShouldThrow<Exception>().ContainingMessage(expectedMessage, "Fail");
+            action.Should().Throw<Exception>().ContainingMessage(expectedMessage, "Fail");
         }
         #endregion
 
@@ -44,7 +44,7 @@ namespace Tests.P3Net.Kraken.UnitTesting._Assertions
 
             Action action = () => { throw new ArgumentException("Message", expectedName);  };
 
-            action.ShouldThrow<ArgumentException>().WithParameter(expectedName);
+            action.Should().Throw<ArgumentException>().WithParameter(expectedName);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Tests.P3Net.Kraken.UnitTesting._Assertions
 
             Action action = () => { throw new ArgumentException("Message", expectedName); };
 
-            action.ShouldThrow<ArgumentException>().WithParameter(expectedName, "Failed");
+            action.Should().Throw<ArgumentException>().WithParameter(expectedName, "Failed");
         }
         #endregion
     }

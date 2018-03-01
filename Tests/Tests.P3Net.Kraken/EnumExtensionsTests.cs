@@ -496,7 +496,7 @@ namespace Tests.P3Net.Kraken
             //Act
             Action action = () => EnumExtensions.Parse<SimpleEnumeration>("Twenty");
 
-            action.ShouldThrow<FormatException>();
+            action.Should().Throw<FormatException>();
         }
 
         [TestMethod]

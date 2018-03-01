@@ -26,7 +26,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action action = () => target.IsNotNone();
 
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
     }
 }

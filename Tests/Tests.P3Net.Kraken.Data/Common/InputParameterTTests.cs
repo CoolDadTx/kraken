@@ -31,7 +31,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {            
             Action action = () => new InputParameter<int>("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             Action action = () => new InputParameter<int>(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]

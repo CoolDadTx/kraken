@@ -66,7 +66,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.1.2-alpha" />
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.1.3-alpha" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_Packaging\P3Net.Kraken.ServiceProcess.nuspec" />

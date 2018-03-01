@@ -66,7 +66,7 @@ namespace Tests.P3Net.Kraken.Data
 
             Action action = () => target.HasRows();
 
-            action.ShouldThrow<NullReferenceException>();
+            action.Should().Throw<NullReferenceException>();
         }
         #endregion
 
@@ -138,7 +138,7 @@ namespace Tests.P3Net.Kraken.Data
 
             Action action = () => target.RowCount();
 
-            action.ShouldThrow<NullReferenceException>();
+            action.Should().Throw<NullReferenceException>();
         }
         #endregion
 
@@ -173,7 +173,7 @@ namespace Tests.P3Net.Kraken.Data
 
             Action action = () => target.RowsAsEnumerable();
 
-            action.ShouldThrow<NullReferenceException>();
+            action.Should().Throw<NullReferenceException>();
         }
         #endregion
     }
