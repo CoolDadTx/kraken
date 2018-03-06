@@ -6,8 +6,8 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
+using P3Net.Kraken.Data.Configuration;
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data.Common
@@ -24,22 +24,32 @@ namespace P3Net.Kraken.Data.Common
 
         /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
         /// <param name="factory">The underlying factory to use.</param>
+        /// <param name="connectionString">The connection string to use.</param>
         /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        public DbProviderFactoryConnectionManager ( DbProviderFactory factory ) 
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : base(connectionString)
         {
             Verify.Argument(nameof(factory)).WithValue(factory).IsNotNull();
 
             Factory = factory;
 
             m_schema = new Lazy<SchemaInformation>(CallLoadSchema);
+
+            ConnectionString = connectionString;
         }
 
         /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
         /// <param name="factory">The underlying factory to use.</param>
         /// <param name="connectionString">The connection string to use.</param>
+        /// <param name="configurationProvider">The configuration provider.</param>
         /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : this(factory)
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString, IDataConfigurationProvider configurationProvider ) : base(connectionString, configurationProvider)
         {
+            Verify.Argument(nameof(factory)).WithValue(factory).IsNotNull();
+
+            Factory = factory;
+
+            m_schema = new Lazy<SchemaInformation>(CallLoadSchema);
+
             ConnectionString = connectionString;
         }
         #endregion

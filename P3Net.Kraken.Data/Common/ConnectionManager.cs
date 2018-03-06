@@ -4,7 +4,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using P3Net.Kraken.Data.Configuration;
 using P3Net.Kraken.Diagnostics;
 
 namespace P3Net.Kraken.Data.Common
@@ -33,31 +33,44 @@ namespace P3Net.Kraken.Data.Common
     ///		<item>Calling <see cref="M:BeginTransaction"/> will leave an open connection until the transaction object is disposed.</item>
     ///		<item><see cref="M:ExecuteReader"/> will leave an open connection until the reader is disposed.</item>
     /// </list>
+    /// <para/>
+    /// When configuration information is needed it is retrieved from the <see cref="ConfigurationProvider"/> property. If not specified
+    /// then the default implementation retrieves it from the configuration file using <see cref="ConfigurationManagerDataConfigurationProvider"/>.
     /// </remarks>
     public abstract class ConnectionManager
     {
         #region Construction
 
         /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
-        protected ConnectionManager ()
-        { /* Do nothing */ }
+        /// <param name="connectionStringOrName">The connection string to use or a connection string name in the configuration.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionStringOrName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="connectionStringOrName"/> is empty.</exception>
+        protected ConnectionManager ( string connectionStringOrName ) : this(connectionStringOrName, null)
+        {
+        }
 
         /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
         /// <param name="connectionStringOrName">The connection string to use or a connection string name in the configuration.</param>
-        protected ConnectionManager ( string connectionStringOrName )
+        /// <param name="configurationProvider">The configuration provider to use. If <see langword="null"/> is specified then the default provider is used.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionStringOrName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="connectionStringOrName"/> is empty.</exception>
+        protected ConnectionManager ( string connectionStringOrName, IDataConfigurationProvider configurationProvider )
         {
-            if (!String.IsNullOrEmpty(connectionStringOrName))
-                ConnectionString = GetConnectionString(connectionStringOrName);
+            ConfigurationProvider = configurationProvider ?? ConfigurationManagerDataConfigurationProvider.Default;
+
+            ConnectionString = connectionStringOrName;
         }
         #endregion
 
         #region Attributes
 
         /// <summary>Gets the connection string to use.</summary>
+        /// <exception cref="ArgumentNullException">When setting the property and the value is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">When setting the property and the value is empty.</exception>
         public string ConnectionString
         {
             get => _connectionString ?? "";
-            protected set => _connectionString = GetConnectionString(value ?? "");
+            protected set => _connectionString = GetConnectionString(value);
         }
 
         /// <summary>Determines if the manager supports querying for parameter information.</summary>
@@ -1265,10 +1278,8 @@ namespace P3Net.Kraken.Data.Common
                                          DataCommand updateCommand, DataSet ds, string table, DataTransaction transaction, CancellationToken cancellationToken )
                         => Task.Run(() => UpdateDataSet(insertCommand, deleteCommand, updateCommand, ds, table, transaction));
         #endregion
-
-        #region Protected Members
-        
-        #region Abstract/Virtual Methods
+                
+        #region Abstract Members
 
         /// <summary>Creates a command.</summary>
         /// <param name="command">The command.</param>
@@ -1284,25 +1295,12 @@ namespace P3Net.Kraken.Data.Common
         /// <returns>The underlying data adapter.</returns>
         protected abstract DbDataAdapter CreateDataAdapterBase ();
 
-        /// <summary>Creates a transaction.</summary>
-        /// <param name="connection">The connection used for the transaction.</param>
-        /// <param name="level">The isolation level to use.</param>
-        /// <returns>The underlying transaction.</returns>
-        protected virtual DbTransaction CreateTransactionBase ( DbConnection connection, IsolationLevel level )
-        {
-            if (connection.State != ConnectionState.Open)
-                connection.Open();
-
-            return connection.BeginTransaction(level);
-        }
-
-        /// <summary>Queries for the parameters associated with a stored procedure.</summary>
-        /// <param name="name">The name of the stored procedure to query.</param>
-        /// <returns>An array of parameters.</returns>
-        /// <exception cref="NotSupportedException">Always thrown.</exception>
-        protected virtual DataParameter[] QueryParametersBase ( string name ) => throw new NotSupportedException("QueryParameters is not supported.");
-
         #endregion
+
+        #region Protected Members
+
+        /// <summary>Gets the configuration provider to use.</summary>
+        protected IDataConfigurationProvider ConfigurationProvider { get; private set; }
 
         /// <summary>Begins a transaction.</summary>
         /// <param name="level">The level of the transaction.</param>
@@ -1321,6 +1319,18 @@ namespace P3Net.Kraken.Data.Common
 
                 throw;
             };
+        }
+
+        /// <summary>Creates a transaction.</summary>
+        /// <param name="connection">The connection used for the transaction.</param>
+        /// <param name="level">The isolation level to use.</param>
+        /// <returns>The underlying transaction.</returns>
+        protected virtual DbTransaction CreateTransactionBase ( DbConnection connection, IsolationLevel level )
+        {
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+
+            return connection.BeginTransaction(level);
         }        
 
         /// <summary>Populates a data set with data.</summary>
@@ -1460,11 +1470,15 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Gets a connection string given its name or raw connection string.</summary>
         /// <param name="connectionStringOrName">The connection string or name.</param>
         /// <returns>The connection string.</returns>
-        /// <exception cref="Exception"><paramref name="connectionStringOrName"/> is a connection string name and it cannot be found.</exception>
+        /// <exception cref="Exception"><paramref name="connectionStringOrName"/> is a connection string name and it cannot be found.
+        /// <para>-or-</para>
+        /// A connection string name was provided by the connection string is empty.
+        /// </exception>        
+        /// <exception cref="ArgumentNullException"><paramref name="connectionStringOrName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="connectionStringOrName"/> is empty.</exception>
         protected string GetConnectionString ( string connectionStringOrName )
         {
-            if (String.IsNullOrEmpty(connectionStringOrName))
-                return "";
+            Verify.Argument(nameof(connectionStringOrName)).WithValue(connectionStringOrName).IsNotNullOrEmpty();
 
             //Connection strings are key-value pairs so if there is an equal or semicolon then we're dealing with
             //a connection string
@@ -1472,11 +1486,14 @@ namespace P3Net.Kraken.Data.Common
                 return connectionStringOrName;
 
             //Look it up
-            var conn = ConfigurationManager.ConnectionStrings[connectionStringOrName];
-            if (conn != null)
-                return conn.ConnectionString;
+            var connString = ConfigurationProvider.GetConnectionString(connectionStringOrName);
+            if (connString == null)
+                throw new Exception("Connection string not found.");
 
-            throw new Exception("Connection string not found.");
+            if (connString.Trim() == "")
+                throw new Exception("Connection string is empty.");
+
+            return connString;
         }
 
         /// <summary>Prepares the connection after it has been opened.</summary>
@@ -1491,6 +1508,12 @@ namespace P3Net.Kraken.Data.Common
                 SetUserContextCore(connection, _userContext ?? "");
         }
 
+        /// <summary>Queries for the parameters associated with a stored procedure.</summary>
+        /// <param name="name">The name of the stored procedure to query.</param>
+        /// <returns>An array of parameters.</returns>
+        /// <exception cref="NotSupportedException">Always thrown.</exception>
+        protected virtual DataParameter[] QueryParametersBase ( string name ) => throw new NotSupportedException("QueryParameters is not supported.");
+        
         /// <summary>Sets the user context.</summary>
         /// <param name="connection">The open connection.</param>
         /// <param name="userContext">The user context to use.</param>

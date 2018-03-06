@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 
 using P3Net.Kraken.Data.Common;
+using P3Net.Kraken.Data.Configuration;
 
 namespace P3Net.Kraken.Data.Sql
 {
@@ -18,15 +19,15 @@ namespace P3Net.Kraken.Data.Sql
         #region Construction
 
         /// <summary>Initializes an instance of the <see cref="SqlConnectionManager"/> class.</summary>
-        public SqlConnectionManager () : base(SqlClientFactory.Instance)
+        /// <param name="connectionString">The connection string to use.</param>
+        public SqlConnectionManager ( string connectionString ) : this(connectionString, null)
         {
-            SupportsQueryParameters = true;
-            SupportsUserContext = true;
         }
 
         /// <summary>Initializes an instance of the <see cref="SqlConnectionManager"/> class.</summary>
         /// <param name="connectionString">The connection string to use.</param>
-        public SqlConnectionManager ( string connectionString ) : base(SqlClientFactory.Instance, connectionString)
+        /// <param name="configurationProvider">The configuration provider.</param>
+        public SqlConnectionManager ( string connectionString, IDataConfigurationProvider configurationProvider ) : base(SqlClientFactory.Instance, connectionString, configurationProvider)
         {
             SupportsQueryParameters = true;
             SupportsUserContext = true;
