@@ -504,7 +504,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => EnumExtensions.Parse<SimpleEnumeration>("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -512,7 +512,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => EnumExtensions.Parse<SimpleEnumeration>(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -530,7 +530,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => EnumExtensions.Parse<double>("4.5");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -574,7 +574,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => EnumExtensions.ToString(DateTime.Now);
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 
@@ -654,7 +654,7 @@ namespace Tests.P3Net.Kraken
             double result;
             Action action = () => EnumExtensions.TryParse("4.5", out result);
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]

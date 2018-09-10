@@ -41,7 +41,7 @@ namespace Tests.P3Net.Kraken.IO
         {
             Action action = () => new NonclosingStream(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 

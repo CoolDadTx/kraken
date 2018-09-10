@@ -89,7 +89,7 @@ namespace Tests.P3Net.Kraken.Interop
         {
             Action action = () => SafeHGlobalHandle.Allocate(0);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace Tests.P3Net.Kraken.Interop
         {
             Action action = () => SafeHGlobalHandle.Allocate(-5);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]

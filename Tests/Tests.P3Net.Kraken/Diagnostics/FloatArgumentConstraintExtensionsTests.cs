@@ -32,7 +32,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanOrEqualToZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanOrEqualToZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -71,7 +71,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -112,7 +112,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanOrEqualToZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanOrEqualToZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -151,7 +151,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -161,7 +161,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -171,7 +171,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -192,7 +192,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -202,7 +202,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -223,7 +223,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -233,7 +233,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -258,7 +258,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanOrEqualToZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -276,7 +276,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanOrEqualToZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -297,7 +297,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -307,7 +307,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -317,7 +317,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -338,7 +338,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanOrEqualToZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -356,7 +356,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanOrEqualToZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -377,7 +377,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -387,7 +387,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -397,7 +397,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -418,7 +418,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -428,7 +428,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -449,7 +449,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -459,7 +459,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -484,7 +484,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanOrEqualToZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -502,7 +502,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanOrEqualToZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -523,7 +523,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -533,7 +533,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -543,7 +543,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsGreaterThanZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -564,7 +564,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanOrEqualToZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -582,7 +582,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanOrEqualToZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -603,7 +603,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -613,7 +613,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -623,7 +623,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsLessThanZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -644,7 +644,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
         
         [TestMethod]
@@ -654,7 +654,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 
@@ -675,7 +675,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsZero();
 
-            work.ShouldThrowArgumentOutOfRangeException();
+            work.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -685,7 +685,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsZero("Testing");
 
-            work.ShouldThrowArgumentOutOfRangeException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentOutOfRangeException>().ContainingMessage("Testing");
         }
         #endregion
 

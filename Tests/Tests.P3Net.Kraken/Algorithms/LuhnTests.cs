@@ -65,7 +65,7 @@ namespace Tests.P3Net.Kraken.Algorithms
         {
             Action action = () => Luhn.CalculateCheckDigit(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace Tests.P3Net.Kraken.Algorithms
         {
             Action action = () => Luhn.CalculateCheckDigit("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Tests.P3Net.Kraken.Algorithms
         {
             Action action = () => Luhn.CalculateCheckDigit("123ABC456");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 

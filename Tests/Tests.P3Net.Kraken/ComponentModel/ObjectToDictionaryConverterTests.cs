@@ -41,7 +41,7 @@ namespace Tests.P3Net.Kraken.ComponentModel
         {
             Action action = () => ObjectToDictionaryConverter.ToDictionary(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
     }
 }

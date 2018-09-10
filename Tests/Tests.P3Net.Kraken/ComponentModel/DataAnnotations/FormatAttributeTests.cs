@@ -31,7 +31,7 @@ namespace Tests.P3Net.Kraken.ComponentModel.DataAnnotations
         {
             Action action = () => new FormatAttribute(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Tests.P3Net.Kraken.ComponentModel.DataAnnotations
         {
             Action action = () => new FormatAttribute("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 

@@ -96,7 +96,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "ABCD1FG".IndexOfNotIn(null, 3);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace Tests.P3Net.Kraken
         {   
             Action action = () => "ABCD1FG".IndexOfNotIn(new char[] { '1', '2', '3'}, -1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]

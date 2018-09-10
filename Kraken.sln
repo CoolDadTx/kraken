@@ -6,7 +6,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Infrastructure", "_Infrast
 	ProjectSection(SolutionItems) = preProject
 		_Infrastructure\AssemblyVer.cs = _Infrastructure\AssemblyVer.cs
 		_Infrastructure\CustomDictionary.xml = _Infrastructure\CustomDictionary.xml
-		ReleaseNotes.md = ReleaseNotes.md
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
@@ -16,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Data", "P3Net.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Windows.Forms", "P3Net.Kraken.Windows.Forms\P3Net.Kraken.Windows.Forms.csproj", "{A0177780-1F73-45CE-BF41-7CD94A6A00F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken", "P3Net.Kraken\P3Net.Kraken.csproj", "{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P3Net.Kraken", "P3Net.Kraken\P3Net.Kraken.csproj", "{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5E031AAA-BD7B-435C-BE9F-35C983E8286E}"
 EndProject
@@ -39,6 +38,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Net.Http", "P3Net.Kraken.Net.Http\P3Net.Kraken.Net.Http.csproj", "{8580B2B9-44EC-4246-AD00-D942EDF13168}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.Net.Http", "Tests\Tests.P3Net.Kraken.Net.Http\Tests.P3Net.Kraken.Net.Http.csproj", "{48559015-B907-40B1-9943-C05DBDE89A0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release notes", "Release notes", "{63AC4BF3-3E45-43B6-B3E6-C021BCF46676}"
+	ProjectSection(SolutionItems) = preProject
+		docs\releases\release-6.0.md = docs\releases\release-6.0.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{7C22A2E8-F3FC-4DAE-89AC-1C3C7E5A3C43}"
+	ProjectSection(SolutionItems) = preProject
+		directory.build.props = directory.build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

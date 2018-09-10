@@ -32,7 +32,7 @@ namespace Tests.P3Net.Kraken.ComponentModel.DataAnnotations
         {
             Action action = () => new RequiredIfAttribute(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 

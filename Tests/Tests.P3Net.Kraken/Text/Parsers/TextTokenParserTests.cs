@@ -22,7 +22,7 @@ namespace Tests.P3Net.Kraken.Text.Parsers
         {               
             Action action = () => new TextTokenParser(null, "}");
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Tests.P3Net.Kraken.Text.Parsers
         {
             Action action = () => new TextTokenParser("", "}");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace Tests.P3Net.Kraken.Text.Parsers
         {
             Action action = () => new TextTokenParser("{", null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace Tests.P3Net.Kraken.Text.Parsers
         {
             Action action = () => new TextTokenParser("{", "");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
 

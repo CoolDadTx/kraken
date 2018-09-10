@@ -47,7 +47,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new DateTime(2011, 10, 26).SetDate(10000, 1, 1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new DateTime(2011, 10, 26).SetDate(2010, 50, 1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new DateTime(2011, 10, 26).SetDate(2010, 1, 76);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

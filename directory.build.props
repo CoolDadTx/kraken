@@ -1,0 +1,26 @@
+<PropertyGroup>
+    <Product>Kraken</Product>
+    <Company>P3Net</Company>
+    <Authors>P3Net</Authors>
+    <Copyright>Copyright © Michael Taylor</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0.0</InformationalVersion>
+    <Version>6.0.0</Version>        
+    
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>    
+    
+    <!-- For packages -->
+    <NoWarn>$(NoWarn);NU5105</NoWarn>
+    <MinClientVersion>4.3</MinClientVersion>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageProjectUrl>https://github.com/cooldadtx/kraken</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cooldadtx/kraken</RepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageReleaseNotes>https://github.com/cooldadtx/kraken
+
+        Supported Platforms:
+
+        .NET 4.7.2
+    </PackageReleaseNotes>
+</PropertyGroup>

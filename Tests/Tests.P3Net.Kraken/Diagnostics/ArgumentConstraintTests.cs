@@ -34,7 +34,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
         {
             Action work = () => new ArgumentConstraint<int>(null);
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
         #endregion
 
@@ -55,7 +55,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.Is(x => x < 0);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.Is(null);
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
         
         [TestMethod]
@@ -75,7 +75,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.Is(x => x < 0, "Testing {0} {1}", 1, 2);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.Is(null, "Testing {0} {1}", 1, 2);
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -106,7 +106,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNot(x => x > 0);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNot(null);
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNot(x => x > 0, "Testing {0} {1}", 1, 2);
 
-            work.ShouldThrowArgumentException().ContainingMessage("Testing 1 2");
+            work.Should().Throw<ArgumentException>().ContainingMessage("Testing 1 2");
         }
 
         [TestMethod]        
@@ -144,7 +144,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNot(null, "Testing {0} {1}", 1, 2);
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]

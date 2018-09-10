@@ -142,7 +142,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Exceptions.RegisterFrameworkException(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 

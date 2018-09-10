@@ -181,7 +181,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => StringExtensions.GetComparer((StringComparison)1000);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -302,7 +302,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "Hello World".RemoveAll((char[])null, 0, StringComparison.CurrentCulture);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -310,7 +310,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "Hello World".RemoveAll((string)null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -318,7 +318,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "Hello World".RemoveAll("");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -326,7 +326,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "Hello World".RemoveAll((string[])null, 0, StringComparison.CurrentCulture);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 

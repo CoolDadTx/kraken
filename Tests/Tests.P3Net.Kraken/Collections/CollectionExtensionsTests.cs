@@ -58,7 +58,7 @@ namespace Tests.P3Net.Kraken.Collections
             //Act
             Action action = () => actual.AddRange(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
     }

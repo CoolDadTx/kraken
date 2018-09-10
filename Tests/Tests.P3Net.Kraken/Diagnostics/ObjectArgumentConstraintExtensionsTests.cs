@@ -30,7 +30,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNull();
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNull("Testing");
 
-            work.ShouldThrowArgumentNullException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentNullException>().ContainingMessage("Testing");
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNull();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNull("Testing");
 
-            work.ShouldThrowArgumentException().ContainingMessage("Testing");
+            work.Should().Throw<ArgumentException>().ContainingMessage("Testing");
         }
         #endregion
     }

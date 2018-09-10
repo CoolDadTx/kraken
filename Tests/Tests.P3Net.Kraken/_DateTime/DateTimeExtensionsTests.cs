@@ -52,7 +52,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => DateTime.MaxValue.NextDay();
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -76,7 +76,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => DateTime.MaxValue.NextDaySameTime();
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -102,7 +102,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => DateTime.MinValue.PreviousDay();
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -126,7 +126,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => DateTime.MinValue.PreviousDaySameTime();
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

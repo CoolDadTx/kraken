@@ -50,7 +50,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => StringExtensions.Combine(null, "1", "3");
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
