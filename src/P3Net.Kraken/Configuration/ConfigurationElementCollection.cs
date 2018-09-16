@@ -2,8 +2,9 @@
  * Copyright © 2017 P3Net
  * All Rights Reserved
  */
+#if NET_FRAMEWORK
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -84,3 +85,4 @@ namespace P3Net.Kraken.Configuration
         protected abstract TKey GetElementKey ( TElement element );        
     }    
 }
+#endif

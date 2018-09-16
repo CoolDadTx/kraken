@@ -13,9 +13,23 @@
       .NET Standard 2.0
     </PackageReleaseNotes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net471|AnyCPU'">
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\P3Net.Kraken\P3Net.Kraken.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net471'">
+    <Reference Include="System.Data.Linq" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
   </ItemGroup>
   
   <ItemGroup>

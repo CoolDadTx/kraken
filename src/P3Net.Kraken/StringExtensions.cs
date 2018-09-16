@@ -2,11 +2,8 @@
  * Copyright © 2004 Michael Taylor
  * All rights reserved.
  */
-#region Imports
-
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -14,15 +11,12 @@ using System.Text;
 using P3Net.Kraken.Collections;
 using P3Net.Kraken.Diagnostics;
 using P3Net.Kraken.Text;
-#endregion
 
 namespace P3Net.Kraken
 {
     /// <summary>Provides extension methods for strings.</summary>
     public static class StringExtensions
     {
-        #region Public Members
-
         /// <summary>Gets the string value unless it is <see langword="null"/> or empty in which case it returns <see langword="null"/>.</summary>
         /// <param name="source">The source.</param>
         /// <returns>The string value or <see langword="null"/> if it is <see langword="null"/> or empty.</returns>
@@ -1588,8 +1582,6 @@ namespace P3Net.Kraken
         {
             return source ?? "";
         }
-        #endregion
-
         #endregion
 
         #region Private Members

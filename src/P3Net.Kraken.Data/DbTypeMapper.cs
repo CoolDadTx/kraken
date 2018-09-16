@@ -2,16 +2,15 @@
  * Copyright © 2011 Michael Taylor
  * All Rights Reserved
  */
-#region Imports
-
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Linq;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Xml.Linq;
-#endregion
+
+#if NET_FRAMEWORK
+
+using System.Data.Linq;
+#endif
 
 namespace P3Net.Kraken.Data
 {
@@ -19,12 +18,10 @@ namespace P3Net.Kraken.Data
     /// <remarks>
     /// This class is database agnostic.  It does not attempt to select the most appropriate, database specific type.
     /// </remarks>
-    [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Db", Justification="Consistent with ADO.NET")]
     public static class DbTypeMapper
     {
         #region Construction
 
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification="Too complex")]
         static DbTypeMapper ( )
         {
             //Cache some standard mappings
@@ -52,8 +49,12 @@ namespace P3Net.Kraken.Data
                 {typeof(DateTimeOffset), DbType.DateTimeOffset},
                 {typeof(TimeSpan), DbType.Time},
 
-                {typeof(Guid), DbType.Guid},                    
-                {typeof(Binary), DbType.Binary},                    
+                {typeof(Guid), DbType.Guid},
+
+#if NET_FRAMEWORK
+                {typeof(Binary), DbType.Binary},
+#endif
+
                 {typeof(byte[]), DbType.Binary},
                 {typeof(XElement), DbType.Xml},
 
@@ -226,7 +227,6 @@ namespace P3Net.Kraken.Data
         ///    </item>
         /// </list>
         /// </remarks>
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Db", Justification="Consistent with type")]
         public static DbType ToDbType ( Type type )
         {
             //Standard mappings

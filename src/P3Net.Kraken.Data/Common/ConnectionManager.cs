@@ -4,7 +4,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
@@ -39,25 +38,31 @@ namespace P3Net.Kraken.Data.Common
         #region Construction
 
         /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
-        protected ConnectionManager ()
-        { /* Do nothing */ }
-
-        /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
-        /// <param name="connectionStringOrName">The connection string to use or a connection string name in the configuration.</param>
-        protected ConnectionManager ( string connectionStringOrName )
+        /// <param name="connectionString">The connection string to use.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionString"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="connectionString"/> is empty.</exception>
+        protected ConnectionManager ( string connectionString )
         {
-            if (!String.IsNullOrEmpty(connectionStringOrName))
-                ConnectionString = GetConnectionString(connectionStringOrName);
+            Verify.Argument(nameof(connectionString)).WithValue(ConnectionString).IsNotNullOrEmpty();
+
+            ConnectionString = connectionString;
         }
         #endregion
 
         #region Attributes
 
         /// <summary>Gets the connection string to use.</summary>
+        /// <exception cref="ArgumentNullException">When setting the property and the value is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">When setting the property and the value is empty.</exception>
         public string ConnectionString
         {
             get => _connectionString ?? "";
-            protected set => _connectionString = GetConnectionString(value ?? "");
+            protected set 
+            {
+                Verify.Argument(nameof(value)).WithValue(value).IsNotNullOrEmpty();
+
+                _connectionString = value;
+            }
         }
 
         /// <summary>Determines if the manager supports querying for parameter information.</summary>
@@ -1455,29 +1460,7 @@ namespace P3Net.Kraken.Data.Common
             {
                 cmdDb?.Dispose();
             };
-        }
-
-        /// <summary>Gets a connection string given its name or raw connection string.</summary>
-        /// <param name="connectionStringOrName">The connection string or name.</param>
-        /// <returns>The connection string.</returns>
-        /// <exception cref="Exception"><paramref name="connectionStringOrName"/> is a connection string name and it cannot be found.</exception>
-        protected string GetConnectionString ( string connectionStringOrName )
-        {
-            if (String.IsNullOrEmpty(connectionStringOrName))
-                return "";
-
-            //Connection strings are key-value pairs so if there is an equal or semicolon then we're dealing with
-            //a connection string
-            if (connectionStringOrName.IndexOfAny(new char[] { '=', ';' }) >= 0)
-                return connectionStringOrName;
-
-            //Look it up
-            var conn = ConfigurationManager.ConnectionStrings[connectionStringOrName];
-            if (conn != null)
-                return conn.ConnectionString;
-
-            throw new Exception("Connection string not found.");
-        }
+        }        
 
         /// <summary>Prepares the connection after it has been opened.</summary>
         /// <param name="connection">The open connection.</param>
@@ -1553,7 +1536,6 @@ namespace P3Net.Kraken.Data.Common
                 cmdDelete?.Dispose();
             };
         }
-
         #endregion
 
         #region Private Members

@@ -32,7 +32,7 @@
         <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>    
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)'=='netframework471'">
+    <PropertyGroup Condition="'$(TargetFramework)'=='net471'">
         <DefineConstants>$(DefineConstants);NET_FRAMEWORK</DefineConstants>
     </PropertyGroup>
     

@@ -8,9 +8,10 @@
  * 
  * $Header: /DotNET/Kraken/Source/P3Net.Kraken.Utils/SystemTime.cs 5     10/26/05 7:59a Michael $
  */
+#if NET_FRAMEWORK
+
 using System;
 using System.Diagnostics;
-using System.Runtime;
 using System.Runtime.InteropServices;
 
 namespace P3Net.Kraken.Win32
@@ -229,3 +230,4 @@ namespace P3Net.Kraken.Win32
 		#endregion //Public Members
 	}
 }
+#endif

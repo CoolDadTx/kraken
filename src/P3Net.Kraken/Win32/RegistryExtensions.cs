@@ -2,6 +2,8 @@
  * Copyright © 2009 Michael Taylor
  * All Rights Reserved
  */
+#if NET_FRAMEWORK
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -283,3 +285,4 @@ namespace P3Net.Kraken.Win32
         #endregion
     }
 }
+#endif

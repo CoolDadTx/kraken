@@ -2,53 +2,47 @@
  * Copyright (c) 2005 by Michael Taylor
  * All rights reserved.
  */
-#region Imports
-
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Security;
 using System.Security.Principal;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#endregion
 
 namespace P3Net.Kraken.UnitTesting
 {
     /// <summary>Base class for unit tests.</summary>
     public abstract class UnitTest
-    {        
-        #region Public Members
-
-        #region Attributes
-
+    {
+#if NET_FRAMEWORK
         /// <summary>Determines if the user running the test is an administrator.</summary>
         public bool IsUserAdministrator
         {
             get
             {
-                WindowsPrincipal user = User;
-                if (user == null)
+                var user = User as WindowsPrincipal;
+                if (User == null)
                     return false;
 
                 //Check the SIDs
-                SecurityIdentifier sidAdmin = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+                var sidAdmin = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
                 if (user.IsInRole(sidAdmin))
                     return true;
 
                 return false;
             }
         }
+#endif
 
         /// <summary>Gets the test assembly being run.</summary>
         public Assembly TestAssembly
         {
             get
             {
-                if (m_Assembly == null)
+                if (_assembly == null)
                     FindAssembly();
 
-                return m_Assembly;
+                return _assembly;
             }
         }
 
@@ -56,46 +50,39 @@ namespace P3Net.Kraken.UnitTesting
         public TestContext TestContext { get; set; }
 
         /// <summary>Gets the user account under which the test is running.</summary>
-        public WindowsPrincipal User
+        public IPrincipal User
         {
             get 
-            { 
-                WindowsPrincipal user = System.Threading.Thread.CurrentPrincipal as WindowsPrincipal;
+            {
+                var user = System.Threading.Thread.CurrentPrincipal;
+#if NET_FRAMEWORK
+
                 if (user == null)
                     user = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+#endif
 
                 return user;
             }
         }
-        #endregion
-
-        #region Methods
-                
+                       
         /// <summary>Called prior to each test.</summary>
         [TestInitialize]
-        public void InitializeTest ( )
-        {
-            OnInitializeTest();
-        }
+        public void InitializeTest ( ) => OnInitializeTest();
         
         /// <summary>Called after each test.</summary>
         [TestCleanup]
-        public void UninitializeTest ( )
-        {
-            OnUninitializeTest();
-        }
-        #endregion
-        
-        #endregion
-        
+        public void UninitializeTest ( ) => OnUninitializeTest();
+
         #region Protected Members
 
+#if NET_FRAMEWORK
         /// <summary>Asserts that the tester is an administrator.</summary>
         protected void AssertAdministrator ()
         {
             if (!IsUserAdministrator)
                 Assert.Inconclusive("Administrative privileges are required.");
         }
+#endif
 
         /// <summary>Called after each test.</summary>
         protected virtual void OnUninitializeTest ( )
@@ -106,25 +93,25 @@ namespace P3Net.Kraken.UnitTesting
         protected virtual void OnInitializeTest ( )
         {
         }
-        #endregion 
+        #endregion
 
         #region Private Members
 
         private void FindAssembly ()
         {
             //Start walking the stack frame until we find the test class
-            StackTrace trace = new StackTrace(1);
-            foreach (StackFrame frame in trace.GetFrames())
+            var trace = new StackTrace(1);
+            foreach (var frame in trace.GetFrames())
             {
-                MethodBase method = frame.GetMethod();
+                var method = frame.GetMethod();
                 if (method != null)
                 {
                     if (method.DeclaringType != null)
                     {
-                        object[] attrs = method.DeclaringType.GetCustomAttributes(typeof(TestClassAttribute), true);
+                        var attrs = method.DeclaringType.GetCustomAttributes(typeof(TestClassAttribute), true);
                         if (attrs.Length > 0)
                         {
-                            m_Assembly = method.DeclaringType.Assembly;
+                            _assembly = method.DeclaringType.Assembly;
                             return;
                         };
                     };
@@ -132,8 +119,8 @@ namespace P3Net.Kraken.UnitTesting
             };
         }
 
-        private Assembly m_Assembly;
+        private Assembly _assembly;
 
-        #endregion 
+        #endregion
     }
 }

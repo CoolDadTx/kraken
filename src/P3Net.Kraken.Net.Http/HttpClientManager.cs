@@ -69,7 +69,12 @@ namespace P3Net.Kraken.Net.Http
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
         /// <exception cref="UriFormatException"><paramref name="clientUri"/> is not a valid URL.</exception>
-        public HttpClient Get ( string clientName, string clientUri ) => Get(clientName, new Uri(clientUri), null);
+        public HttpClient Get ( string clientName, string clientUri )
+        {
+            Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
+
+            return GetCore(clientName, () => CreateCore(new Uri(clientUri, UriKind.Absolute), null));
+        }
 
         /// <summary>Gets a client.</summary>
         /// <param name="clientName">The name of the client.</param>
@@ -77,7 +82,12 @@ namespace P3Net.Kraken.Net.Http
         /// <returns>The client.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
-        public HttpClient Get ( string clientName, Uri clientUri ) => Get(clientName, clientUri, null);
+        public HttpClient Get ( string clientName, Uri clientUri )
+        {
+            Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
+
+            return GetCore(clientName, () => CreateCore(clientUri, null));
+        }
 
         /// <summary>Gets a client.</summary>
         /// <param name="clientName">The name of the client.</param>
@@ -87,7 +97,12 @@ namespace P3Net.Kraken.Net.Http
         /// <exception cref="ArgumentNullException"><paramref name="clientName"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientName"/> is empty.</exception>
         /// <exception cref="UriFormatException"><paramref name="clientUri"/> is not a valid URL.</exception>
-        public HttpClient Get ( string clientName, string clientUri, HttpMessageHandler handler ) => Get(clientName, new Uri(clientUri), handler);
+        public HttpClient Get ( string clientName, string clientUri, HttpMessageHandler handler )
+        {
+            Verify.Argument(nameof(clientName)).WithValue(clientName).IsNotNullOrEmpty();
+
+            return GetCore(clientName, () => CreateCore(new Uri(clientUri, UriKind.Absolute), handler));
+        }
 
         /// <summary>Gets a client.</summary>
         /// <param name="clientName">The name of the client.</param>

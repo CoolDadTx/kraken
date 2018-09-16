@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-#region Imports
+#if NET_FRAMEWORK
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,14 +12,12 @@ using FluentAssertions;
 
 using P3Net.Kraken.Win32;
 using P3Net.Kraken.UnitTesting;
-#endregion
 
 namespace Tests.P3Net.Kraken
 {
     [TestClass]
     public partial class SystemTimeTests : UnitTest
     {
-        #region Tests
 
         #region ToString
 
@@ -65,8 +63,6 @@ namespace Tests.P3Net.Kraken
         }
         #endregion
 
-        #endregion
-
         #region Private Members
 
         private void VerifyTime ( SystemTime st, DateTime dt )
@@ -92,3 +88,4 @@ namespace Tests.P3Net.Kraken
         #endregion
     }
 }
+#endif

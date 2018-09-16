@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NET_FRAMEWORK
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -956,3 +958,4 @@ namespace Tests.P3Net.Kraken.Win32
         #endregion
     }
 }
+#endif

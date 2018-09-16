@@ -21,33 +21,23 @@ namespace P3Net.Kraken.Data.Common
     public class DbProviderFactoryConnectionManager : ConnectionManager
     {
         #region Construction
-
+        
         /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
         /// <param name="factory">The underlying factory to use.</param>
+        /// <param name="connectionString">The connection string to use.</param>
         /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        public DbProviderFactoryConnectionManager ( DbProviderFactory factory ) 
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : base(connectionString)
         {
             Verify.Argument(nameof(factory)).WithValue(factory).IsNotNull();
 
             Factory = factory;
 
-            m_schema = new Lazy<SchemaInformation>(CallLoadSchema);
-        }
-
-        /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
-        /// <param name="factory">The underlying factory to use.</param>
-        /// <param name="connectionString">The connection string to use.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : this(factory)
-        {
-            ConnectionString = connectionString;
+            _schema = new Lazy<SchemaInformation>(CallLoadSchema);            
         }
         #endregion
 
         /// <summary>Gets the underlying database factory.</summary>
         protected DbProviderFactory Factory { get; private set; }
-
-        #region Methods
 
         /// <summary>Creates a connection given a connection string.</summary>
         /// <param name="connectionString">The connection string to use.</param>
@@ -72,10 +62,7 @@ namespace P3Net.Kraken.Data.Common
 
         /// <summary>Creates a data adapter.</summary>
         /// <returns>The underlying data adapter.</returns>
-        protected override DbDataAdapter CreateDataAdapterBase ()
-        {
-            return Factory.CreateDataAdapter();
-        }
+        protected override DbDataAdapter CreateDataAdapterBase () => Factory.CreateDataAdapter();
 
         /// <summary>Creates a transaction.</summary>
         /// <param name="connection">The connection used for the transaction.</param>
@@ -92,10 +79,9 @@ namespace P3Net.Kraken.Data.Common
         /// <summary>Creates a command.</summary>
         /// <param name="command">The base command to use.</param>
         /// <returns>The underlying command.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         protected override DbCommand CreateCommandBase ( DataCommand command )
         {
-            DbCommand cmdDb = Factory.CreateCommand();
+            var cmdDb = Factory.CreateCommand();
 
             cmdDb.CommandText = command.CommandText;
             cmdDb.CommandTimeout = (int)command.CommandTimeout.TotalSeconds;
@@ -120,7 +106,7 @@ namespace P3Net.Kraken.Data.Common
         /// </remarks>
         protected virtual DbParameter CreateParameterBase ( DataParameter source, DbCommand command )
         {
-            DbParameter target = command.CreateParameter();
+            var target = command.CreateParameter();
 
             target.ParameterName = FormatParameterName(source.Name);
             target.DbType = source.DbType;
@@ -161,11 +147,7 @@ namespace P3Net.Kraken.Data.Common
 
         /// <summary>Gets the schema defined by the underlying provider.</summary>
         /// <returns>The schema information.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        protected SchemaInformation GetSchema ()
-        {
-            return m_schema.Value;
-        }
+        protected SchemaInformation GetSchema () => _schema.Value;
 
         /// <summary>Loads schema information about the provider.</summary>
         /// <returns>The schema information.</returns>
@@ -185,7 +167,7 @@ namespace P3Net.Kraken.Data.Common
                 var dt = conn.GetSchema("DataSourceInformation");
                 if ((dt != null) && (dt.Rows.Count > 0))
                 {
-                    DataRow dr = dt.Rows[0];
+                    var dr = dt.Rows[0];
 
                     //Get the parameter formatParameterName
                     if (dt.Columns.Contains("ParameterMarkerFormat"))
@@ -195,20 +177,16 @@ namespace P3Net.Kraken.Data.Common
 
             return schema;
         }
-        #endregion
 
         #region Private Members
 
         //Used to call the virtual method to load the schema
-        private SchemaInformation CallLoadSchema ()
-        {
-            return LoadSchema();
-        }
+        private SchemaInformation CallLoadSchema () => LoadSchema();
 
         //Used to filter and format parameter names (the prefix and suffix contain the 
         //schema-defined parameter layout for parameter names.  We cache this per-provider factory
         //for speed purposes
-        private readonly Lazy<SchemaInformation> m_schema;
+        private readonly Lazy<SchemaInformation> _schema;
         #endregion
     }
 }

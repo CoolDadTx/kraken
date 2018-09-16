@@ -13,6 +13,12 @@
       .NET 4.7.1
     </PackageReleaseNotes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\P3Net.Kraken\P3Net.Kraken.csproj" />

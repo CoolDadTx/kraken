@@ -107,19 +107,8 @@ namespace P3Net.Kraken.Interop
         ///       };
         ///    }
         /// </code>
-        /// <code lang="VB">
-        ///    Public Sub SendCredentials ( userName As SecureString, password As SecureString )
-        ///     
-        ///       Using hdlUser As SafeBStrHandle = SafeBStrHandle.SecureStringToBStr(userName)
-        ///          Using hdlPwd As SafeBStrHandle = SafeBStrHandle.SecureStringToBStr(password)
-        ///          
-        ///             SetUserCredentialsNative(hdlUser.Pointer, hdlPwd.Pointer)
-        ///          End Using
-        ///       End Using
-        ///    End Sub
-        /// </code>
         /// </example>
-        [Obsolete("Deprecated in 5.0. Do not use SecureString.")]
+        [Obsolete("Deprecated in 6.0. Do not use SecureString.")]
         public static SafeBStrHandle SecureStringToBStr ( System.Security.SecureString value)
         {
             if (value == null)

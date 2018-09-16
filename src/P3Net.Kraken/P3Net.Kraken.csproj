@@ -14,6 +14,12 @@
       .NET Standard 2.0
     </PackageReleaseNotes>-->
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
+    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net471|AnyCPU'">
+    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+  </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net471'">
     <Reference Include="System.ComponentModel.DataAnnotations" />

@@ -304,7 +304,7 @@ namespace Tests.P3Net.Kraken.IO
         private string GetBaseTempDirectory ()
         {
             //Would prefer to use TestRunResultsDirectory but that isn't initialized for some reason
-            return TestContext.TestDeploymentDir + @"\" + this.GetType().Name;
+            return TestContext.DeploymentDirectory + @"\" + this.GetType().Name;
         }
 
         private string GetTempTestDirectory ( )
