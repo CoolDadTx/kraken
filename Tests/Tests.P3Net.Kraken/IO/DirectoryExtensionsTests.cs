@@ -303,14 +303,16 @@ namespace Tests.P3Net.Kraken.IO
 
         private string GetBaseTempDirectory ()
         {
-            //Would prefer to use TestRunResultsDirectory but that isn't initialized for some reason
-            return TestContext.DeploymentDirectory + @"\" + this.GetType().Name;
+#if NET_FRAMEWORK
+            var basePath = TestContext.DeploymentDirectory;              
+#else
+            var basePath = Directory.GetCurrentDirectory();
+#endif
+
+            return Path.Combine(basePath, GetType().Name);
         }
 
-        private string GetTempTestDirectory ( )
-        {
-            return GetBaseTempDirectory() + @"\" + TestContext.TestName;
-        }
+        private string GetTempTestDirectory () => Path.Combine(GetBaseTempDirectory(), TestContext.TestName);
 
         private IEnumerable<string> CreateTestDirectories ( string basePath, params string[] paths )
         {
@@ -368,6 +370,6 @@ namespace Tests.P3Net.Kraken.IO
 
             return names;
         }
-        #endregion
+#endregion
     }
 }

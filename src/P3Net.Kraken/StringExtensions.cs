@@ -392,6 +392,57 @@ namespace P3Net.Kraken
         }
         #endregion
 
+        #region IndexOfAll
+
+        /// <summary>Gets the index of all occurrences of a given value in the string.</summary>
+        /// <param name="source">The string value.</param>
+        /// <param name="value">The token to search for.</param>
+        /// <returns>The indices where the token appears.</returns>
+        public static IEnumerable<int> IndexOfAll ( this string source, char value ) => IndexOfAll(source, value, 0, StringComparison.CurrentCulture);
+
+        /// <summary>Gets the index of all occurrences of a given value in the string.</summary>
+        /// <param name="source">The string value.</param>
+        /// <param name="value">The token to search for.</param>
+        /// <param name="startIndex">The optional starting index.</param>
+        /// <returns>The indices where the token appears.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero.</exception>
+        public static IEnumerable<int> IndexOfAll ( this string source, char value, int startIndex ) => IndexOfAll(source, value, startIndex, StringComparison.CurrentCulture);
+
+        /// <summary>Gets the index of all occurrences of a given value in the string.</summary>
+        /// <param name="source">The string value.</param>
+        /// <param name="value">The token to search for.</param>
+        /// <param name="comparison">The comparison rules to use.</param>
+        /// <returns>The indices where the token appears.</returns>
+        public static IEnumerable<int> IndexOfAll ( this string source, char value, StringComparison comparison ) => IndexOfAll(source, value, 0, comparison);
+
+        /// <summary>Gets the index of all occurrences of a given value in the string.</summary>
+        /// <param name="source">The string value.</param>
+        /// <param name="value">The token to search for.</param>
+        /// <param name="comparison">The comparison rules to use.</param>
+        /// <param name="startIndex">The optional starting index.</param>
+        /// <returns>The indices where the token appears.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero.</exception>
+        public static IEnumerable<int> IndexOfAll ( this string source, char value, int startIndex, StringComparison comparison )
+        {
+            Verify.Argument(nameof(startIndex)).WithValue(startIndex).IsGreaterThanOrEqualToZero();
+
+            if (!String.IsNullOrEmpty(source))
+            {
+                var str = value.ToString();
+
+                while (startIndex < source.Length)
+                {
+                    var endIndex = source.IndexOf(str, startIndex, comparison);
+                    if (endIndex < 0)
+                        break;
+
+                    yield return endIndex;
+                    startIndex = endIndex + 1;
+                };
+            };
+        }
+        #endregion
+
         #region IndexOfNotIn
 
         /// <summary>Finds the index of the first character not in the given token list.</summary>
@@ -1397,7 +1448,7 @@ namespace P3Net.Kraken
             // 2 = lower, 3 = space, 4 = digit
             short state = 0, oldState = 0;
             char ch = source[0];
-            if (UserFriendlySeparators.Contains(ch))
+            if (s_userFriendlySeparators.Contains(ch))
             {                
                 //Ignore leading spaces
                 state = oldState = 3;
@@ -1426,7 +1477,7 @@ namespace P3Net.Kraken
                 ch = source[index];
 
                 //Separator
-                if (UserFriendlySeparators.Contains(ch))
+                if (s_userFriendlySeparators.Contains(ch))
                 {
                     //If we are already processing a separator then ignore this one so only 1 space gets inserted
                     if (state == 3)
@@ -1617,7 +1668,7 @@ namespace P3Net.Kraken
             return bldr.ToString();
         }
         
-        private static readonly char[] UserFriendlySeparators = new char[] { '_', ' ', '.' };
+        private static readonly char[] s_userFriendlySeparators = new char[] { '_', ' ', '.' };
         #endregion 
     }
 

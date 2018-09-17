@@ -11,6 +11,10 @@
 
 ## P3Net.Kraken Namespace
 
+#### StringExtensions Class
+
+- [New] `IndexOfAll` method added to find all occurrences of a set of characters in a string.
+
 #### TypeConversion Class
 
 - [New] `TryConvertToBooleean` added to convert to boolean values using the rules defined in other areas of the library.
