@@ -85,7 +85,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Date.FromDayOfYear(2013, 0);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]        
@@ -93,7 +93,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Date.FromDayOfYear(2013, 370);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

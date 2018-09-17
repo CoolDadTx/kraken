@@ -39,7 +39,7 @@ namespace Tests.P3Net.Kraken.Collections
             //Act
             Action action = () => target.ForEach(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 
@@ -67,7 +67,7 @@ namespace Tests.P3Net.Kraken.Collections
             //Act
             Action action = () => target.ForEachIf(null, _ => true);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace Tests.P3Net.Kraken.Collections
             //Act
             Action action = () => target.ForEachIf(_ => { }, null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 #pragma warning restore 618
@@ -316,7 +316,7 @@ namespace Tests.P3Net.Kraken.Collections
         {
             Action action = () => new int[0].RemoveIf(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]

@@ -30,7 +30,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasLengthBetween(1, 3);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasLengthBetween(10, 20);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasLengthBetween(10, 20, expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasLengthBetween(1, 10);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
         #endregion
 
@@ -82,7 +82,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasMaximumLength(3);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
         
         [TestMethod]
@@ -93,7 +93,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasMaximumLength(3, expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasMinimumLength(10);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -133,7 +133,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasMinimumLength(10, expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.HasMinimumLength(1);
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
         #endregion
 
@@ -164,7 +164,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsAlpha();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsAlpha();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -185,7 +185,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsAlpha(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsAlpha(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -241,7 +241,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsAlphanumeric();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -252,7 +252,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsAlphanumeric(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -281,7 +281,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrEmpty();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -291,7 +291,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrEmpty();
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -302,7 +302,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrEmpty(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -313,7 +313,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrEmpty(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -342,7 +342,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrWhiteSpace();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -352,7 +352,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrWhiteSpace();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -362,7 +362,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrWhiteSpace();
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -373,7 +373,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrWhiteSpace(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -384,7 +384,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNotNullOrWhiteSpace(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -413,7 +413,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNumeric();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -423,7 +423,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNumeric();
 
-            work.ShouldThrowArgumentException();
+            work.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -434,7 +434,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNumeric(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]
@@ -445,7 +445,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
 
             Action work = () => target.IsNumeric(expectedMessage);
 
-            work.ShouldThrowArgumentException().ContainingMessage(expectedMessage);
+            work.Should().Throw<ArgumentException>().ContainingMessage(expectedMessage);
         }
 
         [TestMethod]

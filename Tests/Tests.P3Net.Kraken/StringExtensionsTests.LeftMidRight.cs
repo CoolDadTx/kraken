@@ -54,7 +54,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Left(-1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -107,7 +107,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "ABC".Mid(-1, 8);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "ABC".Mid(0, -1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -178,7 +178,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Right(-1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
     }

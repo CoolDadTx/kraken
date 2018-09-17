@@ -2,43 +2,39 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Infrastructure", "_Infrastructure", "{D1E1A242-DAEA-47E8-B1FA-2CC2244863CE}"
-	ProjectSection(SolutionItems) = preProject
-		_Infrastructure\AssemblyVer.cs = _Infrastructure\AssemblyVer.cs
-		_Infrastructure\CustomDictionary.xml = _Infrastructure\CustomDictionary.xml
-		ReleaseNotes.md = ReleaseNotes.md
-	EndProjectSection
-	ProjectSection(FolderStartupServices) = postProject
-		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P3Net.Kraken.Data", "src\P3Net.Kraken.Data\P3Net.Kraken.Data.csproj", "{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Data", "P3Net.Kraken.Data\P3Net.Kraken.Data.csproj", "{A49F5168-AB7C-472F-B7B5-7AB3DDB37372}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Windows.Forms", "src\P3Net.Kraken.Windows.Forms\P3Net.Kraken.Windows.Forms.csproj", "{A0177780-1F73-45CE-BF41-7CD94A6A00F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Windows.Forms", "P3Net.Kraken.Windows.Forms\P3Net.Kraken.Windows.Forms.csproj", "{A0177780-1F73-45CE-BF41-7CD94A6A00F4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken", "P3Net.Kraken\P3Net.Kraken.csproj", "{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P3Net.Kraken", "src\P3Net.Kraken\P3Net.Kraken.csproj", "{BF45A218-FDD0-400B-AFBC-F043C24CEE0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5E031AAA-BD7B-435C-BE9F-35C983E8286E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken", "Tests\Tests.P3Net.Kraken\Tests.P3Net.Kraken.csproj", "{4B9F8878-0E11-41B8-8821-310788530B2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceModel", "P3Net.Kraken.ServiceModel\P3Net.Kraken.ServiceModel.csproj", "{96692C92-A028-4630-A669-49656267FFC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceModel", "src\P3Net.Kraken.ServiceModel\P3Net.Kraken.ServiceModel.csproj", "{96692C92-A028-4630-A669-49656267FFC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.ServiceModel", "Tests\Tests.P3Net.Kraken.ServiceModel\Tests.P3Net.Kraken.ServiceModel.csproj", "{32F3834E-632E-4F46-B09F-A36522C0F52D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.Data", "Tests\Tests.P3Net.Kraken.Data\Tests.P3Net.Kraken.Data.csproj", "{BB85DB49-D391-4964-8920-CEC2B9AFFA54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.UnitTesting", "P3Net.Kraken.UnitTesting\P3Net.Kraken.UnitTesting.csproj", "{78155561-D33E-4D70-B619-329E8327B42D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.UnitTesting", "src\P3Net.Kraken.UnitTesting\P3Net.Kraken.UnitTesting.csproj", "{78155561-D33E-4D70-B619-329E8327B42D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.UnitTesting", "Tests\Tests.P3Net.Kraken.UnitTesting\Tests.P3Net.Kraken.UnitTesting.csproj", "{B7FDC30E-C6E8-4274-90E3-D95D9FC60055}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceProcess", "P3Net.Kraken.ServiceProcess\P3Net.Kraken.ServiceProcess.csproj", "{94213B43-7585-4F32-8413-8E06329952A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.ServiceProcess", "src\P3Net.Kraken.ServiceProcess\P3Net.Kraken.ServiceProcess.csproj", "{94213B43-7585-4F32-8413-8E06329952A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.ServiceProcess", "Tests\Tests.P3Net.Kraken.ServiceProcess\Tests.P3Net.Kraken.ServiceProcess.csproj", "{E7708ED9-6A14-4E6D-93CC-47AA144A0306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Net.Http", "P3Net.Kraken.Net.Http\P3Net.Kraken.Net.Http.csproj", "{8580B2B9-44EC-4246-AD00-D942EDF13168}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P3Net.Kraken.Net.Http", "src\P3Net.Kraken.Net.Http\P3Net.Kraken.Net.Http.csproj", "{8580B2B9-44EC-4246-AD00-D942EDF13168}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.P3Net.Kraken.Net.Http", "Tests\Tests.P3Net.Kraken.Net.Http\Tests.P3Net.Kraken.Net.Http.csproj", "{48559015-B907-40B1-9943-C05DBDE89A0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{7C22A2E8-F3FC-4DAE-89AC-1C3C7E5A3C43}"
+	ProjectSection(SolutionItems) = preProject
+		src\directory.build.props = src\directory.build.props
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

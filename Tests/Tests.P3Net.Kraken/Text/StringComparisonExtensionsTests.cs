@@ -68,7 +68,7 @@ namespace Tests.P3Net.Kraken.Text
         {
             Action action = () => ((StringComparison)100).ToComparer();
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
     }

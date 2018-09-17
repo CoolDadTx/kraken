@@ -23,7 +23,7 @@ namespace Tests.P3Net.Kraken.Text.Substitution
         {
             Action action = () => new ObjectTextSubstitutionRule<SimpleType>(null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
         #endregion
 

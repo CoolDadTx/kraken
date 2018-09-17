@@ -2,7 +2,7 @@
  * Copyright (c) 2005 by Michael Taylor
  * All rights reserved.
  */
-#region Imports
+#if NET_FRAMEWORK
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 
 using P3Net.Kraken.Win32;
-#endregion
 
 namespace Tests.P3Net.Kraken
 {
@@ -94,3 +93,4 @@ namespace Tests.P3Net.Kraken
 		#endregion
 	}
 }
+#endif

@@ -244,7 +244,7 @@ namespace Tests.P3Net.Kraken
 
             Action action = () => target.CompareTo(45);
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
     }

@@ -31,7 +31,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new MonthYearPart(1, 0);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new MonthYearPart(1, Dates.MaximumYear + 1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new MonthYearPart(0, 2013);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new MonthYearPart(14, 2013);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -80,7 +80,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new MonthYearPart(1, 2000).Day(0);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => new MonthYearPart(1, 2000).Day(400);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

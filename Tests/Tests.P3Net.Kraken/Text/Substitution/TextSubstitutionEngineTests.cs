@@ -32,7 +32,7 @@ namespace Tests.P3Net.Kraken.Text.Substitution
         {            
             Action action = () => new TextSubstitutionEngine(null, ">");
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Tests.P3Net.Kraken.Text.Substitution
         {
             Action action = () => new TextSubstitutionEngine("", ">");
 
-            action.ShouldThrowArgumentException();
+            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Tests.P3Net.Kraken.Text.Substitution
         {
             Action action = () => new TextSubstitutionEngine("<", null);
 
-            action.ShouldThrowArgumentNullException();
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]

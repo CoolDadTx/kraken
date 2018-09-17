@@ -89,7 +89,7 @@ namespace Tests.P3Net.Kraken.Interop
         {
             Action action = () => SafeComMemoryHandle.Allocate(0);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]        
@@ -97,7 +97,7 @@ namespace Tests.P3Net.Kraken.Interop
         {            
             Action action = () => SafeComMemoryHandle.Allocate(-5);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 

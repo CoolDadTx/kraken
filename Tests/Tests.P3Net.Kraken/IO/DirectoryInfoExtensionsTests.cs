@@ -328,16 +328,18 @@ namespace Tests.P3Net.Kraken.IO
 
         #region Private Members
 
-        private string GetBaseTempDirectory ()
+        private string GetTestDirectory ()
         {
-            //Would prefer to use TestRunResultsDirectory but that isn't initialized for some reason
-            return TestContext.TestDeploymentDir + @"\" + this.GetType().Name;
+#if NET_FRAMEWORK
+            return TestContext.TestDeploymentDir;
+#else
+            return Directory.GetCurrentDirectory();
+#endif
         }
 
-        private string GetTempTestDirectory ( )
-        {
-            return GetBaseTempDirectory() + @"\" + TestContext.TestName;
-        }
+        private string GetBaseTempDirectory () => GetTestDirectory() + @"\" + GetType().Name;
+
+        private string GetTempTestDirectory ( ) => GetBaseTempDirectory() + @"\" + TestContext.TestName;
 
         private static long CreateTestFileWithSize ( string path, string filename, long size )
         {
@@ -354,6 +356,6 @@ namespace Tests.P3Net.Kraken.IO
             var info = new FileInfo(fullPath);
             return info.Length;
         }        
-        #endregion
+#endregion
     }
 }

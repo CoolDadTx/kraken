@@ -1,9 +1,11 @@
-﻿#region Imports
-
-using System;
+﻿using System;
 using System.Data;
+
+#if NET_FRAMEWORK
+
 using System.Data.Linq;
-using System.Linq;
+#endif
+
 using System.Xml.Linq;
 
 using FluentAssertions;
@@ -11,14 +13,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using P3Net.Kraken;
 using P3Net.Kraken.Data;
 using P3Net.Kraken.UnitTesting;
-#endregion
 
 namespace Tests.P3Net.Kraken.Data
 {
     [TestClass]
     public class DbTypeMapperTests : UnitTest
     {
-        #region ToClrType
+#region ToClrType
 
         [TestMethod]
         public void ToClrType_WithAnsiString ()
@@ -247,6 +248,7 @@ namespace Tests.P3Net.Kraken.Data
 
         #region ToDbType
 
+#if NET_FRAMEWORK
         [TestMethod]
         public void ToDbType_WithBinary ()
         {
@@ -255,6 +257,7 @@ namespace Tests.P3Net.Kraken.Data
             //Assert
             actual.Should().Be(DbType.Binary);
         }
+#endif
 
         [TestMethod]
         public void ToDbType_WithBoolean ()
@@ -624,6 +627,6 @@ namespace Tests.P3Net.Kraken.Data
             //Assert
             actual.Should().Be(DbType.Object);
         }
-        #endregion
+#endregion
     }
 }

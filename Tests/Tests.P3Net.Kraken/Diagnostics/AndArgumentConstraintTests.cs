@@ -29,7 +29,7 @@ namespace Tests.P3Net.Kraken.Diagnostics
         {
             Action work = () => new AndArgumentConstraint<int>(null);
 
-            work.ShouldThrowArgumentNullException();
+            work.Should().Throw<ArgumentNullException>();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Dates.Month(0);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Dates.Month(20);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
 
@@ -289,7 +289,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Dates.Year(Dates.MinimumYear - 1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]        
@@ -297,7 +297,7 @@ namespace Tests.P3Net.Kraken
         {
             Action action = () => Dates.Year(Dates.MaximumYear + 1);
 
-            action.ShouldThrowArgumentOutOfRangeException();
+            action.Should().Throw<ArgumentOutOfRangeException>();
         }
         #endregion
     }
