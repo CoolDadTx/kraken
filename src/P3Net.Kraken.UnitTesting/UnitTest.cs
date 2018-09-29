@@ -34,6 +34,9 @@ namespace P3Net.Kraken.UnitTesting
         }
 #endif
 
+        /// <summary>Gets an instance of <see cref="Random"/> that can be used in tests.</summary>
+        public Random Random => _random.Value;
+
         /// <summary>Gets the test assembly being run.</summary>
         public Assembly TestAssembly
         {
@@ -120,6 +123,7 @@ namespace P3Net.Kraken.UnitTesting
         }
 
         private Assembly _assembly;
+        private readonly Lazy<Random> _random = new Lazy<Random>();
 
         #endregion
     }

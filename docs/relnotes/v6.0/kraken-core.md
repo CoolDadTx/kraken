@@ -12,6 +12,12 @@
 
 ## P3Net.Kraken Namespace
 
+#### RandomExtensions Class
+
+Added new class to provide extension methods for working with random values.
+
+- [New] `NextDate` method returns a random date, optionally limited to a range of dates.
+
 #### StringExtensions Class
 
 - [New] `IndexOfAll` method added to find all occurrences of a set of characters in a string.
