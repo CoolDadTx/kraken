@@ -1,5 +1,7 @@
 /*
  * Copyright © 2004 Michael Taylor
+ * https://www.michaeltaylorp3.net
+ * 
  * All rights reserved.
  */
 using System;
@@ -20,10 +22,7 @@ namespace P3Net.Kraken
         /// <summary>Gets the string value unless it is <see langword="null"/> or empty in which case it returns <see langword="null"/>.</summary>
         /// <param name="source">The source.</param>
         /// <returns>The string value or <see langword="null"/> if it is <see langword="null"/> or empty.</returns>
-        public static string AsNullIfEmpty ( this string source )
-        {
-            return !String.IsNullOrEmpty(source) ? source : null;
-        }
+        public static string AsNullIfEmpty ( this string source ) => !String.IsNullOrEmpty(source) ? source : null;
 
         #region Coalesce
 
@@ -32,10 +31,7 @@ namespace P3Net.Kraken
         /// <returns>The first value that is not <see langword="null"/>.  If all values are <see langword="null"/> then 
         /// <see langword="null"/> is returned.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
-        public static string Coalesce ( params string[] values )
-        {
-            return Coalesce(StringCoalesceOptions.None, values as IEnumerable<string>);
-        }
+        public static string Coalesce ( params string[] values ) => Coalesce(StringCoalesceOptions.None, values as IEnumerable<string>);
 
         /// <summary>Returns the first value that is not <see langword="null"/>.</summary>
         /// <param name="options">The options to use.</param>
@@ -44,19 +40,14 @@ namespace P3Net.Kraken
         /// <see langword="null"/> is returned.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
         public static string Coalesce ( StringCoalesceOptions options, params string[] values )
-        {
-            return Coalesce(options, values as IEnumerable<string>);
-        }
+                                => Coalesce(options, values as IEnumerable<string>);
 
         /// <summary>Returns the first value that is not <see langword="null"/>.</summary>
         /// <param name="values">The values to examine.</param>
         /// <returns>The first value that is not <see langword="null"/>.  If all values are <see langword="null"/> then 
         /// <see langword="null"/> is returned.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
-        public static string Coalesce ( IEnumerable<string> values )
-        {
-            return Coalesce(StringCoalesceOptions.None, values);
-        }
+        public static string Coalesce ( IEnumerable<string> values ) => Coalesce(StringCoalesceOptions.None, values);
 
         /// <summary>Returns the first value that is not <see langword="null"/>.</summary>
         /// <param name="options">The options to use.</param>
@@ -66,7 +57,7 @@ namespace P3Net.Kraken
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
         public static string Coalesce ( StringCoalesceOptions options, IEnumerable<string> values )
         {
-            Verify.Argument("values", values).IsNotNull();
+            Verify.Argument(nameof(values)).WithValue(values).IsNotNull();
 
             IEnumerable<string> query;
             if (EnumExtensions.IsAny(options, StringCoalesceOptions.SkipEmpty))
@@ -79,7 +70,7 @@ namespace P3Net.Kraken
         #endregion
 
         #region Combine
-        
+
         /// <summary>Combines a set of strings using the given separator.</summary>
         /// <param name="separator">The separator to use.</param>        
         /// <param name="values">The list of strings to combine.</param>
@@ -106,11 +97,11 @@ namespace P3Net.Kraken
         ///  </example>
         public static string Combine ( string separator, IEnumerable<string> values )
         {
-            Verify.Argument("separator", separator).IsNotNull();
+            Verify.Argument(nameof(separator)).WithValue(separator).IsNotNull();
             if (values == null)
                 return "";
-                          
-            return InternalCombine(separator, values);  
+
+            return InternalCombine(separator, values);
         }
 
         /// <summary>Combines a set of strings using the given separator.</summary>
@@ -139,11 +130,11 @@ namespace P3Net.Kraken
         ///  </example>
         public static string Combine ( string separator, params string[] values )
         {
-            Verify.Argument("separator", separator).IsNotNull();
+            Verify.Argument(nameof(separator)).WithValue(separator).IsNotNull();
             if (values.IsNullOrEmpty())
                 return "";
 
-            return InternalCombine(separator, values);             
+            return InternalCombine(separator, values);
         }
         #endregion
 
@@ -156,10 +147,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// The comparison is done using the current culture's case sensitive comparison.
         /// </remarks>
-        public static string EnsureEndsWith ( this string source, char delimiter )
-        {
-            return EnsureEndsWith(source, delimiter.ToString());
-        }
+        public static string EnsureEndsWith ( this string source, char delimiter ) => EnsureEndsWith(source, delimiter.ToString());
 
         /// <summary>Ensures a string ends with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -167,9 +155,7 @@ namespace P3Net.Kraken
         /// <param name="comparison">The comparison to perform.</param>
         /// <returns>The string with the delimiter added.  If the source is <see langword="null"/> or empty then the delimiter is returned.</returns>                 
         public static string EnsureEndsWith ( this string source, char delimiter, StringComparison comparison )
-        {
-            return EnsureEndsWith(source, delimiter.ToString(), comparison);
-        }
+                                => EnsureEndsWith(source, delimiter.ToString(), comparison);
 
         /// <summary>Ensures a string ends with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -178,9 +164,7 @@ namespace P3Net.Kraken
         /// <param name="culture">The culture to use.  If <see langword="null"/> then the current culture is used.</param>
         /// <returns>The string with the delimiter added.  If the source is <see langword="null"/> or empty then the delimiter is returned.</returns>                 
         public static string EnsureEndsWith ( this string source, char delimiter, bool ignoreCase, CultureInfo culture )
-        {
-            return EnsureEndsWith(source, delimiter.ToString(), ignoreCase, culture);
-        }
+                                => EnsureEndsWith(source, delimiter.ToString(), ignoreCase, culture);
 
         /// <summary>Ensures a string ends with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -190,10 +174,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// The comparison is done using the current culture's case sensitive comparison.
         /// </remarks>
-        public static string EnsureEndsWith ( this string source, string delimiter )
-        {
-            return EnsureEndsWith(source, delimiter, false, null);
-        }
+        public static string EnsureEndsWith ( this string source, string delimiter ) => EnsureEndsWith(source, delimiter, false, null);
 
         /// <summary>Ensures a string ends with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -235,10 +216,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// The comparison is done using the current culture's case sensitive comparison.
         /// </remarks>
-        public static string EnsureStartsWith ( this string source, char delimiter )
-        {
-            return EnsureStartsWith(source, delimiter.ToString());
-        }
+        public static string EnsureStartsWith ( this string source, char delimiter ) => EnsureStartsWith(source, delimiter.ToString());
 
         /// <summary>Ensures a string starts with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -247,9 +225,7 @@ namespace P3Net.Kraken
         /// <returns>The string with the delimiter added.  If the source is <see langword="null"/> or empty then the delimiter is returned.</returns>               
         /// <exception cref="ArgumentNullException"><paramref name="delimiter"/> is <see langword="null"/>.</exception>
         public static string EnsureStartsWith ( this string source, char delimiter, StringComparison comparison )
-        {
-            return EnsureStartsWith(source, delimiter.ToString(), comparison);
-        }
+                                    => EnsureStartsWith(source, delimiter.ToString(), comparison);
 
         /// <summary>Ensures a string starts with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -259,9 +235,7 @@ namespace P3Net.Kraken
         /// <returns>The string with the delimiter added.  If the source is <see langword="null"/> or empty then the delimiter is returned.</returns>               
         /// <exception cref="ArgumentNullException"><paramref name="delimiter"/> is <see langword="null"/>.</exception>
         public static string EnsureStartsWith ( this string source, char delimiter, bool ignoreCase, CultureInfo culture )
-        {
-            return EnsureStartsWith(source, delimiter.ToString(), ignoreCase, culture);
-        }
+                            => EnsureStartsWith(source, delimiter.ToString(), ignoreCase, culture);
 
         /// <summary>Ensures a string starts with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -271,10 +245,7 @@ namespace P3Net.Kraken
         /// <remarks>
         /// The comparison is done using the current culture's case sensitive comparison.
         /// </remarks>
-        public static string EnsureStartsWith ( this string source, string delimiter )
-        {
-            return EnsureStartsWith(source, delimiter, false, null);
-        }
+        public static string EnsureStartsWith ( this string source, string delimiter ) => EnsureStartsWith(source, delimiter, false, null);
 
         /// <summary>Ensures a string starts with a specific delimiter.</summary>
         /// <param name="source">The source.</param>
@@ -306,6 +277,128 @@ namespace P3Net.Kraken
         }
         #endregion
 
+        #region EnsureSurroundedWith
+
+        /// <summary>Ensures the string is surrounded with the given delimiter.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="delimiter">The delimiter to use.</param>
+        /// <returns>The string surrounded with the given delimiter, if needed.</returns>
+        /// <remarks>
+        /// The string is checked to see if it starts and ends with the given delimiter. The delimiter is added if needed.
+        /// <para />
+        /// If <paramref name="source"/> is <see langword="null"/> or empty then an empty string wrapped in the delimiter
+        /// is returned. If <paramref name="delimiter"/> is <see langword="null"/> or empty then the string is returned unchanged.
+        /// </remarks>
+        public static string EnsureSurroundedWith ( this string source, string delimiter ) => EnsureSurroundedWith(source, delimiter, false, null);
+
+        /// <summary>Ensures the string is surrounded with the given delimiter.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="delimiter">The delimiter to use.</param>
+        /// <param name="comparison">The string comparison to use.</param>
+        /// <returns>The string surrounded with the given delimiter, if needed.</returns>
+        /// <remarks>
+        /// The string is checked to see if it starts and ends with the given delimiter. The delimiter is added if needed.
+        /// <para />
+        /// If <paramref name="source"/> is <see langword="null"/> or empty then an empty string wrapped in the delimiter
+        /// is returned. If <paramref name="delimiter"/> is <see langword="null"/> or empty then the string is returned unchanged.
+        /// </remarks>        
+        public static string EnsureSurroundedWith ( this string source, string delimiter, StringComparison comparison )
+        {
+            delimiter = delimiter ?? "";
+
+            if (String.IsNullOrEmpty(source))
+                return delimiter + delimiter;
+
+            var needsPrefix = !source.StartsWith(delimiter, comparison);
+            var needsSuffix = !source.EndsWith(delimiter, comparison);
+
+            if (needsPrefix)
+                if (needsSuffix)
+                    return delimiter + source + delimiter;
+                else
+                    return delimiter + source;
+            else if (needsSuffix)
+                return source + delimiter;
+
+            return source;
+        }
+
+        /// <summary>Ensures the string is surrounded with the given delimiter.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="delimiter">The delimiter to use.</param>
+        /// <param name="ignoreCase"><see langword="true"/> to ignore case.</param>
+        /// <param name="culture">The culture to use for comparison.</param>
+        /// <returns>The string surrounded with the given delimiter, if needed.</returns>
+        /// <remarks>
+        /// The string is checked to see if it starts and ends with the given delimiter. The delimiter is added if needed.
+        /// <para />
+        /// If <paramref name="source"/> is <see langword="null"/> or empty then an empty string wrapped in the delimiter
+        /// is returned. If <paramref name="delimiter"/> is <see langword="null"/> or empty then the string is returned unchanged.
+        /// </remarks>
+        public static string EnsureSurroundedWith ( this string source, string delimiter, bool ignoreCase, CultureInfo culture )
+        {
+            delimiter = delimiter ?? "";
+
+            if (String.IsNullOrEmpty(source))
+                return delimiter + delimiter;
+
+            var needsPrefix = !source.StartsWith(delimiter, ignoreCase, culture);
+            var needsSuffix = !source.EndsWith(delimiter, ignoreCase, culture);
+
+            if (needsPrefix)
+                if (needsSuffix)
+                    return delimiter + source + delimiter;
+                else
+                    return delimiter + source;
+            else if (needsSuffix)
+                return source + delimiter;
+
+            return source;
+        }
+
+        /// <summary>Ensures the string is surrounded with the given delimiter.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="delimiter">The delimiter to use.</param>
+        /// <returns>The string surrounded with the given delimiter, if needed.</returns>
+        /// <remarks>
+        /// The string is checked to see if it starts and ends with the given delimiter. The delimiter is added if needed.
+        /// <para />
+        /// If <paramref name="source"/> is <see langword="null"/> or empty then an empty string wrapped in the delimiter
+        /// is returned.
+        /// </remarks>
+        public static string EnsureSurroundedWith ( this string source, char delimiter ) => EnsureSurroundedWith(source, delimiter.ToString());
+
+        /// <summary>Ensures the string is surrounded with the given delimiter.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="delimiter">The delimiter to use.</param>
+        /// <param name="comparison">The string comparison to use.</param>
+        /// <returns>The string surrounded with the given delimiter, if needed.</returns>
+        /// <remarks>
+        /// The string is checked to see if it starts and ends with the given delimiter. The delimiter is added if needed.
+        /// <para />
+        /// If <paramref name="source"/> is <see langword="null"/> or empty then an empty string wrapped in the delimiter
+        /// is returned.
+        /// </remarks>
+        public static string EnsureSurroundedWith ( this string source, char delimiter, StringComparison comparison )
+                            => EnsureSurroundedWith(source, delimiter.ToString(), comparison);
+
+        /// <summary>Ensures the string is surrounded with the given delimiter.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="delimiter">The delimiter to use.</param>
+        /// <param name="ignoreCase"><see langword="true"/> to ignore case.</param>
+        /// <param name="culture">The culture to use for comparison.</param>
+        /// <returns>The string surrounded with the given delimiter, if needed.</returns>
+        /// <remarks>
+        /// The string is checked to see if it starts and ends with the given delimiter. The delimiter is added if needed.
+        /// <para />
+        /// If <paramref name="source"/> is <see langword="null"/> or empty then an empty string wrapped in the delimiter
+        /// is returned.
+        /// </remarks>
+        public static string EnsureSurroundedWith ( this string source, char delimiter, bool ignoreCase, CultureInfo culture )
+                            => EnsureSurroundedWith(source, delimiter.ToString(), ignoreCase, culture);
+
+        #endregion
+
         #region FormatWith
 
         /// <summary>Provides a shorthand for using <see cref="O:String.Format"/> on a string.</summary>
@@ -317,10 +410,7 @@ namespace P3Net.Kraken
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
         [Obsolete("Deprecated in 5.0. Use string interpolation.")]
-        public static string FormatWith ( this string source, object arg )
-        {
-            return String.Format(source, arg);
-        }
+        public static string FormatWith ( this string source, object arg ) => String.Format(source, arg);
 
         /// <summary>Provides a shorthand for using <see cref="O:String.Format"/> on a string.</summary>
         /// <param name="source">The source.</param>
@@ -332,10 +422,7 @@ namespace P3Net.Kraken
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
         [Obsolete("Deprecated in 5.0. Use string interpolation.")]
-        public static string FormatWith ( this string source, object arg1, object arg2 )
-        {
-            return String.Format(source, arg1, arg2);
-        }
+        public static string FormatWith ( this string source, object arg1, object arg2 ) => String.Format(source, arg1, arg2);
 
         /// <summary>Provides a shorthand for using <see cref="O:String.Format"/> on a string.</summary>
         /// <param name="source">The source.</param>
@@ -348,10 +435,7 @@ namespace P3Net.Kraken
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
         [Obsolete("Deprecated in 5.0. Use string interpolation.")]
-        public static string FormatWith ( this string source, object arg1, object arg2, object arg3 )
-        {
-            return String.Format(source, arg1, arg2, arg3);
-        }
+        public static string FormatWith ( this string source, object arg1, object arg2, object arg3 ) => String.Format(source, arg1, arg2, arg3);
 
         /// <summary>Provides a shorthand for using <see cref="O:String.Format"/> on a string.</summary>
         /// <param name="source">The source.</param>
@@ -362,10 +446,7 @@ namespace P3Net.Kraken
         /// This method is identical to <see cref="O:String.Format"/> but is an instance method.
         /// </remarks>
         [Obsolete("Deprecated in 5.0. Use string interpolation.")]
-        public static string FormatWith ( this string source, params object[] args )
-        {
-            return String.Format(source, args);
-        }
+        public static string FormatWith ( this string source, params object[] args ) => String.Format(source, args);
         #endregion
 
         #region GetComparer
@@ -388,7 +469,7 @@ namespace P3Net.Kraken
                 case StringComparison.OrdinalIgnoreCase: return StringComparer.OrdinalIgnoreCase;
             };
 
-            throw new ArgumentOutOfRangeException("comparison");
+            throw new ArgumentOutOfRangeException(nameof(comparison));
         }
         #endregion
 
@@ -459,10 +540,7 @@ namespace P3Net.Kraken
         ///		Console.WriteLine("abcd".IndexOfNotIn('1', '2', '3', '4'));		// 0
         /// </code>
         /// </example>
-        public static int IndexOfNotIn ( this string source, params char[] tokens )
-        {
-            return IndexOfNotIn(source, tokens, 0);
-        }
+        public static int IndexOfNotIn ( this string source, params char[] tokens ) => IndexOfNotIn(source, tokens, 0);
 
         /// <summary>Finds the index of the first character not in the given token list.</summary>
         /// <param name="source">The string to search.</param>
@@ -478,13 +556,13 @@ namespace P3Net.Kraken
         /// <example>Refer to <see cref="M:IndexOfNotIn(String,Char[])">IndexOfNotIn</see> for an example.</example>
         public static int IndexOfNotIn ( this string source, IEnumerable<char> tokens, int startingIndex )
         {
-            Verify.Argument("tokens", tokens).IsNotNull();
-            Verify.Argument("startingIndex", startingIndex).IsGreaterThanOrEqualToZero();
+            Verify.Argument(nameof(tokens)).WithValue(tokens).IsNotNull();
+            Verify.Argument(nameof(startingIndex)).WithValue(startingIndex).IsGreaterThanOrEqualToZero();
 
             if ((source.Length == 0) || (tokens.Count() == 0) || (startingIndex >= source.Length))
                 return -1;
 
-            for (int index = startingIndex; index < source.Length; ++index)
+            for (var index = startingIndex; index < source.Length; ++index)
             {
                 if (!tokens.Contains(source[index]))
                     return index;
@@ -493,7 +571,7 @@ namespace P3Net.Kraken
             return -1;
         }
         #endregion
-        
+
         #region Is...
 
         /// <summary>Determines if a string consists of only alphabetic characters.</summary>
@@ -525,7 +603,7 @@ namespace P3Net.Kraken
             if (source.Length == 0)
                 return false;
 
-            foreach (char ch in source)
+            foreach (var ch in source)
             {
                 if (!Char.IsLetter(ch))
                     return false;
@@ -541,13 +619,12 @@ namespace P3Net.Kraken
         /// <example>Refer to <see cref="IsAlpha"/> for an example.</example>
         /// <seealso cref="IsAlpha"/>
         /// <seealso cref="IsNumeric"/>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "AlphaNumeric")]
         public static bool IsAlphaNumeric ( this string source )
         {
             if (source.Length == 0)
                 return false;
 
-            foreach (Char ch in source)
+            foreach (var ch in source)
             {
                 if (!Char.IsLetterOrDigit(ch))
                     return false;
@@ -557,12 +634,9 @@ namespace P3Net.Kraken
         }
 
         /// <summary>Determines if a string is empty.</summary>
-        /// <param name="source">Thje source.</param>
+        /// <param name="source">The source.</param>
         /// <returns><see langword="true"/> if the string is empty, or <see langword="null"/>.</returns>
-        public static bool IsEmpty ( this string source )
-        {
-            return String.IsNullOrEmpty(source);
-        }
+        public static bool IsEmpty ( this string source ) => String.IsNullOrEmpty(source);
 
         /// <summary>Determines if a string is a valid identifier.</summary>
         /// <param name="source">The string to examine.</param>
@@ -579,7 +653,7 @@ namespace P3Net.Kraken
             if ((source.Length == 0) || (!Char.IsLetter(source, 0) && source[0] != '_'))
                 return false;
 
-            foreach (Char ch in source)
+            foreach (var ch in source)
             {
                 if (!Char.IsLetterOrDigit(ch) && (ch != '_'))
                     return false;
@@ -590,10 +664,7 @@ namespace P3Net.Kraken
 
         /// <summary>Determines if a string consists of only numeric characters.</summary>
         /// <param name="source">The string to examine.</param>
-        /// <returns><see langword="true"/> if the string consists of only numeric characters or <see langword="false"/> otherwise.</returns>
-        /// <remarks>
-        /// Parseable strings are not necessarily numeric.
-        /// </remarks>
+        /// <returns><see langword="true"/> if the string consists of only numeric characters or <see langword="false"/> otherwise.</returns>        
         /// <example>Refer to <see cref="IsAlpha"/> for an example.</example>
         /// <seealso cref="IsAlpha"/>
         /// <seealso cref="IsAlphaNumeric"/>
@@ -612,12 +683,9 @@ namespace P3Net.Kraken
         }
 
         /// <summary>Determines if a string is all whitespace.</summary>
-        /// <param name="source">Thje source.</param>
+        /// <param name="source">The source.</param>
         /// <returns><see langword="true"/> if the string is whitespace, or <see langword="null"/>.</returns>
-        public static bool IsWhitespace ( this string source )
-        {
-            return String.IsNullOrWhiteSpace(source);
-        }
+        public static bool IsWhitespace ( this string source ) => String.IsNullOrWhiteSpace(source);
         #endregion
 
         #region Left
@@ -643,7 +711,7 @@ namespace P3Net.Kraken
         /// <seealso cref="Mid"/>
         public static string Left ( this string source, int count )
         {
-            Verify.Argument("count", count).IsGreaterThanOrEqualToZero();
+            Verify.Argument(nameof(count)).WithValue(count).IsGreaterThanOrEqualToZero();
 
             return (count < source.Length) ? source.Substring(0, count) : source;
         }
@@ -665,10 +733,7 @@ namespace P3Net.Kraken
         /// </example>
         /// <seealso cref="Left"/>
         /// <seealso cref="O:RightOf"/>
-        public static string LeftOf ( this string source, params char[] tokens )
-        {
-            return LeftOf(source, (IList<char>)tokens);
-        }
+        public static string LeftOf ( this string source, params char[] tokens ) => LeftOf(source, (IList<char>)tokens);
 
         /// <summary>Gets the portion of the string to the left of any of the given tokens.</summary>
         /// <param name="source">The string to search.</param>
@@ -681,13 +746,13 @@ namespace P3Net.Kraken
         /// <seealso cref="Left"/>
         /// <seealso cref="O:RightOf"/>
         public static string LeftOf ( this string source, IList<char> tokens )
-        {            
+        {
             if ((tokens == null) || tokens.Count == 0)
                 return source;
 
             //Find the token
-            int index = source.IndexOfAny(tokens.ToArray());
-            
+            var index = source.IndexOfAny(tokens.ToArray());
+
             return (index >= 0) ? source.Substring(0, index) : source;
         }
 
@@ -701,10 +766,7 @@ namespace P3Net.Kraken
         /// <example>Refer to <see cref="LeftOf(String,Char[])">LeftOf</see> for an example.</example>
         /// <seealso cref="Left"/>
         /// <seealso cref="O:RightOf"/>
-        public static string LeftOf ( this string source, string token )
-        {
-            return LeftOf(source, token, StringComparison.CurrentCulture);
-        }
+        public static string LeftOf ( this string source, string token ) => LeftOf(source, token, StringComparison.CurrentCulture);
 
         /// <summary>Gets the portion of the string to the left of the given token.</summary>
         /// <param name="source">The string to search.</param>
@@ -718,14 +780,14 @@ namespace P3Net.Kraken
         /// <seealso cref="Left"/>
         /// <seealso cref="O:RightOf"/>
         public static string LeftOf ( this string source, string token, StringComparison comparison )
-        {        
+        {
             //Empty source or token is easy
             if ((source.Length == 0) || String.IsNullOrEmpty(token))
                 return source;
-            
+
             //Find the token
-            int index = source.IndexOf(token, comparison);
-           
+            var index = source.IndexOf(token, comparison);
+
             return (index >= 0) ? source.Substring(0, index) : source;
         }
         #endregion
@@ -757,8 +819,8 @@ namespace P3Net.Kraken
         /// <seealso cref="Right"/>
         public static string Mid ( this string source, int startIndex, int endIndex )
         {
-            Verify.Argument("startIndex", startIndex).IsGreaterThanOrEqualToZero();
-            Verify.Argument("endIndex", endIndex).IsGreaterThanOrEqualTo(startIndex);
+            Verify.Argument(nameof(startIndex)).WithValue(startIndex).IsGreaterThanOrEqualToZero();
+            Verify.Argument(nameof(endIndex)).WithValue(endIndex).IsGreaterThanOrEqualTo(startIndex);
 
             if (startIndex >= source.Length)
                 return "";
@@ -776,10 +838,7 @@ namespace P3Net.Kraken
         /// <param name="source">The string to modify.</param>
         /// <param name="value">The value to remove.</param>
         /// <returns>The updated string.</returns>
-        public static string RemoveAll ( this string source, char value )
-        {
-            return RemoveAll(source, value.ToString(), 0, StringComparison.CurrentCulture);
-        }
+        public static string RemoveAll ( this string source, char value ) => RemoveAll(source, value.ToString(), 0, StringComparison.CurrentCulture);
 
         /// <summary>Removes all specified characters from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -788,9 +847,7 @@ namespace P3Net.Kraken
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero or larger than the length of the string.</exception>
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, char value, int startIndex )
-        {
-            return RemoveAll(source, value.ToString(), startIndex, StringComparison.CurrentCulture);
-        }
+                        => RemoveAll(source, value.ToString(), startIndex, StringComparison.CurrentCulture);
 
         /// <summary>Removes all specified characters from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -798,9 +855,7 @@ namespace P3Net.Kraken
         /// <param name="comparison">The comparer to use.</param>
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, char value, StringComparison comparison )
-        {
-            return RemoveAll(source, value.ToString(), 0, comparison);
-        }
+                            => RemoveAll(source, value.ToString(), 0, comparison);
 
         /// <summary>Removes all specified characters from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -810,9 +865,7 @@ namespace P3Net.Kraken
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero or larger than the length of the string.</exception>
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, char value, int startIndex, StringComparison comparison )
-        {
-            return RemoveAll(source, value.ToString(), startIndex, comparison);
-        }
+                            => RemoveAll(source, value.ToString(), startIndex, comparison);
 
         /// <summary>Removes all specified characters from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -824,7 +877,7 @@ namespace P3Net.Kraken
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, IEnumerable<char> values, int startIndex, StringComparison comparison )
         {
-            Verify.Argument("values", values).IsNotNull();
+            Verify.Argument(nameof(values)).WithValue(values).IsNotNull();
 
             var bldr = new StringBuilder(source.Length);
             if (startIndex != 0)
@@ -846,10 +899,7 @@ namespace P3Net.Kraken
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="value"/> is empty.</exception>
         /// <returns>The updated string.</returns>
-        public static string RemoveAll ( this string source, string value )
-        {
-            return RemoveAll(source, value, 0, StringComparison.CurrentCulture);
-        }
+        public static string RemoveAll ( this string source, string value ) => RemoveAll(source, value, 0, StringComparison.CurrentCulture);
 
         /// <summary>Removes the specified value from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -860,9 +910,7 @@ namespace P3Net.Kraken
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero or larger than the length of the string.</exception>
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, string value, int startIndex )
-        {
-            return RemoveAll(source, value, startIndex, StringComparison.CurrentCulture);
-        }
+                            => RemoveAll(source, value, startIndex, StringComparison.CurrentCulture);
 
         /// <summary>Removes the specified value from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -872,9 +920,7 @@ namespace P3Net.Kraken
         /// <exception cref="ArgumentException"><paramref name="value"/> is empty.</exception>
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, string value, StringComparison comparison )
-        {
-            return RemoveAll(source, value, 0, comparison);
-        }
+                               => RemoveAll(source, value, 0, comparison);
 
         /// <summary>Removes the specified value from a string.</summary>
         /// <param name="source">The string to modify.</param>
@@ -887,7 +933,7 @@ namespace P3Net.Kraken
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, string value, int startIndex, StringComparison comparison )
         {
-            Verify.Argument("value", value).IsNotNullOrEmpty();
+            Verify.Argument(nameof(value)).WithValue(value).IsNotNullOrEmpty();
 
             return RemoveAll(source, new[] { value }, startIndex, comparison);
         }
@@ -902,14 +948,14 @@ namespace P3Net.Kraken
         /// <returns>The updated string.</returns>
         public static string RemoveAll ( this string source, IEnumerable<string> values, int startIndex, StringComparison comparison )
         {
-            Verify.Argument("values", values).IsNotNull();
+            Verify.Argument(nameof(values)).WithValue(values).IsNotNull();
 
             values = values.Where(x => !String.IsNullOrEmpty(x));
 
             var str = source;
             foreach (var value in values)
             {
-                int index = str.IndexOf(value, startIndex, comparison);
+                var index = str.IndexOf(value, startIndex, comparison);
                 while (index >= 0)
                 {
                     str = str.Remove(index, value.Length);
@@ -937,7 +983,7 @@ namespace P3Net.Kraken
         /// <example>Refer to <see cref="ReplaceAll(String, IEnumerable{String},String)">ReplaceAll</see> for an example.</example>
         public static string ReplaceAll ( this string source, char[] valuesToReplace, char newValue )
         {
-            Verify.Argument("valuesToReplace", valuesToReplace).IsNotNull();
+            Verify.Argument(nameof(valuesToReplace)).WithValue(valuesToReplace).IsNotNull();
 
             if (source.Length == 0 || valuesToReplace.Length == 0)
                 return source;
@@ -976,8 +1022,8 @@ namespace P3Net.Kraken
         /// </example>
         public static string ReplaceAll ( this string source, char[] valuesToReplace, char[] replacementValues )
         {
-            Verify.Argument("valuesToReplace", valuesToReplace).IsNotNull();
-            Verify.Argument("replacementValues", replacementValues).IsNotNull();
+            Verify.Argument(nameof(valuesToReplace)).WithValue(valuesToReplace).IsNotNull();
+            Verify.Argument(nameof(replacementValues)).WithValue(replacementValues).IsNotNull();
 
             if (replacementValues.Length < valuesToReplace.Length)
                 throw new ArgumentException("Replacement values is smaller than values to replace.", "replacementValues");
@@ -988,7 +1034,7 @@ namespace P3Net.Kraken
             var bldr = new StringBuilder();
             foreach (var ch in source)
             {
-                int index = valuesToReplace.IndexOf(ch);
+                var index = valuesToReplace.IndexOf(ch);
                 if (index >= 0)
                     bldr.Append(replacementValues[index]);
                 else
@@ -1018,14 +1064,14 @@ namespace P3Net.Kraken
         /// </example>
         public static string ReplaceAll ( this string source, IEnumerable<string> valuesToReplace, string newValue )
         {
-            Verify.Argument("valuesToReplace", valuesToReplace).IsNotNull();
+            Verify.Argument(nameof(valuesToReplace)).WithValue(valuesToReplace).IsNotNull();
 
             if (source.Length == 0 || valuesToReplace.Count() == 0)
                 return source;
 
             newValue = newValue ?? "";
 
-            StringBuilder bldr = new StringBuilder(source);
+            var bldr = new StringBuilder(source);
             foreach (var value in valuesToReplace)
             {
                 if (!String.IsNullOrEmpty(value))
@@ -1061,8 +1107,8 @@ namespace P3Net.Kraken
         /// </example>
         public static string ReplaceAll ( this string source, IEnumerable<string> valuesToReplace, IEnumerable<string> replacementValues )
         {
-            Verify.Argument("valuesToReplace", valuesToReplace).IsNotNull();
-            Verify.Argument("replacementValues", replacementValues).IsNotNull();
+            Verify.Argument(nameof(valuesToReplace)).WithValue(valuesToReplace).IsNotNull();
+            Verify.Argument(nameof(replacementValues)).WithValue(replacementValues).IsNotNull();
 
             if (replacementValues.Count() < valuesToReplace.Count())
                 throw new ArgumentException("Replacement values is smaller than values to replace.", "replacementValues");
@@ -1072,7 +1118,7 @@ namespace P3Net.Kraken
 
             var bldr = new StringBuilder(source);
 
-            int index = 0;
+            var index = 0;
             foreach (var oldValue in valuesToReplace)
             {
                 if (!String.IsNullOrEmpty(oldValue))
@@ -1108,7 +1154,7 @@ namespace P3Net.Kraken
         /// <seealso cref="O:RightOf"/>
         public static string Right ( this string source, int count )
         {
-            Verify.Argument("count", count).IsGreaterThanOrEqualToZero();
+            Verify.Argument(nameof(count)).WithValue(count).IsGreaterThanOrEqualToZero();
 
             return (count < source.Length) ? source.Substring(source.Length - count) : source;
         }
@@ -1130,10 +1176,7 @@ namespace P3Net.Kraken
         /// </example>
         /// <seealso cref="O:LeftOf"/>
         /// <seealso cref="Right"/>
-        public static string RightOf ( this string source, params char[] tokens )
-        {
-            return RightOf(source, (IList<char>)tokens);
-        }
+        public static string RightOf ( this string source, params char[] tokens ) => RightOf(source, (IList<char>)tokens);
 
         /// <summary>Gets the portion of the string to the right of any of the given tokens.</summary>
         /// <param name="source">The string to search.</param>
@@ -1151,11 +1194,11 @@ namespace P3Net.Kraken
                 return source;
 
             //Find it
-            int index = source.IndexOfAny(tokens.ToArray());
+            var index = source.IndexOfAny(tokens.ToArray());
 
             return (index >= 0) && (index < source.Length - 1) ? source.Substring(index + 1) : "";
         }
-        
+
         /// <summary>Gets the portion of the string to the right of the given token.</summary>
         /// <param name="source">The string to search.</param>
         /// <param name="token">The token to find.</param>
@@ -1165,10 +1208,7 @@ namespace P3Net.Kraken
         /// </remarks>
         /// <example>Refer to <see cref="RightOf(String,Char[])">RightOf</see> for an example.</example>
         /// <seealso cref="O:LeftOf"/>
-        public static string RightOf ( this string source, string token )
-        {
-            return RightOf(source, token, StringComparison.CurrentCulture);
-        }
+        public static string RightOf ( this string source, string token ) => RightOf(source, token, StringComparison.CurrentCulture);
 
         /// <summary>Gets the portion of the string to the right of the given token.</summary>
         /// <param name="source">The string to search.</param>
@@ -1186,34 +1226,24 @@ namespace P3Net.Kraken
                 return source;
 
             //Find it
-            int index = source.IndexOf(token, comparisonType);
+            var index = source.IndexOf(token, comparisonType);
 
-            int start = index + token.Length;
+            var start = index + token.Length;
             return (index >= 0) && (start < source.Length - 1) ? source.Substring(start) : "";
         }
         #endregion
-
-        #region Strip
 
         #region Strip...
 
         /// <summary>Strips all non-digits characters from the string. </summary>
         /// <param name="source">The source value.</param>
         /// <remarks>The new value.</remarks>
-        public static string StripNonDigits ( this string source )
-        {
-            return new string(source.Where(c => Char.IsDigit(c)).ToArray());
-        }
+        public static string StripNonDigits ( this string source ) => new string(source.Where(c => Char.IsDigit(c)).ToArray());
 
         /// <summary>Strips all non-alphanumeric characters from the string. </summary>
         /// <param name="source">The source value.</param>
         /// <remarks>The new value.</remarks>
-        public static string StripNonLetterOrDigits ( this string source )
-        {
-            return new string(source.Where(c => Char.IsLetterOrDigit(c)).ToArray());
-        }
-        #endregion
-
+        public static string StripNonLetterOrDigits ( this string source ) => new string(source.Where(c => Char.IsLetterOrDigit(c)).ToArray());
         #endregion
 
         #region ToCamel
@@ -1231,10 +1261,7 @@ namespace P3Net.Kraken
         /// <seealso cref="O:ToUserFriendly"/>
         /// <seealso cref="O:String.ToUpper"/>
         /// <seealso cref="O:String.ToLower"/>		
-        public static string ToCamel ( this string source )
-        {
-            return ToCamel(source, null);
-        }
+        public static string ToCamel ( this string source ) => ToCamel(source, null);
 
         /// <summary>Returns a copy of the string camel-cased.</summary>
         /// <param name="source">The obj to convert.</param>
@@ -1271,7 +1298,7 @@ namespace P3Net.Kraken
             return Char.ToLower(source[0], culture) + source.Substring(1);
         }
         #endregion
-                
+
         #region ToPascal
 
         /// <summary>Returns a copy of the string Pascal-cased.</summary>
@@ -1295,10 +1322,7 @@ namespace P3Net.Kraken
         /// <seealso cref="O:ToUserFriendly"/>
         /// <seealso cref="O:String.ToUpper"/>
         /// <seealso cref="O:String.ToLower"/>		
-        public static string ToPascal ( this string source )
-        {
-            return ToPascal(source, null);
-        }
+        public static string ToPascal ( this string source ) => ToPascal(source, null);
 
         /// <summary>Returns a copy of the string Pascal-cased.</summary>
         /// <param name="source">The obj to convert.</param>
@@ -1332,10 +1356,7 @@ namespace P3Net.Kraken
         /// <summary>Title cases a string.</summary>
         /// <param name="source">The source value.</param>
         /// <returns>The string title cased using the current culture.</returns>        
-        public static string ToTitleCase ( this string source )
-        {
-            return ToTitleCase(source, null);
-        }
+        public static string ToTitleCase ( this string source ) => ToTitleCase(source, null);
 
         /// <summary>Title cases a string.</summary>
         /// <param name="source">The source value.</param>
@@ -1365,10 +1386,7 @@ namespace P3Net.Kraken
         /// <seealso cref="O:ToPascal"/>
         /// <seealso cref="O:String.ToUpper"/>
         /// <seealso cref="O:String.ToLower"/>
-        public static string ToUserFriendly ( this string source )
-        {
-            return ToUserFriendly(source, true);
-        }
+        public static string ToUserFriendly ( this string source ) => ToUserFriendly(source, true);
 
         /// <summary>Returns a copy of the string split into multiple words.</summary>
         /// <param name="source">The string to split.</param>
@@ -1436,20 +1454,20 @@ namespace P3Net.Kraken
         /// <seealso cref="O:String.ToUpper"/>
         /// <seealso cref="O:String.ToLower"/>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        public static string ToUserFriendly ( this string source, bool uppercaseBoundary)
+        public static string ToUserFriendly ( this string source, bool uppercaseBoundary )
         {
             if (source.Length == 0)
                 return source;
 
-            StringBuilder bldr = new StringBuilder();
-            StringBuilder buffer = new StringBuilder();
+            var bldr = new StringBuilder();
+            var buffer = new StringBuilder();
 
             //Init the state machine with the first character: 0 = init, 1 = upper,
             // 2 = lower, 3 = space, 4 = digit
             short state = 0, oldState = 0;
-            char ch = source[0];
+            var ch = source[0];
             if (s_userFriendlySeparators.Contains(ch))
-            {                
+            {
                 //Ignore leading spaces
                 state = oldState = 3;
             } else if (Char.IsUpper(ch))
@@ -1472,7 +1490,7 @@ namespace P3Net.Kraken
             };
 
             //Enumerate the characters			
-            for (int index = 1; index < source.Length; ++index)
+            for (var index = 1; index < source.Length; ++index)
             {
                 ch = source[index];
 
@@ -1610,10 +1628,7 @@ namespace P3Net.Kraken
         /// <returns>The string or an empty string if the string is <see langword="null"/>.</returns>
         /// <example>Refer to <see cref="ValueOrEmpty"/> for an example.</example>
         /// <seealso cref="ValueOrEmpty"/>
-        public static string TrimmedValueOrEmpty ( this string source )
-        {
-            return (source != null) ? source.Trim() : "";
-        }
+        public static string TrimmedValueOrEmpty ( this string source ) => source?.Trim() ?? "";
 
         /// <summary>Gets the string obj or an empty string if the string is <see langword="null"/>.</summary>
         /// <param name="source">The source string.</param>
@@ -1629,9 +1644,68 @@ namespace P3Net.Kraken
         /// </code>
         /// </example>
         /// <seealso cref="ValueOrEmpty"/>
-        public static string ValueOrEmpty ( this string source )
+        public static string ValueOrEmpty ( this string source ) => source ?? "";
+        #endregion
+
+        #region Truncate
+
+        /// <summary>Truncates a string to the given length.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="length">The maximum length.</param>
+        /// <returns>The string truncated to the given length.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than zero.</exception>
+        public static string Truncate ( this string source, int length ) => Truncate(source, length, "");
+
+        /// <summary>Truncates a string to the given length.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="length">The maximum length.</param>
+        /// <param name="indicator">The indicator to append to the string if it is truncated.</param>
+        /// <returns>The string truncated to the given length.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than zero.</exception>
+        /// <remarks>
+        /// If the string plus the indicator is less than the length then the original string is returned. Otherwise
+        /// the leftmost portion of the string is returned minus the length of the indicator and then the indicator is added.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than zero.
+        /// /or
+        /// <paramref name="length"/> is less than the length of the indicator.
+        /// </exception>
+        public static string Truncate ( this string source, int length, string indicator )
+                            => Truncate(source, length, indicator, true);
+
+        /// <summary>Truncates a string to the given length.</summary>
+        /// <param name="source">The source.</param>
+        /// <param name="length">The maximum length.</param>
+        /// <param name="indicator">The indicator to append to the string if it is truncated.</param>
+        /// <param name="append"><see langword="true"/> to append the indicator or <see langword="false"/> to add to the front of the string.</param>
+        /// <returns>The string truncated to the given length.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than zero.</exception>
+        /// <remarks>
+        /// If the string plus the indicator is less than the length then the original string is returned. Otherwise
+        /// the leftmost portion of the string is returned minus the length of the indicator and then the indicator is
+        /// added to the front or back depending upon <paramref name="append"/>.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is less than zero.
+        /// /or
+        /// <paramref name="length"/> is less than the length of the indicator.
+        /// </exception>
+        public static string Truncate ( this string source, int length, string indicator, bool append )
         {
-            return source ?? "";
+            Verify.Argument(nameof(length)).WithValue(length).IsGreaterThanOrEqualToZero();
+
+            if (source.Length < length)
+                return source;
+
+            if (String.IsNullOrEmpty(indicator))
+                return source.Left(length);
+
+            var count = length - indicator.Length;
+            Verify.Argument(nameof(length)).WithValue(count).IsGreaterThanOrEqualToZero("Length must be at least as large as the indicator length.");
+
+            if (append)
+                return source.Left(count) + indicator;
+            else
+                return indicator + source.Left(count);
         }
         #endregion
 
@@ -1643,8 +1717,8 @@ namespace P3Net.Kraken
             if (separator.Length == 0)
                 return String.Join("", values);
 
-            StringBuilder bldr = new StringBuilder();
-            bool endsWithSeparator = true;   //Default to true so we won't add one initially
+            var bldr = new StringBuilder();
+            var endsWithSeparator = true;   //Default to true so we won't add one initially
 
             foreach (var value in values)
             {
@@ -1667,7 +1741,7 @@ namespace P3Net.Kraken
 
             return bldr.ToString();
         }
-        
+
         private static readonly char[] s_userFriendlySeparators = new char[] { '_', ' ', '.' };
         #endregion 
     }

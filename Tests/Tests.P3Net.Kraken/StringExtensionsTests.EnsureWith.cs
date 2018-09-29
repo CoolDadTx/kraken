@@ -418,5 +418,266 @@ namespace Tests.P3Net.Kraken
         #endregion
 
         #endregion
+
+        #region EnsureSurroundedWith
+
+        [TestMethod]
+        public void EnsureSurroundedWith_NeedsBoth ()
+        {
+            var target = "Field1";
+            var delimiter = "@";
+            var expected = delimiter + target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_NeedsPrefix ()
+        {
+            var delimiter = "@";
+            var target = "Field1" + delimiter;            
+            var expected = delimiter + target;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_NeedsSuffix ()
+        {
+            var delimiter = "@";
+            var target = delimiter + "Field1";
+            var expected = target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_NeedsNeither ()
+        {
+            var delimiter = "@";
+            var target = delimiter + "Field1" + delimiter;
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_TargetIsNull ()
+        {
+            var delimiter = "@";
+            var expected = delimiter + delimiter;
+
+            var actual = ((string)null).EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_TargetIsEmpty ()
+        {
+            var delimiter = "@";
+            var expected = delimiter + delimiter;
+
+            var actual = "".EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_DelimiterIsNull ()
+        {
+            var target = "Field1";
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(null);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_DelimiterIsEmpty ()
+        {
+            var target = "Field1";
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith("");
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_WithComparison_DiffersByCaseWithSensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = "x";
+            var expected = delimiter + target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter, StringComparison.CurrentCulture);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_WithComparison_DiffersByCaseWithInsensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = "x";
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(delimiter, StringComparison.CurrentCultureIgnoreCase);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_WithCulture_DiffersByCaseWithSensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = "x";
+            var expected = delimiter + target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter, false, CultureInfo.CurrentCulture);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_WithCulture_DiffersByCaseWithInsensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = "x";
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(delimiter, true, CultureInfo.CurrentCulture);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_NeedsBoth ()
+        {
+            var target = "Field1";
+            var delimiter = '@';
+            var expected = delimiter + target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_NeedsPrefix ()
+        {
+            var delimiter = '@';
+            var target = "Field1" + delimiter;
+            var expected = delimiter + target;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_NeedsSuffix ()
+        {
+            var delimiter = '@';
+            var target = delimiter + "Field1";
+            var expected = target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_NeedsNeither ()
+        {
+            var delimiter = '@';
+            var target = delimiter + "Field1" + delimiter;
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_TargetIsNull ()
+        {
+            var delimiter = '@';
+            var expected = delimiter.ToString() + delimiter.ToString();
+
+            var actual = ((string)null).EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_TargetIsEmpty ()
+        {
+            var delimiter = '@';
+            var expected = delimiter.ToString() + delimiter.ToString();
+
+            var actual = "".EnsureSurroundedWith(delimiter);
+
+            actual.Should().Be(expected);
+        }
+        
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_WithComparison_DiffersByCaseWithSensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = 'x';
+            var expected = delimiter + target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter, StringComparison.CurrentCulture);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_WithComparison_DiffersByCaseWithInsensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = 'x';
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(delimiter, StringComparison.CurrentCultureIgnoreCase);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_WithCulture_DiffersByCaseWithSensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = 'x';
+            var expected = delimiter + target + delimiter;
+
+            var actual = target.EnsureSurroundedWith(delimiter, false, CultureInfo.CurrentCulture);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void EnsureSurroundedWith_CharDelimiter_WithCulture_DiffersByCaseWithInsensitive ()
+        {
+            var target = "XField1X";
+            var delimiter = 'x';
+            var expected = target;
+
+            var actual = target.EnsureSurroundedWith(delimiter, true, CultureInfo.CurrentCulture);
+
+            actual.Should().Be(expected);
+        }
+        #endregion
     }
 }
