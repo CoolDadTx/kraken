@@ -31,21 +31,6 @@ namespace Tests.P3Net.Kraken.Reflection
         #region Tests
         
         [TestMethod]
-        public void BuildDate_IsValid ()
-        {
-            //Use heuristics to get the actual build date
-            var target = this.GetType().Assembly;
-            var expected = new FileInfo(target.Location).LastWriteTimeUtc;
-
-            //Act            
-            var details = target.GetAssemblyDetails();
-            var actual = details.BuildDate;
-
-            //Assert
-            actual.Should().BeDate(expected);
-        }
-
-        [TestMethod]
         public void CompanyName_IsValid ()
         {
             var target = typeof(Uri).Assembly;

@@ -5,6 +5,7 @@
 - [P3Net.Kraken.Interop Namespace](#p3net-kraken-interop-namespace)
 - [P3Net.Kraken.IO Namespace](#p3net-kraken-io-namespace)
 - [P3Net.Kraken.Linq Namespace](#p3net-kraken-linq-namespace)
+- [P3Net.Kraken.Reflection Namespace](#p3net-kraken-reflection-namespace)
 - [P3Net.Kraken.Win32 Namespace](#p3net-kraken-win32-namespace)
 
 [Version Release Notes](readme.md)
@@ -66,6 +67,12 @@ Some of the methods in this class rely on Windows-specific calls. They remain un
 #### LinqExtensions Class
 
 [New] This class adds some extension methods to [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1) including some asynchronous LINQ commands.
+
+## P3Net.Kraken.Reflection Namespace
+
+#### AssemblyDetails Class
+
+- *[Deprecated]* `BuildDate` is deprecated. It relied on linker date embedded in the PE file but with [deterministic builds](https://gist.github.com/aelij/b20271f4bd0ab1298e49068b388b54ae) that information is no longer set.
 
 ## P3Net.Kraken.Win32 Namespace
 

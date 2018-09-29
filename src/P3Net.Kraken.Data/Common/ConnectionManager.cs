@@ -43,7 +43,7 @@ namespace P3Net.Kraken.Data.Common
         /// <exception cref="ArgumentException"><paramref name="connectionString"/> is empty.</exception>
         protected ConnectionManager ( string connectionString )
         {
-            Verify.Argument(nameof(connectionString)).WithValue(ConnectionString).IsNotNullOrEmpty();
+            Verify.Argument(nameof(connectionString)).WithValue(connectionString).IsNotNullOrEmpty();
 
             ConnectionString = connectionString;
         }

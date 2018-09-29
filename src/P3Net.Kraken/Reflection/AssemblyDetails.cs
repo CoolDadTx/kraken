@@ -2,19 +2,14 @@
  * Copyright © 2006 Michael Taylor
  * All Rights Reserved
  */
-#region Imports
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-
-#endregion
 
 namespace P3Net.Kraken.Reflection
 {
@@ -29,14 +24,15 @@ namespace P3Net.Kraken.Reflection
         {
             Debug.Assert(assembly != null, "Assembly is null.");
 
-            m_assembly = assembly;
+            _assembly = assembly;
         }
         #endregion
 
         #region Public Members
-        
+
         /// <summary>Gets the build date of the assembly.</summary>
         /// <value>The build date comes from the PE header information.</value>
+        [Obsolete("Deprecated in 6.0. Linker date is no longer reliably available in PE files because of deterministic builds.")]
         public DateTime BuildDate
         {
             get
@@ -54,43 +50,19 @@ namespace P3Net.Kraken.Reflection
 
         /// <summary>Gets the company name.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string CompanyName
-        {
-            get 
-            {
-                return GetAttributeProperty("CompanyName", "", typeof(AssemblyCompanyAttribute), "Company"); 
-            }
-        }
+        public string CompanyName => GetAttributeProperty("CompanyName", "", typeof(AssemblyCompanyAttribute), "Company"); 
 
         /// <summary>Gets the configuration name.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string Configuration
-        {
-            get 
-            {
-                return GetAttributeProperty("Configuration", "", typeof(AssemblyConfigurationAttribute), "Configuration"); 
-            }
-        }
+        public string Configuration => GetAttributeProperty("Configuration", "", typeof(AssemblyConfigurationAttribute), "Configuration"); 
         
         /// <summary>Gets the copyright notice.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string Copyright
-        {
-            get
-            {
-                return GetAttributeProperty("Copyright", "", typeof(AssemblyCopyrightAttribute), "Copyright");
-            }
-        }
+        public string Copyright => GetAttributeProperty("Copyright", "", typeof(AssemblyCopyrightAttribute), "Copyright");
         
         /// <summary>Gets the description of the assembly.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string Description
-        {
-            get
-            {
-                return GetAttributeProperty("Description", "", typeof(AssemblyDescriptionAttribute), "Description");
-            }
-        }
+        public string Description => GetAttributeProperty("Description", "", typeof(AssemblyDescriptionAttribute), "Description");
 
         /// <summary>Gets the filename of the assembly.</summary>
         /// <value>The filename includes the extension.</value>
@@ -148,76 +120,34 @@ namespace P3Net.Kraken.Reflection
 
         /// <summary>Gets the file version as a string.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string FileVersionString
-        {
-            get	{ return FileVersion.ToString(); }
-        }
+        public string FileVersionString => FileVersion.ToString();
 
         /// <summary>Gets the full path to the assembly.</summary>
-        public string FullPath
-        {
-            get { return m_assembly.Location;	}
-        }
+        public string FullPath => _assembly.Location;
 
         /// <summary>Gets the informational version of the assembly.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string InformationalVersion
-        {
-            get
-            {
-                return GetAttributeProperty("InformationalVersion", "", typeof(AssemblyInformationalVersionAttribute), "InformationalVersion");
-            }
-        }
+        public string InformationalVersion => GetAttributeProperty("InformationalVersion", "", typeof(AssemblyInformationalVersionAttribute), "InformationalVersion");
 
         /// <summary>Determines if the assembly is CLS compliant.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public bool IsClsCompliant
-        {
-            get
-            {
-                return GetAttributeProperty("IsCLSCompliant", false, typeof(CLSCompliantAttribute), "IsCompliant");
-            }
-        }
+        public bool IsClsCompliant => GetAttributeProperty("IsCLSCompliant", false, typeof(CLSCompliantAttribute), "IsCompliant");
 
         /// <summary>Determines if the assembly is visible to COM.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public bool IsComVisible
-        {
-            get
-            {
-                return GetAttributeProperty("IsComVisible", true, typeof(ComVisibleAttribute), "Value");
-            }
-        }
+        public bool IsComVisible => GetAttributeProperty("IsComVisible", true, typeof(ComVisibleAttribute), "Value");
 
         /// <summary>Gets the product name of the assembly.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string ProductName
-        {
-            get
-            {
-                return GetAttributeProperty("ProductName", "", typeof(AssemblyProductAttribute), "Product");
-            }
-        }
+        public string ProductName => GetAttributeProperty("ProductName", "", typeof(AssemblyProductAttribute), "Product");
 
         /// <summary>Gets the title of the assembly.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string Title
-        {
-            get
-            {
-                return GetAttributeProperty("Title", "", typeof(AssemblyTitleAttribute), "Title");
-            }
-        }
+        public string Title => GetAttributeProperty("Title", "", typeof(AssemblyTitleAttribute), "Title");
 
         /// <summary>Gets the trademark notice of the assembly.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string Trademark
-        {
-            get
-            {
-                return GetAttributeProperty("Trademark", "", typeof(AssemblyTrademarkAttribute), "Trademark");
-            }
-        }
+        public string Trademark => GetAttributeProperty("Trademark", "", typeof(AssemblyTrademarkAttribute), "Trademark");
 
         /// <summary>Gets the version of the assembly.</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
@@ -229,7 +159,7 @@ namespace P3Net.Kraken.Reflection
                 Version value;
                 if (!TryGetProperty("Version", out value))
                 {
-                    value = m_assembly.GetName().Version ?? new Version(0, 0, 0, 0);
+                    value = _assembly.GetName().Version ?? new Version(0, 0, 0, 0);
 
                     SetProperty("Version", value);
                 };
@@ -240,10 +170,7 @@ namespace P3Net.Kraken.Reflection
 
         /// <summary>Gets the version as a string .</summary>
         /// <value>The property comes from the corresponding assembly attribute.</value>
-        public string VersionString
-        {
-            get { return Version.ToString(); }
-        }		
+        public string VersionString => Version.ToString(); 
         #endregion
 
         #region Private Members
@@ -257,7 +184,7 @@ namespace P3Net.Kraken.Reflection
 
             //Try to get the attribute value
             value = defaultValue;            
-            var attribute = (from a in m_assembly.GetCustomAttributes(attributeType, false)
+            var attribute = (from a in _assembly.GetCustomAttributes(attributeType, false)
                              select a).FirstOrDefault();
             if (attribute != null)
             {
@@ -278,7 +205,7 @@ namespace P3Net.Kraken.Reflection
         private DateTime GetBuildDate ( )
         {
             //We have to stream the assembly into memory so we can pick apart the PE header (mini parser present)
-            using (FileStream stream = new FileStream(m_assembly.Location, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var stream = new FileStream(_assembly.Location, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 return InternalGetBuildDate(stream);                
             };
@@ -308,8 +235,7 @@ namespace P3Net.Kraken.Reflection
 
         private bool TryGetProperty<T> ( string key, out T value )
         {
-            object obj = null;
-            if (m_properties.TryGetValue(key, out obj))
+            if (_properties.TryGetValue(key, out var obj))
             {
                 value = (T)obj;
                 return true;
@@ -321,7 +247,7 @@ namespace P3Net.Kraken.Reflection
 
         private static int ReadInt32 ( Stream stream )
         {
-            byte[] buffer = new byte[4];
+            var buffer = new byte[4];
 
             stream.Read(buffer, 0, 4);
             return BitConverter.ToInt32(buffer, 0);
@@ -330,15 +256,15 @@ namespace P3Net.Kraken.Reflection
         private void SetProperty( string key, object value )
         {
             //Ensure it is thread safe
-            lock (m_properties)
+            lock (_properties)
             {
-                m_properties[key] = value;
+                _properties[key] = value;
             };
         }
         #region Data
 
-        private Assembly m_assembly;
-        private Dictionary<string, object> m_properties = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase); 
+        private Assembly _assembly;
+        private readonly Dictionary<string, object> _properties = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase); 
         #endregion
 
         #endregion
