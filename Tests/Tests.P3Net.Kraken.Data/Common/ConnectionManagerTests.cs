@@ -6,7 +6,6 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using P3Net.Kraken.Data.Common;
-using P3Net.Kraken.Data.Configuration;
 using P3Net.Kraken.UnitTesting;
 
 namespace Tests.P3Net.Kraken.Data.Common
@@ -41,43 +40,6 @@ namespace Tests.P3Net.Kraken.Data.Common
 
             a.Should().Throw<ArgumentException>();
         }
-
-        [TestMethod]
-        public void Ctor_WithConnectionStringNameWorks ()
-        {
-            var connName = "Name1";
-            var expectedString = "Server=server1;Database=db1";
-
-            var mockProvider = new MemoryDataConfigurationProvider();
-            mockProvider.ConnectionStrings[connName] = expectedString;
-
-            var target = new TestConnectionManager(connName, mockProvider);
-
-            target.ConnectionString.Should().Be(expectedString);
-        }
-
-        [TestMethod]
-        public void Ctor_WithConnectionStringNameDoesNotExistFails ()
-        {
-            var connName = "Name1";
-
-            Action a = () => new TestConnectionManager(connName);
-
-            a.Should().Throw<ArgumentException>();
-        }
-
-        [TestMethod]
-        public void Ctor_WithConnectionStringNameAndIsEmptyFails ()
-        {
-            var connName = "Name1";
-
-            var mockProvider = new MemoryDataConfigurationProvider();
-            mockProvider.ConnectionStrings[connName] = "";
-
-            Action a = () => new TestConnectionManager(connName, mockProvider);
-
-            a.Should().Throw<Exception>();
-        }
         #endregion
 
         #region ConnectionString
@@ -110,33 +72,13 @@ namespace Tests.P3Net.Kraken.Data.Common
 
             target.ConnectionString.Should().Be(expected);
         }
-
-        [TestMethod]
-        public void ConnectionString_WithConnectionStringNameWorks ()
-        {
-            var expected = "Server=server2;Dabase=db2";
-            var connName = "conn1";
-
-            var provider = new MemoryDataConfigurationProvider();
-            provider.ConnectionStrings[connName] = expected;
-
-            var target = new TestConnectionManager("Server=server1;Dabase=DB1", provider);
-            target.SetConnectionString(connName);
-
-            target.ConnectionString.Should().Be(expected);
-        }
         #endregion
 
         #region Private Members
 
         private sealed class TestConnectionManager : ConnectionManager
         {
-            public TestConnectionManager ( string connectionStringOrName ) : this(connectionStringOrName, null)
-            {
-            }
-
-            public TestConnectionManager ( string connectionStringOrName, IDataConfigurationProvider configurationProvider ) 
-                                    : base(connectionStringOrName, configurationProvider ?? new MemoryDataConfigurationProvider())
+            public TestConnectionManager ( string connectionStringOrName ) : base(connectionStringOrName)
             {
             }
 

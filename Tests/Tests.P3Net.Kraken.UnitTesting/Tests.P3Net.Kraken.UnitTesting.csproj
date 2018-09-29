@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.4.2" />
         <PackageReference Include="Moq" Version="4.10.0" />
+        <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
+        <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
     </ItemGroup>
 
     <ItemGroup>
