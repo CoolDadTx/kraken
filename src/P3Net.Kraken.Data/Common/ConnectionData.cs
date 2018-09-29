@@ -66,8 +66,13 @@ namespace P3Net.Kraken.Data.Common
             {
                 try
                 {
-                    var conn = Detach();
-                    if ((conn?.State != ConnectionState.Closed))
+                    var conn = Detach();            
+                    
+                    //CR15 - don't do anything else if null
+                    if (conn == null)
+                        return;
+
+                    if (conn.State != ConnectionState.Closed)
                         conn.Close();
                 } catch
                 { /* Ignore */ };
