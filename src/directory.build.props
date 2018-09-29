@@ -14,7 +14,7 @@
         </PackageReleaseNotes>    
     
         <NoWarn>$(NoWarn);NU5105</NoWarn>
-        <MinClientVersion>4.2</MinClientVersion>
+        <MinClientVersion>4.1</MinClientVersion>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageProjectUrl>https://github.com/cooldadtx/kraken</PackageProjectUrl>
         <RepositoryUrl>https://github.com/cooldadtx/kraken</RepositoryUrl>
