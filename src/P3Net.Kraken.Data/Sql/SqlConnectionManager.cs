@@ -26,6 +26,11 @@ namespace P3Net.Kraken.Data.Sql
         }
         #endregion
 
+        /// <summary>Formats the parameter name.</summary>
+        /// <param name="originalName">The parameter name.</param>
+        /// <returns>The formatted parameter name.</returns>
+        protected override string FormatParameterName ( string originalName ) => originalName.EnsureStartsWith("@");
+
         /// <summary>Gets the schema information from the database.</summary>
         /// <returns>The schema information.</returns>
         protected override SchemaInformation LoadSchema ()

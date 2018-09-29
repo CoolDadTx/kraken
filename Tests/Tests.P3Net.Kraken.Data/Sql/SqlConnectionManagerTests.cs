@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * Copyright © 2018 Federation of State Medical Boards
+ * All Rights Reserved
+ */
+using System;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FluentAssertions;
 
-using P3Net.Kraken;
 using P3Net.Kraken.Data.Sql;
 using P3Net.Kraken.UnitTesting;
 
@@ -40,6 +42,44 @@ namespace Tests.P3Net.Kraken.Data.Sql
             Action a = () => new SqlConnectionManager("");
 
             a.Should().Throw<ArgumentException>();
+        }
+        #endregion
+
+        #region FormatParameterName
+
+        [TestMethod]
+        public void FormatParameterName_NotAlreadyFormatted ()
+        {
+            var name = "FirstName";
+            var expected = $"@{name}";
+
+            var target = new TestSqlConnectionManager();
+            var actual = target.GetParameterName(name);
+
+            actual.Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void FormatParameterName_AlreadyFormatted ()
+        {
+            var name = "@FirstName";
+            var expected = name;
+
+            var target = new TestSqlConnectionManager();
+            var actual = target.GetParameterName(name);
+
+            actual.Should().Be(expected);
+        }
+        #endregion
+
+        #region Private Members
+
+        private sealed class TestSqlConnectionManager : SqlConnectionManager
+        {
+            public TestSqlConnectionManager() : base(@"Server=localhost;Database=Master")
+            { }
+
+            public string GetParameterName ( string originalName ) => FormatParameterName(originalName);
         }
         #endregion
     }
