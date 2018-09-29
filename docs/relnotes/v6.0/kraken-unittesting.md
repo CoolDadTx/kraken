@@ -15,6 +15,6 @@
 #### UnitTest Class
 
 - `AssertAdministrator` is not available in .NET Standard.
-- `Random` property added to provide access to an instance of [Random](https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netframework-4.7.2) for use in testing.
+- `Random` property added to provide access to an instance of [Random](https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netframework-4.7.2) for use in testing. [Details](https://github.com/CoolDadTx/kraken/issues/3)
 - `User` has been modified to return `IPrincipal` instead of `WindowsPrincipal`. For the .NET Framework it continues to behave as before. For .NET Standard it simply returns [Thread.CurrentPrincipal](https://docs.microsoft.com/en-us/dotnet/api/system.threading.thread.currentprincipal).
 - `IsUserAdministrator` is not available in .NET Standard.

@@ -14,13 +14,16 @@
 
 #### RandomExtensions Class
 
-Added new class to provide extension methods for working with random values.
+Added new class to provide extension methods for working with random values. [Details](https://github.com/CoolDadTx/kraken/issues/3)
 
 - [New] `NextDate` method returns a random date, optionally limited to a range of dates.
 
 #### StringExtensions Class
 
+- [New] `Coalesce` method added to find the first non-null string. [Details](https://github.com/CoolDadTx/kraken/issues/11)
+- [New] `EnsureSurroundedWith` method added to combine `EnsureStartsWith` and `EnsureEndsWith`. [Details](https://github.com/CoolDadTx/kraken/issues/11)
 - [New] `IndexOfAll` method added to find all occurrences of a set of characters in a string.
+- [New] `Truncate` method added to truncate a string to a specific length. [Details](https://github.com/CoolDadTx/kraken/issues/11)
 
 #### TypeConversion Class
 
