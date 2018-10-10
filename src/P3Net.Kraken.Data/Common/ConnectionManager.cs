@@ -38,30 +38,33 @@ namespace P3Net.Kraken.Data.Common
         #region Construction
 
         /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
-        /// <param name="connectionString">The connection string to use.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionString"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="connectionString"/> is empty.</exception>
-        protected ConnectionManager ( string connectionString )
+        protected ConnectionManager ()
         {
-            Verify.Argument(nameof(connectionString)).WithValue(connectionString).IsNotNullOrEmpty();
+        }
 
-            ConnectionString = connectionString;
+        /// <summary>Initializes an instance of the <see cref="ConnectionManager"/> class.</summary>
+        /// <param name="connectionStringOrName">The connection string or name to use.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionStringOrName"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="connectionStringOrName"/> is empty.</exception>
+        [Obsolete("Deprecated in 6.1. Use the With... extension methods to specify the connection string.")]
+        protected ConnectionManager ( string connectionStringOrName )
+        {
+            UseConnectionString(connectionStringOrName);
         }
         #endregion
 
         #region Attributes
 
-        /// <summary>Gets the connection string to use.</summary>
-        /// <exception cref="ArgumentNullException">When setting the property and the value is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">When setting the property and the value is empty.</exception>
+            /// <summary>Gets or sets the connection string to use.</summary>
+            /// <exception cref="ArgumentNullException">When setting the property and the value is <see langword="null"/>.</exception>
+            /// <exception cref="ArgumentException">When setting the property and the value is empty.</exception>
         public string ConnectionString
         {
             get => _connectionString ?? "";
-            protected set 
-            {
+            set {
                 Verify.Argument(nameof(value)).WithValue(value).IsNotNullOrEmpty();
 
-                _connectionString = value;
+                SetConnectionString(value);
             }
         }
 
@@ -1474,6 +1477,13 @@ namespace P3Net.Kraken.Data.Common
                 SetUserContextCore(connection, _userContext ?? "");
         }
 
+        /// <summary>Sets the connection string.</summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <remarks>
+        /// The default implementation sets the underlying field for the connection string to <paramref name="connectionString"/>.
+        /// </remarks>
+        protected virtual void SetConnectionString ( string connectionString ) => _connectionString = connectionString;
+
         /// <summary>Sets the user context.</summary>
         /// <param name="connection">The open connection.</param>
         /// <param name="userContext">The user context to use.</param>
@@ -1535,6 +1545,27 @@ namespace P3Net.Kraken.Data.Common
                 cmdUpdate?.Dispose();
                 cmdDelete?.Dispose();
             };
+        }
+
+        /// <summary>Helper method to set the connection string for classes that need the legacy functionality.</summary>        
+        /// <param name="connectionString"></param>
+        /// <remarks>
+        /// This method is to help migrate derived types from accepting connection strings in the constructor to using the extension methods.
+        /// <para />
+        /// On .NET Framework this method looks at the connection string to determine if it is a connection string or name. It then sets the connection string
+        /// accordingly. On .NET Standard this method simply sets the connection string.
+        /// </remarks>
+        protected void UseConnectionString ( string connectionString )
+        {
+#if NET_FRAMEWORK
+            if (!(connectionString ?? "").Contains("="))
+            {
+                this.WithConnectionStringName(connectionString);
+                return;
+            };
+#endif
+
+            ConnectionString = connectionString;
         }
         #endregion
 

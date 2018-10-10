@@ -16,13 +16,20 @@ namespace P3Net.Kraken.Data.Sql
     public class SqlConnectionManager : DbProviderFactoryConnectionManager
     {
         #region Construction
-        
+
         /// <summary>Initializes an instance of the <see cref="SqlConnectionManager"/> class.</summary>
-        /// <param name="connectionString">The connection string to use.</param>
-        public SqlConnectionManager ( string connectionString ) : base(SqlClientFactory.Instance, connectionString)
+        public SqlConnectionManager () : base(SqlClientFactory.Instance)
         {
             SupportsQueryParameters = true;
             SupportsUserContext = true;
+        }
+
+        /// <summary>Initializes an instance of the <see cref="SqlConnectionManager"/> class.</summary>
+        /// <param name="connectionString">The connection string to use.</param>
+        [Obsolete("Deprecated in 6.1. Use one of the With... extension methods instead.")]
+        public SqlConnectionManager ( string connectionString ) : base(SqlClientFactory.Instance)
+        {
+            UseConnectionString(connectionString);
         }
         #endregion
 
