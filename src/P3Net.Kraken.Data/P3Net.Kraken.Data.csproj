@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net471'">
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
 

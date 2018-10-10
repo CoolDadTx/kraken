@@ -14,7 +14,15 @@ namespace Tests.P3Net.Kraken.Data.Common
     public class ConnectionManagerTests : UnitTest
     {
         #region Ctor
-        
+
+        [TestMethod]
+        public void Ctor_Default ()
+        {
+            var target = new TestConnectionManager();
+
+            target.ConnectionString.Should().BeEmpty();
+        }
+
         [TestMethod]
         public void Ctor_WithConnectionStringWorks ()
         {
@@ -47,17 +55,17 @@ namespace Tests.P3Net.Kraken.Data.Common
         [TestMethod]
         public void ConnectionString_SetToNullThrows ()
         {
-            var target = new TestConnectionManager("Server=server1;Dabase=DB1");
-            Action a = () => target.SetConnectionString(null);
+            var target = new TestConnectionManager();
+            Action a = () => target.ConnectionString = null;
 
-            a.Should().Throw<ArgumentNullException>();            
+            a.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
         public void ConnectionString_SetToEmptyThrows ()
         {
-            var target = new TestConnectionManager("Server=server1;Dabase=DB1");
-            Action a = () => target.SetConnectionString("");
+            var target = new TestConnectionManager();
+            Action a = () => target.ConnectionString = "";
 
             a.Should().Throw<ArgumentException>();
         }
@@ -67,8 +75,8 @@ namespace Tests.P3Net.Kraken.Data.Common
         {
             var expected = "Server=server2;Dabase=db2";
 
-            var target = new TestConnectionManager("Server=server1;Dabase=DB1");
-            target.SetConnectionString(expected);
+            var target = new TestConnectionManager();
+            target.ConnectionString = expected;
 
             target.ConnectionString.Should().Be(expected);
         }
@@ -78,16 +86,20 @@ namespace Tests.P3Net.Kraken.Data.Common
 
         private sealed class TestConnectionManager : ConnectionManager
         {
-            public TestConnectionManager ( string connectionStringOrName ) : base(connectionStringOrName)
+            public TestConnectionManager ()
             {
             }
 
-            public void SetConnectionString ( string value ) => ConnectionString = value;
+#pragma warning disable 618        
+            public TestConnectionManager ( string connectionStringOrName ) : base(connectionStringOrName)
+            {
+            }
+#pragma warning disable 618
 
             protected override DbCommand CreateCommandBase ( DataCommand command ) => throw new NotImplementedException();
             protected override DbConnection CreateConnectionBase ( string connectionString ) => throw new NotImplementedException();
-            protected override DbDataAdapter CreateDataAdapterBase () => throw new NotImplementedException();            
-        }        
+            protected override DbDataAdapter CreateDataAdapterBase () => throw new NotImplementedException();
+        }
         #endregion
     }
 }

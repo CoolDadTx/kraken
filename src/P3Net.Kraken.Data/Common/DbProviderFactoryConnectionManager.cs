@@ -21,18 +21,27 @@ namespace P3Net.Kraken.Data.Common
     public class DbProviderFactoryConnectionManager : ConnectionManager
     {
         #region Construction
-        
+
         /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
         /// <param name="factory">The underlying factory to use.</param>
-        /// <param name="connectionString">The connection string to use.</param>
         /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
-        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : base(connectionString)
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory )
         {
             Verify.Argument(nameof(factory)).WithValue(factory).IsNotNull();
 
             Factory = factory;
 
-            _schema = new Lazy<SchemaInformation>(CallLoadSchema);            
+            _schema = new Lazy<SchemaInformation>(CallLoadSchema);
+        }
+
+        /// <summary>Initializes an instance of the <see cref="DbProviderFactoryConnectionManager"/> class.</summary>
+        /// <param name="factory">The underlying factory to use.</param>
+        /// <param name="connectionString">The connection string to use.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="factory"/> is <see langword="null"/>.</exception>		
+        [Obsolete("Deprecated in 6.1. Use one of the With... extension methods instead.")]
+        public DbProviderFactoryConnectionManager ( DbProviderFactory factory, string connectionString ) : this(factory)
+        {
+            UseConnectionString(connectionString);      
         }
         #endregion
 

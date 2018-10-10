@@ -17,7 +17,16 @@ namespace Tests.P3Net.Kraken.Data.Sql
     public class SqlConnectionManagerTests : UnitTest
     {
         #region Ctor
-        
+
+        [TestMethod]
+        public void Ctor_Default ()
+        {
+            var target = new SqlConnectionManager();
+
+            target.ConnectionString.Should().BeEmpty();
+        }
+
+#pragma warning disable 618
         [TestMethod]
         public void Ctor_WithConnectionStringWorks ()
         {
@@ -43,6 +52,7 @@ namespace Tests.P3Net.Kraken.Data.Sql
 
             a.Should().Throw<ArgumentException>();
         }
+#pragma warning disable 618
         #endregion
 
         #region FormatParameterName
@@ -76,7 +86,7 @@ namespace Tests.P3Net.Kraken.Data.Sql
 
         private sealed class TestSqlConnectionManager : SqlConnectionManager
         {
-            public TestSqlConnectionManager() : base(@"Server=localhost;Database=Master")
+            public TestSqlConnectionManager () : base(@"Server=localhost;Database=Master")
             { }
 
             public string GetParameterName ( string originalName ) => FormatParameterName(originalName);
